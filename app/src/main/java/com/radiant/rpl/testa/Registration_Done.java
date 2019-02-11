@@ -17,10 +17,17 @@ TextView tvv;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration__done);
         tvv=findViewById(R.id.clickhere);
+        Intent iiii=getIntent();
+       String sectorrr= iiii.getStringExtra("sectorid");
+       String mobbbbb=iiii.getStringExtra("mobileeno");
 
-
-        String styledText = "<u><font color='red'>Click Here</font></u>.";
-        tvv.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
+        String styledText = "<u><font color='red'>Click Here</font></u> to proceed for Assessment";
+        if (sectorrr.equals("40")) {
+            tvv.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
+        }
+        else {
+            tvv.setVisibility(View.GONE);
+        }
         tvv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
