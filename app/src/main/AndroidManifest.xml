@@ -12,16 +12,26 @@
         android:roundIcon="@drawable/testalogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name="com.radiant.rpl.testa.Reverify"
             android:theme="@style/AppTheme1"
+            android:screenOrientation="portrait"
             ></activity>
+
         <activity android:name="com.radiant.rpl.testa.MainActivity"
             android:theme="@style/AppTheme1"
+            android:screenOrientation="portrait"
             />
-        <activity android:name="com.radiant.rpl.testa.Registration_Done" />
+
+        <activity android:name="com.radiant.rpl.testa.Registration_Done"
+            android:screenOrientation="portrait"
+            />
+
         <activity
             android:name="com.radiant.rpl.testa.Start_Registration"
-            android:theme="@style/AppTheme1">
+            android:theme="@style/AppTheme1"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -72,7 +72,7 @@ ProgressDialog pd;
     String yearobirth,monthobirth,dateobirth;
     AwesomeValidation awesomeValidation;
     String gender,eduction1,employment1,employer1,sector1,bankname1,state1,district1,encodedphoto,encodedphotoaadhar,jobrole1;
-    String bankiddd,stateiddd,districtiddd,employeridd,sectoridd,jobroleeiddd;
+    String bankiddd,stateiddd,districtiddd,employeridd,employeridname,sectoridd,jobroleeiddd;
     NetworkStateReceiver networkStateReceiver;
 
     @Override
@@ -201,7 +201,7 @@ ProgressDialog pd;
                     ii.putExtra("district", districtiddd);
                     ii.putExtra("education", eduction1);
                     ii.putExtra("employed", employment1);
-                    ii.putExtra("employer", employeridd);
+                    ii.putExtra("employer", employeridname);
                     ii.putExtra("sector", sectoridd);
                     ii.putExtra("addline1", input_address1.getText().toString());
                     ii.putExtra("addline2", input_address2.getText().toString());
@@ -446,8 +446,8 @@ ProgressDialog pd;
             {
                 if(position > 0) {
                     employer1 = employer.getSelectedItem().toString();
-                    employeridd = employdetail.get(employer1);
-                    Sectorlist(employeridd);
+                    employeridname = employdetail.get(employer1);
+                    Sectorlist(employeridname);
                 }
             }
 

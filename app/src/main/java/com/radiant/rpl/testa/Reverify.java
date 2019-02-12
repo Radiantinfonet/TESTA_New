@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +47,7 @@ public class Reverify extends AppCompatActivity {
         mob_txt=findViewById(R.id.input_mobile_noo);
         aadharno_txt=findViewById(R.id.input_aadhar_no);
         bankacc_txt=findViewById(R.id.input_bank_acdetails);
-
+        awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
         Intent ii=getIntent();
         fname=ii.getStringExtra("first_namee");
         lname=ii.getStringExtra("last_namee");
@@ -178,6 +179,7 @@ public class Reverify extends AppCompatActivity {
                 map.put("pincode",pincode1);
                 map.put("aadhar",aadharno);
                 map.put("ssc_id",sectorr);
+                map.put("company_id",employerr);
                 map.put("sector_id","0");
                 map.put("bankname",bank1);
                 map.put("name_in_bank",nameasinbank1);
