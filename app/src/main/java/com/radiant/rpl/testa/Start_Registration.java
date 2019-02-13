@@ -17,6 +17,7 @@ public class Start_Registration extends AppCompatActivity {
         setContentView(R.layout.activity_start__registration);
         b1=findViewById(R.id.buttonregister);
         b1.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Intent ii=new Intent(Start_Registration.this,MainActivity.class);

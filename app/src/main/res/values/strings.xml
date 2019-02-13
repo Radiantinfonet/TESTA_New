@@ -4,7 +4,7 @@
 
     <!-- hint name of field -->
 
-
+<string name="registration">Register For Rpl4</string>
     <string name="hint_name">First Name</string>
     <string name="hint_middile_name">Middle Name</string>
     <string name="hint_last_name">Last Name</string>
