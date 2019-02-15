@@ -32,7 +32,7 @@ public class Reverify extends AppCompatActivity {
 
     EditText fname_txt,lname_txt,mob_txt,aadharno_txt,bankacc_txt;
     String fname,lname,mob,aadharno,bankacc,yearobirth,monthobirth,dateobirthh,gender,bank1,statee,districtt,educationn,employedd,employerr,sectorr,addline11,addline22,pincode1,nameasinbank1,
-    iffccode1,photouri,jobrolee,empidd,locationn,aadharpic;
+    iffccode1,photouri,jobrolee,empidd,locationn,aadharpic,language;
     String getFname,getLname,getMob,getAadharno,getBankacc;
     ProgressDialog pd;
     Button btn_Register;
@@ -72,6 +72,7 @@ public class Reverify extends AppCompatActivity {
         iffccode1=ii.getStringExtra("ifsccode");
         jobrolee=ii.getStringExtra("jobrole");
         empidd=ii.getStringExtra("empid");
+        language=ii.getStringExtra("preflang");
         locationn=ii.getStringExtra("location");
         aadharpic=ii.getStringExtra("picaadhar");
         photouri=ii.getStringExtra("pic");
@@ -186,6 +187,7 @@ public class Reverify extends AppCompatActivity {
                 map.put("ifsc",iffccode1);
                 map.put("jobrole_id",jobrolee);
                 map.put("employee_id",empidd);
+                map.put("language",language);
                 map.put("StoreLocation",locationn);
                 if (aadharpic!=null){
                 map.put("aadhar_image",aadharpic);}

@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
@@ -38,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,12 +50,12 @@ import radiant.rpl.radiantrpl.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole;
+    Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,input_layout_prefferedlanguage;
     EditText input_name,input_last_name,input_mobile_no,input_address1
             ,input_address2,input_pincode,input_aadhar,input_bank_ac,input_ifsc_code,input_bank_username,input_empid,input_loc;
 ProgressDialog pd;
     String[] banks,states,districts,employers,jobrole;
-    List<String> bankslist,Statelist,districtlist,sectorlist,employerlist,jobrolelist;
+    List<String> bankslist,Statelist,districtlist,sectorlist,employerlist,jobrolelist,preflang;
     HashMap<String, String> bankdetail = new HashMap<>();
     HashMap<String, String> Jobrolelist = new HashMap<>();
     HashMap<String,String> Statedetail=new HashMap<>();
@@ -61,19 +63,23 @@ ProgressDialog pd;
     HashMap<String,String> sectordetail=new HashMap<>();
     HashMap<String,String> employerdetail =new HashMap<>();
     HashMap<String,String> employdetail =new HashMap<>();
+    HashMap<String,String> langdetail =new HashMap<>();
     Button input_submit;
     CheckBox checkBox;
     String[] sectors=new String[]{"Select the Sector"};
+    String[] preflangg=new String[]{"Select the Preffered Language"};
     ImageView input_photograph,input_aadharpic;
-    String Stateid,Statevalue,bankid,bankvalue,districtid,districtvalue,selectedstatetext,sectorid,sectorvalue,employerid,employervalue,jobroleid,jobrolevalue;
+    String Stateid,Statevalue,bankid,bankvalue,districtid,districtvalue,selectedstatetext,sectorid,sectorvalue,employerid,employervalue,jobroleid,jobrolevalue,preflangid,preflangvalue;
     private static final int CAMERA_REQUEST = 1888;
     private static final int CAMERA_AADHAR_REQUEST = 1889;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     String yearobirth,monthobirth,dateobirth;
     AwesomeValidation awesomeValidation;
-    String gender,eduction1,employment1,employer1,sector1,bankname1,state1,district1,encodedphoto,encodedphotoaadhar,jobrole1;
-    String bankiddd,stateiddd,districtiddd,employeridd,employeridname,sectoridd,jobroleeiddd;
+    String gender,eduction1,employment1,employer1,sector1,bankname1,state1,district1,encodedphoto,encodedphotoaadhar,jobrole1,preflang1;
+    String bankiddd,stateiddd,districtiddd,employeridd,employeridname,sectoridd,jobroleeiddd,preflangiddd;
     NetworkStateReceiver networkStateReceiver;
+    SwipeRefreshLayout mySwipeRefreshLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +113,7 @@ ProgressDialog pd;
         input_bank_ac=findViewById(R.id.input_bank_ac);
         input_ifsc_code=findViewById(R.id.input_ifsc_code);
         input_bank_username = findViewById(R.id.input_bank_username);
+        input_layout_prefferedlanguage=findViewById(R.id.input_layout_prefferedlanguage);
         awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
         checkBox = findViewById(R.id.checkBox);
 
@@ -118,7 +125,7 @@ ProgressDialog pd;
         awesomeValidation.addValidation(MainActivity.this,R.id.input_last_name,"[a-zA-Z\\s]+",R.string.err_msg_for_last_name);
         awesomeValidation.addValidation(MainActivity.this,R.id.input_address1,"(.|\\s)*\\S(.|\\s)*",R.string.err_msg_for_address1);
         awesomeValidation.addValidation(MainActivity.this,R.id.input_pincode,"^[0-9]{6}$",R.string.err_msg_pincode);
-        awesomeValidation.addValidation(MainActivity.this,R.id.input_bank_ac,"^[0-9]{11,14}$",R.string.err_msg_for_acno);
+        awesomeValidation.addValidation(MainActivity.this,R.id.input_bank_ac,"^[0-9]{11,16}$",R.string.err_msg_for_acno);
         awesomeValidation.addValidation(MainActivity.this,R.id.input_ifsc_code,"^[A-Z0-9]{6,12}$",R.string.err_msg_for_ifsc);
         awesomeValidation.addValidation(MainActivity.this,R.id.input_aadhar,"^[0-9]{12}$",R.string.err_msg_foraadhar);
         awesomeValidation.addValidation(MainActivity.this,R.id.input_mobile_no,"^[0-9]{10}$",R.string.err_msg_formobile);
@@ -128,7 +135,7 @@ ProgressDialog pd;
         input_jobrole.setEnabled(false);
         input_empid.setEnabled(false);
         input_loc.setEnabled(false);
-
+        input_layout_prefferedlanguage.setEnabled(false);
         Bankdetails();
         Statedetails();
         Employerlist();
@@ -143,7 +150,8 @@ ProgressDialog pd;
         sectorlist=new ArrayList<>(Arrays.asList(sectors));
         employerlist=new ArrayList<>(Arrays.asList(employers));
         jobrolelist=new ArrayList<>(Arrays.asList(jobrole));
-
+        preflang=new ArrayList<>(Arrays.asList(preflangg));
+        mySwipeRefreshLayout=new SwipeRefreshLayout(getApplicationContext());
         input_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,7 +192,7 @@ ProgressDialog pd;
 
                 else if(awesomeValidation.validate() && !(gender.equals("Select Gender"))&& !state1.equals("Select the State") && !yearobirth.equals("Year")
                          && !district1.equals("Select the District") && !eduction1.equals("Select Education") && !employment1.equals("Are you employed?")
-                         && !(sector1.equals("Select the Sector")) && !(bankname1.equals("Select the Bank")) && checkBox.isChecked() && encodedphoto!=null) {
+                         && !(sector1.equals("Select the Sector")) && !(preflang1.equals("Select the Preffered Language")) && !(bankname1.equals("Select the Bank")) && checkBox.isChecked() && encodedphoto!=null) {
 
                     Intent ii = new Intent(MainActivity.this, Reverify.class);
                     ii.putExtra("first_namee", input_name.getText().toString());
@@ -211,6 +219,7 @@ ProgressDialog pd;
                     ii.putExtra("jobrole",jobroleeiddd);
                     ii.putExtra("empid",input_empid.getText().toString());
                     ii.putExtra("location",input_loc.getText().toString());
+                    ii.putExtra("preflang",preflangiddd);
                      ii.putExtra("pic",encodedphoto);
                      ii.putExtra("picaadhar",encodedphotoaadhar);
                     startActivity(ii);
@@ -417,6 +426,7 @@ ProgressDialog pd;
                     input_jobrole.setEnabled(true);
                     input_empid.setEnabled(true);
                     input_loc.setEnabled(true);
+                    input_layout_prefferedlanguage.setEnabled(true);
                 }
                 employeridd=employerdetail.get(employment1);
                 //Toast.makeText(getApplicationContext(),"emp"+employeridd,Toast.LENGTH_LONG).show();
@@ -448,6 +458,9 @@ ProgressDialog pd;
                     employer1 = employer.getSelectedItem().toString();
                     employeridname = employdetail.get(employer1);
                     Sectorlist(employeridname);
+                    languageSelect(employeridname);
+                    getJobroleList(employeridname);
+
                 }
             }
 
@@ -478,7 +491,7 @@ ProgressDialog pd;
 
                 if(position > 0){
                     sectoridd=sectordetail.get(selectedsectortext);
-                    getJobroleList(sectoridd);
+
                 }
             }
 
@@ -505,6 +518,34 @@ ProgressDialog pd;
                 if(position > 0) {
                     jobrole1 = input_jobrole.getSelectedItem().toString();
                     jobroleeiddd=Jobrolelist.get(jobrole1);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+
+            }
+
+
+        });
+
+        //Preffered Exam Language
+        ArrayAdapter<String> preflanguage = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_list_item_1,preflang);
+        preflanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        input_layout_prefferedlanguage.setAdapter(preflanguage);
+
+        input_layout_prefferedlanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id)
+            {
+                if(position > 0) {
+                    preflang1 = input_layout_prefferedlanguage.getSelectedItem().toString();
+                    preflangiddd=langdetail.get(preflang1);
                 }
             }
 
@@ -622,6 +663,8 @@ ProgressDialog pd;
     }
 
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -708,6 +751,79 @@ ProgressDialog pd;
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
 
+                return map;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(20000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
+    }
+
+    //Language Api Call
+    private void languageSelect(final String cmp_id) {
+
+
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_language.php";
+
+        StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+
+                    JSONObject jobj = new JSONObject(response);
+
+                    String status= jobj.getString("status");
+
+                    if (status.equals("1")){
+                        if (preflang.size()>2){
+                            preflang.clear();
+                        }
+                        preflang.add("Choose the Prefferred Language");
+                        JSONArray jsonArray=jobj.getJSONArray("language");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject c = jsonArray.getJSONObject(i);
+                            preflangid = c.getString("language_code");
+                            preflangvalue = c.getString("name");
+                            langdetail.put(preflangvalue,preflangid );
+                            preflang.add(preflangvalue);
+                        }
+
+                        // Toast.makeText(getApplicationContext(),"Success"+bankslist,Toast.LENGTH_LONG).show();
+
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(),"Failed to fetch Language Details",Toast.LENGTH_LONG).show();
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Failed to fetch Language Details", Toast.LENGTH_LONG).show();
+            }
+        })
+
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                super.getHeaders();
+                Map<String, String> map = new HashMap<>();
+                return map;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                super.getParams();
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/x-www-form-urlencoded");
+                map.put("company_id",cmp_id);
                 return map;
             }
         };
@@ -802,8 +918,11 @@ ProgressDialog pd;
                 //Toast.makeText(getApplicationContext(),"Success"+districtlist,Toast.LENGTH_LONG).show();
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    districtlist.clear();
                     String status= jobj.getString("status");
+                    if (districtlist.size()>2){
+                        districtlist.clear();
+                    }
+                    districtlist.add("Choose the District");
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("district");
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -1008,12 +1127,16 @@ ProgressDialog pd;
 
                     JSONObject jobj = new JSONObject(response);
                     String status= jobj.getString("status");
-                    jobrolelist.clear();
+                    //jobrolelist.clear();
+                    if (jobrolelist.size()>2){
+                        jobrolelist.clear();
+                    }
+                    jobrolelist.add("Choose the Job Role");
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("jobrole");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
-                            jobroleid = c.getString("id");
+                            jobroleid = c.getString("jobrole_id");
                             jobrolevalue = c.getString("name");
                             Jobrolelist.put(jobrolevalue, jobroleid);
                             jobrolelist.add(jobrolevalue);
@@ -1051,7 +1174,8 @@ ProgressDialog pd;
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
-                map.put("ssc_id",sscid);
+                map.put("company_id",sscid);
+                System.out.println("aaaaaa"+map);
                 return map;
             }
         };
@@ -1094,6 +1218,7 @@ ProgressDialog pd;
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             int currentBitmapWidth = photo.getWidth();
             int currentBitmapHeight = photo.getHeight();
+            mySwipeRefreshLayout.setRefreshing(false);
             input_aadharpic.setImageBitmap(photo);
             int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) currentBitmapWidth / (double) currentBitmapWidth));
             Bitmap newbitMap = Bitmap.createScaledBitmap(photo, currentBitmapWidth, newHeight, true);
