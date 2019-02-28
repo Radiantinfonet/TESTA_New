@@ -1,7 +1,6 @@
 package com.radiant.rpl.testa;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -34,9 +33,11 @@ TextView tvv,tvv1;
             public void onClick(View v) {
                 String url = "https://www.skillassessment.org/retail/";
 
-                Intent i = new Intent(Intent.ACTION_VIEW);
+             Intent ii=new Intent(Registration_Done.this, Start_Registration.class);
+                   startActivity(ii);
+                /*Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
-                startActivity(i);
+                startActivity(i);*/
             }
         });
 
@@ -51,10 +52,11 @@ TextView tvv,tvv1;
             @Override
             public void onClick(View v) {
                 String url = "https://www.skillassessment.org/retail/";
-
-                Intent i = new Intent(Intent.ACTION_VIEW);
+                Intent ii=new Intent(Registration_Done.this, Start_Registration.class);
+                startActivity(ii);
+               /* Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
-                startActivity(i);
+                startActivity(i);*/
             }
         });
 

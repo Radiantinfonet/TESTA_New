@@ -15,6 +15,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -39,21 +40,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
 import radiant.rpl.radiantrpl.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,input_layout_prefferedlanguage;
+    Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,
+            input_layout_prefferedlanguage,category;
     EditText input_name,input_last_name,input_mobile_no,input_address1
-            ,input_address2,input_pincode,input_aadhar,input_bank_ac,input_ifsc_code,input_bank_username,input_empid,input_loc;
-ProgressDialog pd;
+            ,input_address2,input_pincode,input_aadhar,input_bank_ac,input_ifsc_code,input_bank_username,input_empid,input_loc,Email;
+    ProgressDialog pd;
     String[] banks,states,districts,employers,jobrole;
     List<String> bankslist,Statelist,districtlist,sectorlist,employerlist,jobrolelist,preflang;
     HashMap<String, String> bankdetail = new HashMap<>();
@@ -69,17 +71,19 @@ ProgressDialog pd;
     String[] sectors=new String[]{"Select the Sector"};
     String[] preflangg=new String[]{"Select the Preffered Language"};
     ImageView input_photograph,input_aadharpic;
-    String Stateid,Statevalue,bankid,bankvalue,districtid,districtvalue,selectedstatetext,sectorid,sectorvalue,employerid,employervalue,jobroleid,jobrolevalue,preflangid,preflangvalue;
+    String Stateid,Statevalue,bankid,bankvalue,districtid,districtvalue,selectedstatetext,sectorid,sectorvalue,
+            employerid,employervalue,jobroleid,jobrolevalue,preflangid,preflangvalue;
     private static final int CAMERA_REQUEST = 1888;
     private static final int CAMERA_AADHAR_REQUEST = 1889;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     String yearobirth,monthobirth,dateobirth;
     AwesomeValidation awesomeValidation;
-    String gender,eduction1,employment1,employer1,sector1,bankname1,state1,district1,encodedphoto,encodedphotoaadhar,jobrole1,preflang1;
+    String gender,eduction1,employment1,employer1,sector1,bankname1,state1,district1,encodedphoto,encodedphotoaadhar,jobrole1,preflang1,categoryy;
     String bankiddd,stateiddd,districtiddd,employeridd,employeridname,sectoridd,jobroleeiddd,preflangiddd;
     NetworkStateReceiver networkStateReceiver;
     SwipeRefreshLayout mySwipeRefreshLayout;
-
+    ArrayAdapter<String> jobroleadapter;
+    private android.app.AlertDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,7 @@ ProgressDialog pd;
 
         final Spinner myspinner = findViewById(R.id.input_layout_gender);
         yearofbirth=findViewById(R.id.input_layout_year);
+        category=findViewById(R.id.input_layout_category);
         monthofbirth=findViewById(R.id.input_layout_month);
         dateofbirth=findViewById(R.id.input_layout_date);
         education=findViewById(R.id.input_layout_Education);
@@ -114,22 +119,20 @@ ProgressDialog pd;
         input_ifsc_code=findViewById(R.id.input_ifsc_code);
         input_bank_username = findViewById(R.id.input_bank_username);
         input_layout_prefferedlanguage=findViewById(R.id.input_layout_prefferedlanguage);
+        progressDialog = new SpotsDialog(MainActivity.this, R.style.Custom);
         awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
         checkBox = findViewById(R.id.checkBox);
-
-
-
-
-
-        awesomeValidation.addValidation(MainActivity.this,R.id.input_name,"[a-zA-Z\\s]+",R.string.err_msg_for_first_name);
-        awesomeValidation.addValidation(MainActivity.this,R.id.input_last_name,"[a-zA-Z\\s]+",R.string.err_msg_for_last_name);
-        awesomeValidation.addValidation(MainActivity.this,R.id.input_address1,"(.|\\s)*\\S(.|\\s)*",R.string.err_msg_for_address1);
-        awesomeValidation.addValidation(MainActivity.this,R.id.input_pincode,"^[0-9]{6}$",R.string.err_msg_pincode);
-        awesomeValidation.addValidation(MainActivity.this,R.id.input_bank_ac,"^[0-9]{11,16}$",R.string.err_msg_for_acno);
-        awesomeValidation.addValidation(MainActivity.this,R.id.input_ifsc_code,"^[A-Z0-9]{6,12}$",R.string.err_msg_for_ifsc);
-        awesomeValidation.addValidation(MainActivity.this,R.id.input_aadhar,"^[0-9]{12}$",R.string.err_msg_foraadhar);
-        awesomeValidation.addValidation(MainActivity.this,R.id.input_mobile_no,"^[0-9]{10}$",R.string.err_msg_formobile);
-        awesomeValidation.addValidation(MainActivity.this,R.id.input_bank_username,"[a-zA-Z\\s]+",R.string.err_msg_for_namein_bank);
+        Email = findViewById(R.id.input_email);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_name,"[a-zA-Z\\s]+", R.string.err_msg_for_first_name);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_last_name,"[a-zA-Z\\s]+", R.string.err_msg_for_last_name);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_address1,"(.|\\s)*\\S(.|\\s)*", R.string.err_msg_for_address1);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_pincode,"^[0-9]{6}$", R.string.err_msg_pincode);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_ac,"^[0-9]{6,18}$", R.string.err_msg_for_acno);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_ifsc_code,"^[a-zA-Z0-9]{5,14}$", R.string.err_msg_for_ifsc);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_aadhar,"^[0-9]{12}$", R.string.err_msg_foraadhar);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_mobile_no,"^[0-9]{10}$", R.string.err_msg_formobile);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_username,"[a-zA-Z\\s]+", R.string.err_msg_for_namein_bank);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
         sector.setEnabled(false);
         employer.setEnabled(false);
         input_jobrole.setEnabled(false);
@@ -163,14 +166,28 @@ ProgressDialog pd;
                else if (gender.equals("Select Gender")){
                     Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
                 }
+                 else if (gender.equals("Select categroy")){
+                     Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
+                 }
 
-               else if (state1.equals("Select the State")){
+                 else if (state1.equals("Select the State")){
                     Toast.makeText(getApplicationContext(),"State must be selected",Toast.LENGTH_LONG).show();
                 }
 
              else if (district1.equals("Select the District")){
                     Toast.makeText(getApplicationContext(),"District must be selected",Toast.LENGTH_LONG).show();
                 }
+                 else if (preflang1.equals("Select the Preffered Language")){
+                     Toast.makeText(getApplicationContext(),"Language must be selected",Toast.LENGTH_LONG).show();
+                 }
+
+
+                 else if (jobrole1.equals("Select the Jobrole")){
+                     Toast.makeText(getApplicationContext(),"jobrole must be selected",Toast.LENGTH_LONG).show();
+                 }
+                 else if (employer1.equals("Select the Employer")){
+                     Toast.makeText(getApplicationContext(),"Employer must be selected",Toast.LENGTH_LONG).show();
+                 }
 
                else if (eduction1.equals("Select Education")){
                     Toast.makeText(getApplicationContext(),"Education must be selected",Toast.LENGTH_LONG).show();
@@ -192,7 +209,9 @@ ProgressDialog pd;
 
                 else if(awesomeValidation.validate() && !(gender.equals("Select Gender"))&& !state1.equals("Select the State") && !yearobirth.equals("Year")
                          && !district1.equals("Select the District") && !eduction1.equals("Select Education") && !employment1.equals("Are you employed?")
-                         && !(sector1.equals("Select the Sector")) && !(preflang1.equals("Select the Preffered Language")) && !(bankname1.equals("Select the Bank")) && checkBox.isChecked() && encodedphoto!=null) {
+                         && !employer1.equals("Select the Employer") && !jobrole1.equals("Select the Jobrole") && !(sector1.equals("Select the Sector")) && !(preflang1.equals("Select the Preffered Language"))
+                         && !(bankname1.equals("Select the Bank"))
+                         && checkBox.isChecked() && encodedphoto!=null) {
 
                     Intent ii = new Intent(MainActivity.this, Reverify.class);
                     ii.putExtra("first_namee", input_name.getText().toString());
@@ -222,7 +241,10 @@ ProgressDialog pd;
                     ii.putExtra("preflang",preflangiddd);
                      ii.putExtra("pic",encodedphoto);
                      ii.putExtra("picaadhar",encodedphotoaadhar);
-                    startActivity(ii);
+                     ii.putExtra("Email",Email.getText().toString());
+                     ii.putExtra("categroy", categoryy);
+
+                     startActivity(ii);
 
                 }else
                 {
@@ -398,13 +420,10 @@ ProgressDialog pd;
         });
 
         //Employment
-
         ArrayAdapter<String> myAdapterEmployment = new ArrayAdapter<String>(MainActivity.this,
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Employment));
         myAdapterEmployment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         employment.setAdapter(myAdapterEmployment);
-
         employment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
@@ -503,11 +522,6 @@ ProgressDialog pd;
 
         //jobrole
 
-        ArrayAdapter<String> jobroleadapter = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,jobrolelist);
-        jobroleadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        input_jobrole.setAdapter(jobroleadapter);
 
         input_jobrole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
@@ -515,9 +529,37 @@ ProgressDialog pd;
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id)
             {
-                if(position > 0) {
+               // if(position > 0) {
                     jobrole1 = input_jobrole.getSelectedItem().toString();
                     jobroleeiddd=Jobrolelist.get(jobrole1);
+               // }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+
+            }
+
+
+        });
+
+        //Choose category
+        ArrayAdapter<String> categoryadapt = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Category));
+        categoryadapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        category.setAdapter(categoryadapt);
+
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id)
+            {
+                if(position > 0) {
+                    categoryy = category.getSelectedItem().toString();
+                    //jobroleeiddd=Jobrolelist.get(jobrole1);
                 }
             }
 
@@ -530,12 +572,9 @@ ProgressDialog pd;
 
         });
 
-        //Preffered Exam Language
-        ArrayAdapter<String> preflanguage = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,preflang);
-        preflanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        input_layout_prefferedlanguage.setAdapter(preflanguage);
+        //Preffered Exam Language
+
 
         input_layout_prefferedlanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
@@ -543,10 +582,9 @@ ProgressDialog pd;
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id)
             {
-                if(position > 0) {
                     preflang1 = input_layout_prefferedlanguage.getSelectedItem().toString();
                     preflangiddd=langdetail.get(preflang1);
-                }
+
             }
 
             @Override
@@ -761,7 +799,7 @@ ProgressDialog pd;
     //Language Api Call
     private void languageSelect(final String cmp_id) {
 
-
+        progressDialog.show();
         String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_language.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -775,11 +813,12 @@ ProgressDialog pd;
                     String status= jobj.getString("status");
 
                     if (status.equals("1")){
-                        if (preflang.size()>2){
+                       /* if (preflang.size()<=1){
                             preflang.clear();
                         }
-                        preflang.add("Choose the Prefferred Language");
+                        preflang.add("Choose the Prefferred Language");*/
                         JSONArray jsonArray=jobj.getJSONArray("language");
+                        preflang.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             preflangid = c.getString("language_code");
@@ -787,6 +826,11 @@ ProgressDialog pd;
                             langdetail.put(preflangvalue,preflangid );
                             preflang.add(preflangvalue);
                         }
+                        ArrayAdapter<String> preflanguage = new ArrayAdapter<String>(MainActivity.this,
+                                android.R.layout.simple_list_item_1,preflang);
+                        preflanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                        input_layout_prefferedlanguage.setAdapter(preflanguage);
 
                         // Toast.makeText(getApplicationContext(),"Success"+bankslist,Toast.LENGTH_LONG).show();
 
@@ -801,11 +845,16 @@ ProgressDialog pd;
                     e.printStackTrace();
                 }
 
-
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
                 Toast.makeText(getApplicationContext(), "Failed to fetch Language Details", Toast.LENGTH_LONG).show();
             }
         })
@@ -1127,13 +1176,13 @@ ProgressDialog pd;
 
                     JSONObject jobj = new JSONObject(response);
                     String status= jobj.getString("status");
-                    //jobrolelist.clear();
-                    if (jobrolelist.size()>2){
+
+                    /*if (jobrolelist.size()<=1){
                         jobrolelist.clear();
-                    }
-                    jobrolelist.add("Choose the Job Role");
+                    }*/
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("jobrole");
+                        jobrolelist.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             jobroleid = c.getString("jobrole_id");
@@ -1141,6 +1190,14 @@ ProgressDialog pd;
                             Jobrolelist.put(jobrolevalue, jobroleid);
                             jobrolelist.add(jobrolevalue);
                         }
+
+                            jobroleadapter= new ArrayAdapter<String>(MainActivity.this,
+                                    android.R.layout.simple_list_item_1,jobrolelist);
+                            jobroleadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                            input_jobrole.setAdapter(jobroleadapter);
+
+
 
                     }
                     else {
@@ -1151,12 +1208,16 @@ ProgressDialog pd;
                     e.printStackTrace();
                 }
 
-
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
                 Toast.makeText(getApplicationContext(), "Failed to fetch Job Roles", Toast.LENGTH_LONG).show();
             }
         })

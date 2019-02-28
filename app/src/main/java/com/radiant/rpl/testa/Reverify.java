@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -22,7 +21,6 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +30,7 @@ public class Reverify extends AppCompatActivity {
 
     EditText fname_txt,lname_txt,mob_txt,aadharno_txt,bankacc_txt;
     String fname,lname,mob,aadharno,bankacc,yearobirth,monthobirth,dateobirthh,gender,bank1,statee,districtt,educationn,employedd,employerr,sectorr,addline11,addline22,pincode1,nameasinbank1,
-    iffccode1,photouri,jobrolee,empidd,locationn,aadharpic,language;
+    iffccode1,photouri,jobrolee,empidd,locationn,aadharpic,language,category1,Email1;
     String getFname,getLname,getMob,getAadharno,getBankacc;
     ProgressDialog pd;
     Button btn_Register;
@@ -76,6 +74,8 @@ public class Reverify extends AppCompatActivity {
         locationn=ii.getStringExtra("location");
         aadharpic=ii.getStringExtra("picaadhar");
         photouri=ii.getStringExtra("pic");
+        category1 = ii.getStringExtra("categroy");
+        Email1= ii.getStringExtra("Email");
 
         fname_txt.setText(fname);
         lname_txt.setText(lname);
@@ -99,11 +99,11 @@ public class Reverify extends AppCompatActivity {
             }
         });
 
-        awesomeValidation.addValidation(Reverify.this,R.id.input_fname,"[a-zA-Z\\s]+",R.string.err_msg_for_first_name);
-        awesomeValidation.addValidation(Reverify.this,R.id.input_last_lname,"[a-zA-Z\\s]+",R.string.err_msg_for_last_name);
-        awesomeValidation.addValidation(Reverify.this,R.id.input_mobile_noo,"^[0-9]{10}$",R.string.err_msg_formobile);
-        awesomeValidation.addValidation(Reverify.this,R.id.input_aadhar_no,"^[0-9]{12}$",R.string.err_msg_foraadhar);
-        awesomeValidation.addValidation(Reverify.this,R.id.input_bank_acdetails,"^[0-9]{11,14}$",R.string.err_msg_for_acno);
+        awesomeValidation.addValidation(Reverify.this, R.id.input_fname,"[a-zA-Z\\s]+", R.string.err_msg_for_first_name);
+        awesomeValidation.addValidation(Reverify.this, R.id.input_last_lname,"[a-zA-Z\\s]+", R.string.err_msg_for_last_name);
+        awesomeValidation.addValidation(Reverify.this, R.id.input_mobile_noo,"^[0-9]{10}$", R.string.err_msg_formobile);
+        awesomeValidation.addValidation(Reverify.this, R.id.input_aadhar_no,"^[0-9]{12}$", R.string.err_msg_foraadhar);
+        awesomeValidation.addValidation(Reverify.this, R.id.input_bank_acdetails,"^[0-9]{6,18}$", R.string.err_msg_for_acno);
     }
 
 
@@ -123,7 +123,7 @@ public class Reverify extends AppCompatActivity {
                     System.out.println("sss"+response);
                     String status= jobj.getString("status");
                     if (status.equals("1")){
-                          Intent iii=new Intent(Reverify.this,Registration_Done.class);
+                          Intent iii=new Intent(Reverify.this, Registration_Done.class);
                           iii.putExtra("sectorid",sectorr);
                           iii.putExtra("mobileeno",mobbb);
                           startActivity(iii);
@@ -189,6 +189,10 @@ public class Reverify extends AppCompatActivity {
                 map.put("employee_id",empidd);
                 map.put("language",language);
                 map.put("StoreLocation",locationn);
+                map.put("category",category1);
+                map.put("email",Email1);
+
+
                 if (aadharpic!=null){
                 map.put("aadhar_image",aadharpic);}
                 map.put("student_image",photouri);
