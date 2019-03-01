@@ -3,16 +3,19 @@ package com.radiant.rpl.testa;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Patterns;
@@ -49,7 +52,7 @@ import java.util.Map;
 import dmax.dialog.SpotsDialog;
 import radiant.rpl.radiantrpl.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,
             input_layout_prefferedlanguage,category;
@@ -89,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
 
         final Spinner myspinner = findViewById(R.id.input_layout_gender);
         yearofbirth=findViewById(R.id.input_layout_year);
@@ -699,6 +705,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
+
 
 
 
