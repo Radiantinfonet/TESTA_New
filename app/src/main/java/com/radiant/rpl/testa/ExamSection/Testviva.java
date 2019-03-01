@@ -254,21 +254,28 @@ SharedPreferences sp;
                     REQ_CODE_CAMERA_PERMISSION);
         }
 
-        Timer t = new Timer();
+        if (Build.VERSION.SDK_INT<Build.VERSION_CODES.P) {
+            Timer t = new Timer();
 //Set the schedule function and rate
-        t.scheduleAtFixedRate(new TimerTask() {
+            t.scheduleAtFixedRate(new TimerTask() {
 
-                                  @Override
-                                  public void run() {
-                                      takePicture();
-                                      //Called each time when 1000 milliseconds (1 second) (the period parameter)
-                                  }
+                                      @Override
+                                      public void run() {
 
-                              },
+                                          takePicture();
+
+
+                                          //Called each time when 1000 milliseconds (1 second) (the period parameter)
+                                      }
+
+                                  },
 //Set how long before to start calling the TimerTask (in milliseconds)
-                0,
+                    0,
 //Set the amount of time between each execution (in milliseconds)
-                30000*2);
+                    30000 * 2);
+        } else{
+            System.out.println("Proctoring is now supported below this OS.");
+        }
 
         mdrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
@@ -528,6 +535,7 @@ SharedPreferences sp;
         String batch_id=batchvalue;
         long theory_time=(TimeLeftInMillis/1000)%60;
         long practical_time=(TimeLeftInMillis/1000)%60;
+        if (cursor.getCount()>0){
         if (cursor != null) {
             cursor.moveToFirst();
 
@@ -550,6 +558,7 @@ SharedPreferences sp;
             System.out.println("aasddd"+jsonInString);
             cursor.close();
         }
+        }
         else{
             Toast.makeText(getApplicationContext(),"No Questions answered",Toast.LENGTH_LONG).show();
         }
@@ -571,7 +580,8 @@ SharedPreferences sp;
 
     public void getStatusdata(){
         cursor11=dbAutoSave.getData1(studentid);
-        if (cursor11 != null) {
+        if (cursor11.getCount()>0){
+            if (cursor11 != null) {
             cursor11.moveToFirst();
 
             do {
@@ -584,6 +594,9 @@ SharedPreferences sp;
 
             cursor11.close();
 
+        }
+        }
+        else{
         }
     }
 

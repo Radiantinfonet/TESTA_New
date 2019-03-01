@@ -28,12 +28,15 @@
             android:theme="@style/AppTheme1" />
         <activity android:name="com.radiant.rpl.testa.StudenAtten"
             android:screenOrientation="portrait"
+            android:label="Attendance"
             />
         <activity android:name="com.radiant.rpl.testa.Testinstruction"
             android:screenOrientation="portrait"
+            android:label="Instructions"
             />
         <activity android:name="com.radiant.rpl.testa.Welcome_page"
             android:screenOrientation="portrait"
+            android:label="Home"
             />
         <activity android:name="com.radiant.rpl.testa.SignInAct"
             android:theme="@style/AppTheme1"

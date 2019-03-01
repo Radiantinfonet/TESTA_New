@@ -572,6 +572,7 @@ Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).sho
 
       public void getStatusdata(){
         cursor11=dbAutoSave.getData1(studentid);
+          if (cursor11.getCount()>0){
           if (cursor11 != null) {
               cursor11.moveToFirst();
 
@@ -582,13 +583,13 @@ Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).sho
 
                   statuss.add(aaa);
                   questatus.add(bbb);
-                  System.out.println("aaaabbb"+statuss);
+                  System.out.println("aaaabbb" + statuss);
               } while (cursor11.moveToNext());
 
               cursor11.close();
-
+          }
           }else{
-              Toast.makeText(getApplicationContext(),"Unable to open pellete",Toast.LENGTH_LONG).show();
+
           }
       }
 
