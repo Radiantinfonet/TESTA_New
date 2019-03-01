@@ -214,7 +214,7 @@
 
             <fragment
                 android:id="@+id/fragmentParent1"
-                android:name="com.radiant.rpl.testa.ExamSection.FragmentParent"
+                android:name="com.radiant.rpl.testa.ExamSection.FragmentParent1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_below="@id/count_down_strip1"
