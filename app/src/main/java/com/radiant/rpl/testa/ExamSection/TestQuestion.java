@@ -87,7 +87,7 @@ public class TestQuestion extends HiddenCameraActivity {
     private NotificationHelper mNotificationHelper;
     private android.app.AlertDialog progressDialog;
 
-    private static final long START_TIME_IN_MILLIS = 1500000;
+    private static final long START_TIME_IN_MILLIS = 30000*40;
     private static final long START_TIME_IN_MILLISR = 00000;
     private android.os.CountDownTimer CountDownTimer;
     private boolean TimerRunning;
@@ -153,7 +153,7 @@ public class TestQuestion extends HiddenCameraActivity {
     };
     int arraysize;
     long timee;
-    boolean b;
+    boolean alreadyExecuted=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,10 +178,9 @@ public class TestQuestion extends HiddenCameraActivity {
         employeeList=new ArrayList<>();
         dbAutoSave = new DbAutoSave(getApplicationContext());
         mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
-        Toast.makeText(getApplicationContext(),"on create called",Toast.LENGTH_LONG).show();
         setterGetter =new SetterGetter();
         mNotificationHelper = new NotificationHelper(this);
-
+        Toast.makeText(getApplicationContext(),"on create running",Toast.LENGTH_LONG).show();
         Snackbar
                 .make(parentLayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000)
                 .setActionTextColor(Color.MAGENTA)
@@ -194,7 +193,9 @@ public class TestQuestion extends HiddenCameraActivity {
                 finalSubmitbutton.setEnabled(true);
                 //Do something after 100ms
             }
-        }, 10000);
+        },
+                //10000);
+                10000*12);
 
         imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,25 +243,28 @@ public class TestQuestion extends HiddenCameraActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
                     REQ_CODE_CAMERA_PERMISSION);
         }
-
-        Timer t = new Timer();
+        if (Build.VERSION.SDK_INT<Build.VERSION_CODES.P) {
+            Timer t = new Timer();
 //Set the schedule function and rate
-        t.scheduleAtFixedRate(new TimerTask() {
+            t.scheduleAtFixedRate(new TimerTask() {
 
-                                  @Override
-                                  public void run() {
-                                      if (Build.VERSION.SDK_INT<Build.VERSION_CODES.P){
-                                      takePicture();
+                                      @Override
+                                      public void run() {
+
+                                          takePicture();
+
+
+                                          //Called each time when 1000 milliseconds (1 second) (the period parameter)
                                       }
-                                      //Called each time when 1000 milliseconds (1 second) (the period parameter)
-                                  }
 
-                              },
+                                  },
 //Set how long before to start calling the TimerTask (in milliseconds)
-                0,
+                    0,
 //Set the amount of time between each execution (in milliseconds)
-                30000*2);
-
+                    30000 * 2);
+        } else{
+            System.out.println("Proctoring is now supported below this OS.");
+        }
 
         mdrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
@@ -272,11 +276,6 @@ public class TestQuestion extends HiddenCameraActivity {
         Toast.makeText(getApplicationContext(),"on restart running",Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        Toast.makeText(getApplicationContext(),"on resume running",Toast.LENGTH_LONG).show();
-    }
 
     private void getIDs() {
         fragmentParent = (FragmentParent) this.getSupportFragmentManager().findFragmentById(R.id.fragmentParent);
@@ -296,8 +295,11 @@ public class TestQuestion extends HiddenCameraActivity {
     @Override
     protected void onStart() {
         super.onStart();
+Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
+
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
+
+        //TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
         TimeLeftInMillis = prefs.getLong("millisLeft", timee);
         TimerRunning = prefs.getBoolean("timerRunning", false);
 
@@ -324,16 +326,15 @@ public class TestQuestion extends HiddenCameraActivity {
             public void onClick(View v) {
                 showDialog();
                 resetTimer();
-
             }
         });
 
+
         startTimer();
 
-        if (b=false){
+        if(!alreadyExecuted) {
             Questionlist();
         }
-            System.out.println("ffff"+value);
 
 
 
@@ -393,19 +394,19 @@ public class TestQuestion extends HiddenCameraActivity {
     }
 
     private void updateButtons() {
-//        if (TimerRunning) {
-//        } else {
-//
-//            if (TimeLeftInMillis < 1000) {
-//            } else {
-//            }
-//
-//            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
-//
-//            } else {
-//
-//            }
-//        }
+        if (TimerRunning) {
+        } else {
+
+            if (TimeLeftInMillis < 1000) {
+            } else {
+            }
+
+            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
+
+            } else {
+
+            }
+        }
     }
 
     @Override
@@ -459,11 +460,13 @@ public class TestQuestion extends HiddenCameraActivity {
             @Override
             public void onResponse(String response) {
                 try {
+                    alreadyExecuted=false;
                     JSONObject jobj = new JSONObject(response);
                     String status= jobj.getString("status");
                     float aab=jobj.getLong("theory_time");
                     System.out.println("dddd"+FormatSeconds(aab));
                     if (status.equals("1")){
+                        alreadyExecuted = true;
                         JSONArray jsonArray=jobj.getJSONArray("theory_questions");
                         arraysize=jsonArray.length();
                         timee=arraysize*60*1000;
@@ -569,6 +572,7 @@ public class TestQuestion extends HiddenCameraActivity {
 
       public void getStatusdata(){
         cursor11=dbAutoSave.getData1(studentid);
+          if (cursor11.getCount()>0){
           if (cursor11 != null) {
               cursor11.moveToFirst();
 
@@ -579,13 +583,13 @@ public class TestQuestion extends HiddenCameraActivity {
 
                   statuss.add(aaa);
                   questatus.add(bbb);
-                  System.out.println("aaaabbb"+statuss);
+                  System.out.println("aaaabbb" + statuss);
               } while (cursor11.moveToNext());
 
               cursor11.close();
-
+          }
           }else{
-              Toast.makeText(getApplicationContext(),"Unable to open pellete",Toast.LENGTH_LONG).show();
+
           }
       }
 
@@ -609,8 +613,8 @@ public class TestQuestion extends HiddenCameraActivity {
     public void showDialog11() {
 
 
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setMessage("Your time is over.Press Yes to Schedule the next section")
+        AlertDialog alertDialog1 = new AlertDialog.Builder(this)
+                .setMessage("Your time is over.Press Yes to Schedule the test for the Final submit.")
                 .setCancelable(false)
                 .setPositiveButton("Yes And proceed", new DialogInterface.OnClickListener() {
                     @Override
@@ -627,7 +631,8 @@ public class TestQuestion extends HiddenCameraActivity {
                 }).create();
 
 
-        alertDialog.show();
+        alertDialog1.show();
+
 
     }
 
@@ -635,7 +640,7 @@ public class TestQuestion extends HiddenCameraActivity {
 
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setMessage("You want to go for next section Test please click  yes and proceed.")
+                .setMessage("Your time is over.Click Yes to schedule Test for Next Section.")
                 .setPositiveButton("Yes And proceed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

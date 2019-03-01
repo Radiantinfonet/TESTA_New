@@ -48,6 +48,7 @@ import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
 import com.androidhiddencamera.config.CameraRotation;
+import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.gson.Gson;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
 import com.radiant.rpl.testa.MyNetwork;
@@ -73,7 +74,7 @@ import radiant.rpl.radiantrpl.R;
 
 
 public class Testviva extends HiddenCameraActivity {
-    FragmentParent fragmentParent;
+    FragmentParent1 fragmentParent;
     TextView textView,finalSubmitbutton,reviewlaterr;
     Cursor cursor,cursor11;
     Toolbar t1;
@@ -89,7 +90,7 @@ public class Testviva extends HiddenCameraActivity {
     String j;
     private NotificationHelper mNotificationHelper;
     private android.app.AlertDialog progressDialog;
-    private static final long START_TIME_IN_MILLIS =1500000;
+    private static final long START_TIME_IN_MILLIS =30000*50 ;
     private static final long  START_TIME_IN_MILLISR=00000;
     private android.os.CountDownTimer CountDownTimer;
     private boolean TimerRunning;
@@ -150,6 +151,7 @@ SharedPreferences sp;
             "Ramanand sagar",
             "Vishwamitra",
     };
+    boolean alreadyExecuted1=false;
 
     @Override
 
@@ -159,6 +161,7 @@ SharedPreferences sp;
         getIDs();
         t1=findViewById(R.id.toolbar);
         setSupportActionBar(t1);
+
         sp=getSharedPreferences("mypref", MODE_PRIVATE);
         batchvalue=sp.getString("batchid","");
         studentid=sp.getString("userid","");
@@ -175,6 +178,7 @@ SharedPreferences sp;
         employeeList=new ArrayList<>();
         sessionManager=new SessionManager();
         dbAutoSave = new DbAutoSave(getApplicationContext());
+        Toast.makeText(getApplicationContext(),"on create running",Toast.LENGTH_LONG).show();
         mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
         //Questionlist();
         setterGetter =new SetterGetter();
@@ -184,6 +188,24 @@ SharedPreferences sp;
                 .make(parentlayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000)
                 .setActionTextColor(Color.MAGENTA)
                 .show();
+
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle.containsKey("selectedva"))    {
+            value= bundle.getString("selectedva");
+            System.out.println("ffff"+value);
+        }
+
+
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finalSubmitbutton.setEnabled(true);
+                //Do something after 100ms
+            }
+        }, 10000*12);
 
         imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,40 +254,36 @@ SharedPreferences sp;
                     REQ_CODE_CAMERA_PERMISSION);
         }
 
-        Timer t = new Timer();
+        if (Build.VERSION.SDK_INT<Build.VERSION_CODES.P) {
+            Timer t = new Timer();
 //Set the schedule function and rate
-        t.scheduleAtFixedRate(new TimerTask() {
+            t.scheduleAtFixedRate(new TimerTask() {
 
-                                  @Override
-                                  public void run() {
-                                      takePicture();
-                                      //Called each time when 1000 milliseconds (1 second) (the period parameter)
-                                  }
+                                      @Override
+                                      public void run() {
 
-                              },
+                                          takePicture();
+
+
+                                          //Called each time when 1000 milliseconds (1 second) (the period parameter)
+                                      }
+
+                                  },
 //Set how long before to start calling the TimerTask (in milliseconds)
-                0,
+                    0,
 //Set the amount of time between each execution (in milliseconds)
-                30000*2);
+                    30000 * 2);
+        } else{
+            System.out.println("Proctoring is now supported below this OS.");
+        }
 
         mdrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
     }
 
-    private class MyThread extends Thread {
-
-
-        @Override
-        public void run() {
-          saveproctoring();
-        }
-
-    }
-
     private void getIDs() {
-        fragmentParent = (FragmentParent) this.getSupportFragmentManager().findFragmentById(R.id.fragmentParent1);
+        fragmentParent = (FragmentParent1) this.getSupportFragmentManager().findFragmentById(R.id.fragmentParent1);
         View vv=findViewById(R.id.count_down_strip1);
-        reviewlaterr=vv.findViewById(R.id.mark1);
         textView=vv.findViewById(R.id.timer1);
         finalSubmitbutton=vv.findViewById(R.id.finish1);
         drawer_Right=findViewById(R.id.drawer_right1);
@@ -276,10 +294,62 @@ SharedPreferences sp;
 
     }
 
+
+    //Thread for clicking proctoring photo
+    private class MyThread extends Thread {
+
+
+        @Override
+        public void run() {
+          saveproctoring();
+        }
+
+    }
+
+    @Override
+    public void onImageCapture(@NonNull File imageFile) {
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bitmap = ImageUtils.getInstant().getCompressedBitmap(imageFile.getAbsolutePath());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        encodedd1 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        System.out.println("ddddd"+encodedd1);
+        if (encodedd1!=null){
+            new MyThread().start();
+        }
+        URI imguri=imageFile.toURI();
+        Toast.makeText(getApplicationContext(),"Proctoring image has been Clicked.",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
+        switch (errorCode) {
+            case CameraError.ERROR_CAMERA_OPEN_FAILED:
+                Toast.makeText(this, R.string.error_cannot_open, Toast.LENGTH_LONG).show();
+                break;
+            case CameraError.ERROR_IMAGE_WRITE_FAILED:
+                Toast.makeText(this, R.string.error_cannot_write, Toast.LENGTH_LONG).show();
+                break;
+            case CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE:
+                Toast.makeText(this, R.string.error_cannot_get_permission, Toast.LENGTH_LONG).show();
+                break;
+            case CameraError.ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION:
+                HiddenCameraUtils.openDrawOverPermissionSetting(this);
+                break;
+            case CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA:
+                Toast.makeText(this, R.string.error_not_having_camera, Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
+
+
     @Override
     protected void onStart() {
         super.onStart();
-
+        Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
 
         TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
@@ -288,6 +358,12 @@ SharedPreferences sp;
         updateCountDownText();
         updateButtons();
         resetTimer();
+
+        if(!alreadyExecuted1) {
+            if (value!=null){
+                Questionlist();
+            }
+        }
 
         if (TimerRunning) {
             EndTime = prefs.getLong("endTime", 0);
@@ -321,12 +397,14 @@ SharedPreferences sp;
 
 
                 alertDialog.show();
+
+
                 resetTimer();
             }
         });
 
 
-       startTimer();
+        startTimer();
 
 
     }
@@ -337,7 +415,7 @@ SharedPreferences sp;
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setMessage("Your time is over.Press Yes to Schedule the test for the Final submit.")
-                .setCancelable(true)
+                .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -380,19 +458,12 @@ SharedPreferences sp;
         TimerRunning = true;
         updateButtons();
 
-        Bundle bundle = getIntent().getExtras();
 
-        if (bundle.containsKey("selectedva"))    {
-            value= bundle.getString("selectedva");
-            Questionlist();
-            System.out.println("ffff"+value);
-        }
     }
 
     private void resetTimer() {
         TimeLeftInMillis = START_TIME_IN_MILLIS;
         updateCountDownText();
-        TimerRunning = false;
         updateButtons();
     }
 
@@ -415,20 +486,21 @@ SharedPreferences sp;
     }
 
     private void updateButtons() {
-//        if (TimerRunning) {
-//        } else {
-//
-//
-//            if (TimeLeftInMillis < 1000) {
-//            } else {
-//            }
-//
-//            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
-//
-//            } else {
-//
-//            }
-//        }
+        if (TimerRunning) {
+
+        } else {
+
+
+            if (TimeLeftInMillis < 1000) {
+            } else {
+            }
+
+            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
+
+            } else {
+
+            }
+        }
     }
 
     @Override
@@ -454,6 +526,97 @@ SharedPreferences sp;
 
     }
 
+
+
+
+    public void getalldata(){
+        cursor=dbAutoSave.getData(studentid);
+        ArrayList<SetterGetter> dataList = new ArrayList<SetterGetter>();
+        String batch_id=batchvalue;
+        long theory_time=(TimeLeftInMillis/1000)%60;
+        long practical_time=(TimeLeftInMillis/1000)%60;
+        if (cursor.getCount()>0){
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            do {
+                SetterGetter data = new SetterGetter();
+                data.student_id = cursor.getString(1);
+                data.que_id = cursor.getString(2);
+                data.selected_answer = cursor.getString(3);
+
+                questioniddd.add(bbb);
+                answeredoptionn.add(ccc);
+                dataList.add(data);
+
+            } while (cursor.moveToNext());
+            Datalist listOfData = new Datalist();
+            listOfData.dataList = dataList;
+            listOfData.batch_id=batch_id;
+            Gson gson = new Gson();
+            jsonInString = gson.toJson(listOfData); // Here you go!
+            System.out.println("aasddd"+jsonInString);
+            cursor.close();
+        }
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"No Questions answered",Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Toast.makeText(getApplicationContext(),"on Resume running",Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Toast.makeText(getApplicationContext(),"on Restart running",Toast.LENGTH_LONG).show();
+    }
+
+    public void getStatusdata(){
+        cursor11=dbAutoSave.getData1(studentid);
+        if (cursor11.getCount()>0){
+            if (cursor11 != null) {
+            cursor11.moveToFirst();
+
+            do {
+                aaa = cursor11.getString(3);
+                bbb = cursor11.getString(2);
+                statuss.add(aaa);
+                questatus.add(bbb);
+                System.out.println("aaaabbb"+statuss);
+            } while (cursor11.moveToNext());
+
+            cursor11.close();
+
+        }
+        }
+        else{
+        }
+    }
+
+    public void getData(){
+        cl1 = new CustomAdapter(aa, con, statuss,questatus);
+        cl2 = new CustomAdapter(aa, con, statuss,questatus);
+        drawer_Right.setAdapter(cl1);
+
+    }
+
+
+
+    public void SendInNotification(String title, long timerNotify,long timerinSec){
+
+        NotificationCompat.Builder nb = mNotificationHelper.getSendNotification(title,timerNotify,timerinSec);
+        mNotificationHelper.getManger().notify(1,nb.build());
+
+
+    }
+
     //Fetching Questions
     private void Questionlist() {
         progressDialog.show();
@@ -463,24 +626,25 @@ SharedPreferences sp;
             @Override
             public void onResponse(String response) {
                 try {
+                    alreadyExecuted1=false;
                     JSONObject jobj = new JSONObject(response);
                     String status= jobj.getString("status");
                     if (status.equals("1")){
+                        alreadyExecuted1=true;
                         JSONArray jsonArray=jobj.getJSONArray("practical_questions");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
-                            aa.add(c.getString("question_id"));
-                            bb.add(c.getString("question"));
-                            qnooo.add(i+1);
-                            queid.add(c.getString("question_id"));
-                            options1.add(c.getString("option1"));
-                            options2.add(c.getString("option2"));
-                            options3.add(c.getString("option3"));
-                            options4.add(c.getString("option4"));
-
+                            if (qnooo.size()<=jsonArray.length()-1){qnooo.add(i+1);}
+                            if (aa.size()<=jsonArray.length()-1){aa.add(c.getString("question_id"));}
+                            if (bb.size()<=jsonArray.length()-1){bb.add(c.getString("question"));}
+                            if (queid.size()<=jsonArray.length()-1){ queid.add(c.getString("question_id"));}
+                            if (options1.size()<=jsonArray.length()-1){options1.add(c.getString("option1"));}
+                            if (options2.size()<=jsonArray.length()-1){options2.add(c.getString("option2"));}
+                            if (options3.size()<=jsonArray.length()-1){ options3.add(c.getString("option3"));}
+                            if (options4.size()<=jsonArray.length()-1){ options4.add(c.getString("option4"));}
 
                         }
-                       System.out.println("aaaa"+aa);
+                        System.out.println("aaaa"+aa);
                         for (int ii=0;ii<=aa.size()-1;ii++) {
                           /*  if (options3.equals(null)){
                                 options3.add("None of them");
@@ -533,93 +697,6 @@ SharedPreferences sp;
         MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
-
-    public void getalldata(){
-        cursor=dbAutoSave.getData(studentid);
-        ArrayList<SetterGetter> dataList = new ArrayList<SetterGetter>();
-        String batch_id=batchvalue;
-        long theory_time=(TimeLeftInMillis/1000)%60;
-        long practical_time=(TimeLeftInMillis/1000)%60;
-        if (cursor.getCount()>0){
-        if (cursor != null) {
-            cursor.moveToFirst();
-
-            do {
-                SetterGetter data = new SetterGetter();
-                data.student_id = cursor.getString(1);
-                data.que_id = cursor.getString(2);
-                data.selected_answer = cursor.getString(3);
-
-                questioniddd.add(bbb);
-                answeredoptionn.add(ccc);
-                dataList.add(data);
-
-            } while (cursor.moveToNext());
-            Datalist listOfData = new Datalist();
-            listOfData.dataList = dataList;
-            listOfData.batch_id=batch_id;
-            Gson gson = new Gson();
-            jsonInString = gson.toJson(listOfData); // Here you go!
-            System.out.println("aasddd"+jsonInString);
-            cursor.close();
-        }
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"No Questions answered",Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finalSubmitbutton.setEnabled(true);
-                //Do something after 100ms
-            }
-        }, 10000);
-    }
-
-
-
-    public void getStatusdata(){
-        cursor11=dbAutoSave.getData1(studentid);
-        if (cursor11 != null) {
-            cursor11.moveToFirst();
-
-            do {
-                aaa = cursor11.getString(3);
-                bbb = cursor11.getString(2);
-                statuss.add(aaa);
-                questatus.add(bbb);
-                System.out.println("aaaabbb"+statuss);
-            } while (cursor11.moveToNext());
-
-            cursor11.close();
-
-        }
-    }
-
-    public void getData(){
-        cl1 = new CustomAdapter(aa, con, statuss,questatus);
-        cl2 = new CustomAdapter(aa, con, statuss,questatus);
-        drawer_Right.setAdapter(cl1);
-
-    }
-
-
-
-    public void SendInNotification(String title, long timerNotify,long timerinSec){
-
-        NotificationCompat.Builder nb = mNotificationHelper.getSendNotification(title,timerNotify,timerinSec);
-        mNotificationHelper.getManger().notify(1,nb.build());
-
-
-    }
 
     //Saving all the answers of exam conducted
     private void Questionlist1() {
@@ -758,46 +835,8 @@ SharedPreferences sp;
     }
 
 
-    @Override
-    public void onImageCapture(@NonNull File imageFile) {
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        Bitmap bitmap = ImageUtils.getInstant().getCompressedBitmap(imageFile.getAbsolutePath());
-        //Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        encodedd1 = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        System.out.println("ddddd"+encodedd1);
-        if (encodedd1!=null){
-            new MyThread().start();
-        }
-        URI imguri=imageFile.toURI();
-        Toast.makeText(getApplicationContext(),"Proctoring image has been Clicked.",Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
-        switch (errorCode) {
-            case CameraError.ERROR_CAMERA_OPEN_FAILED:
-                Toast.makeText(this, R.string.error_cannot_open, Toast.LENGTH_LONG).show();
-                break;
-            case CameraError.ERROR_IMAGE_WRITE_FAILED:
-                Toast.makeText(this, R.string.error_cannot_write, Toast.LENGTH_LONG).show();
-                break;
-            case CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE:
-                Toast.makeText(this, R.string.error_cannot_get_permission, Toast.LENGTH_LONG).show();
-                break;
-            case CameraError.ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION:
-                HiddenCameraUtils.openDrawOverPermissionSetting(this);
-                break;
-            case CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA:
-                Toast.makeText(this, R.string.error_not_having_camera, Toast.LENGTH_LONG).show();
-                break;
-        }
-    }
-
+     // Back press button to stop going back
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             exitByBackKey();
