@@ -25,7 +25,6 @@
         <activity
             android:name="com.radiant.rpl.testa.ExamSection.TestQuestion"
             android:screenOrientation="portrait"
-            android:launchMode = "singleTop"
             android:theme="@style/AppTheme1" />
         <activity android:name="com.radiant.rpl.testa.StudenAtten"
             android:screenOrientation="portrait"
