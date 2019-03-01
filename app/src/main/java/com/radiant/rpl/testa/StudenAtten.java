@@ -124,8 +124,6 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent ii=new Intent(StudenAtten.this, Testinstruction.class);
-                startActivity(ii);
            if (encoded!=null) {
                    AssessorAttendance();
                }else {

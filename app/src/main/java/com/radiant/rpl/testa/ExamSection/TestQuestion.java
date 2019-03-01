@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -152,6 +153,7 @@ public class TestQuestion extends HiddenCameraActivity {
     };
     int arraysize;
     long timee;
+    boolean b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,7 +179,6 @@ public class TestQuestion extends HiddenCameraActivity {
         dbAutoSave = new DbAutoSave(getApplicationContext());
         mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
         Toast.makeText(getApplicationContext(),"on create called",Toast.LENGTH_LONG).show();
-        //Questionlist();
         setterGetter =new SetterGetter();
         mNotificationHelper = new NotificationHelper(this);
 
@@ -248,7 +249,9 @@ public class TestQuestion extends HiddenCameraActivity {
 
                                   @Override
                                   public void run() {
+                                      if (Build.VERSION.SDK_INT<Build.VERSION_CODES.P){
                                       takePicture();
+                                      }
                                       //Called each time when 1000 milliseconds (1 second) (the period parameter)
                                   }
 
@@ -329,7 +332,10 @@ public class TestQuestion extends HiddenCameraActivity {
 
 
         startTimer();
+
+        if (b=false){
             Questionlist();
+        }
             System.out.println("ffff"+value);
 
 
@@ -448,6 +454,7 @@ public class TestQuestion extends HiddenCameraActivity {
     }
 
     private void Questionlist() {
+
         progressDialog.show();
         String serverURL = "https://www.skillassessment.org/sdms/android_connect/batch_questions.php";
 
@@ -466,21 +473,21 @@ public class TestQuestion extends HiddenCameraActivity {
                         System.out.println("bsdfsdf"+timee+"   "+START_TIME_IN_MILLIS);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
-                            qnooo.add(i+1);
-                            aa.add(c.getString("question_id"));
-                            bb.add(c.getString("question"));
-                            queid.add(c.getString("question_id"));
-                            options1.add(c.getString("option1"));
-                            options2.add(c.getString("option2"));
-                            options3.add(c.getString("option3"));
-                            options4.add(c.getString("option4"));
+                            if (qnooo.size()<=jsonArray.length()-1){qnooo.add(i+1);}
+                            if (aa.size()<=jsonArray.length()-1){aa.add(c.getString("question_id"));}
+                            if (bb.size()<=jsonArray.length()-1){bb.add(c.getString("question"));}
+                            if (queid.size()<=jsonArray.length()-1){ queid.add(c.getString("question_id"));}
+                            if (options1.size()<=jsonArray.length()-1){options1.add(c.getString("option1"));}
+                            if (options2.size()<=jsonArray.length()-1){options2.add(c.getString("option2"));}
+                            if (options3.size()<=jsonArray.length()-1){ options3.add(c.getString("option3"));}
+                            if (options4.size()<=jsonArray.length()-1){ options4.add(c.getString("option4"));}
 
                         }
                         System.out.println("bbbb"+aa);
                         for (int ii=0;ii<=aa.size()-1;ii++) {
-                            fragmentParent.addPage(aa.get(ii) + "",bb.get(ii),qnooo.get(ii),options1.get(ii),options2.get(ii),options3.get(ii),options4.get(ii));
-
+                            fragmentParent.addPage(aa.get(ii) + "", bb.get(ii), qnooo.get(ii), options1.get(ii), options2.get(ii), options3.get(ii), options4.get(ii));
                         }
+
 
                     }
                     else {

@@ -629,15 +629,14 @@ SharedPreferences sp;
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
                 try {
                     JSONObject jobj = new JSONObject(response);
                     String status = jobj.getString("status");
                     if (status.equals("1")) {
+                        Toast.makeText(getApplicationContext(),"You have successfully attempted the Assessment",Toast.LENGTH_LONG).show();
                         dbAutoSave.onDelete();
                         Intent ii = new Intent(Testviva.this, Start_Registration.class);
                         startActivity(ii);
-                        Toast.makeText(getApplicationContext(),"You have successfully attempted the Assessment",Toast.LENGTH_LONG).show();
 
                     } else {
                         Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();

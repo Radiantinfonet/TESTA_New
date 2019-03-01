@@ -24,7 +24,6 @@ public class Start_Registration extends AppCompatActivity {
         sessionManager=new SessionManager();
         String stat=sessionManager.getPreferences(getApplicationContext(),"vipin");
         dbAutoSave = new DbAutoSave(getApplicationContext());
-         //dbAutoSave.onDelete();
         prefs=getSharedPreferences("prefs", MODE_PRIVATE);
         if (stat.equals("1")){
 
@@ -48,6 +47,7 @@ public class Start_Registration extends AppCompatActivity {
             }
         }
         );
+
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
