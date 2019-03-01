@@ -87,7 +87,7 @@ public class TestQuestion extends HiddenCameraActivity {
     private NotificationHelper mNotificationHelper;
     private android.app.AlertDialog progressDialog;
 
-    private static final long START_TIME_IN_MILLIS = 30000*40;
+    private static final long START_TIME_IN_MILLIS =1500000;
     private static final long START_TIME_IN_MILLISR = 00000;
     private android.os.CountDownTimer CountDownTimer;
     private boolean TimerRunning;
@@ -299,7 +299,7 @@ Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).sho
 
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
 
-        //TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
+        TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
         TimeLeftInMillis = prefs.getLong("millisLeft", timee);
         TimerRunning = prefs.getBoolean("timerRunning", false);
 
@@ -329,8 +329,8 @@ Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).sho
             }
         });
 
-
         startTimer();
+
 
         if(!alreadyExecuted) {
             Questionlist();
@@ -394,19 +394,19 @@ Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).sho
     }
 
     private void updateButtons() {
-        if (TimerRunning) {
-        } else {
-
-            if (TimeLeftInMillis < 1000) {
-            } else {
-            }
-
-            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
-
-            } else {
-
-            }
-        }
+//        if (TimerRunning) {
+//        } else {
+//
+//            if (TimeLeftInMillis < 1000) {
+//            } else {
+//            }
+//
+//            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
+//
+//            } else {
+//
+//            }
+//        }
     }
 
     @Override
@@ -640,7 +640,7 @@ Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).sho
 
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setMessage("Your time is over.Click Yes to schedule Test for Next Section.")
+                .setMessage("You want to go for next section Test please click  yes and proceed.")
                 .setPositiveButton("Yes And proceed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

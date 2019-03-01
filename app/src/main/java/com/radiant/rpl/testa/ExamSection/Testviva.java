@@ -90,7 +90,7 @@ public class Testviva extends HiddenCameraActivity {
     String j;
     private NotificationHelper mNotificationHelper;
     private android.app.AlertDialog progressDialog;
-    private static final long START_TIME_IN_MILLIS =30000*50 ;
+    private static final long START_TIME_IN_MILLIS =1500000 ;
     private static final long  START_TIME_IN_MILLISR=00000;
     private android.os.CountDownTimer CountDownTimer;
     private boolean TimerRunning;
@@ -397,8 +397,6 @@ SharedPreferences sp;
 
 
                 alertDialog.show();
-
-
                 resetTimer();
             }
         });
@@ -464,6 +462,7 @@ SharedPreferences sp;
     private void resetTimer() {
         TimeLeftInMillis = START_TIME_IN_MILLIS;
         updateCountDownText();
+        TimerRunning = false;
         updateButtons();
     }
 
@@ -485,23 +484,23 @@ SharedPreferences sp;
         textView.setText(timeLeftFormatted);
     }
 
-    private void updateButtons() {
-        if (TimerRunning) {
-
-        } else {
-
-
-            if (TimeLeftInMillis < 1000) {
-            } else {
-            }
-
-            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
-
-            } else {
-
-            }
-        }
-    }
+    private void updateButtons() {}
+//        if (TimerRunning) {
+//
+//        } else {
+//
+//
+//            if (TimeLeftInMillis < 1000) {
+//            } else {
+//            }
+//
+//            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
+//
+//            } else {
+//
+//            }
+//        }
+//    }
 
     @Override
     protected void onStop() {
