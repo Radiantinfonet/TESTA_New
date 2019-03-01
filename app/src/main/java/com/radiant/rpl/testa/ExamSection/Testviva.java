@@ -150,6 +150,7 @@ SharedPreferences sp;
             "Ramanand sagar",
             "Vishwamitra",
     };
+    private boolean alreadyExecuted1=false;
 
     @Override
 
@@ -185,6 +186,15 @@ SharedPreferences sp;
                 .make(parentlayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000)
                 .setActionTextColor(Color.MAGENTA)
                 .show();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finalSubmitbutton.setEnabled(true);
+                //Do something after 100ms
+            }
+        }, 10000*12);
 
         imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -302,6 +312,10 @@ SharedPreferences sp;
             } else {
                 startTimer();
             }
+        }
+
+        if(!alreadyExecuted1) {
+            Questionlist();
         }
 
         finalSubmitbutton.setOnClickListener(new View.OnClickListener() {
@@ -469,6 +483,7 @@ SharedPreferences sp;
                     JSONObject jobj = new JSONObject(response);
                     String status= jobj.getString("status");
                     if (status.equals("1")){
+                        alreadyExecuted1=false;
                         JSONArray jsonArray=jobj.getJSONArray("practical_questions");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
@@ -574,14 +589,7 @@ SharedPreferences sp;
     @Override
     public void onResume() {
         super.onResume();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finalSubmitbutton.setEnabled(true);
-                //Do something after 100ms
-            }
-        }, 10000*12);
+
     }
 
 

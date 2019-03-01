@@ -153,7 +153,7 @@ public class TestQuestion extends HiddenCameraActivity {
     };
     int arraysize;
     long timee;
-    boolean b;
+    boolean alreadyExecuted=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -333,10 +333,9 @@ public class TestQuestion extends HiddenCameraActivity {
 
         startTimer();
 
-        if (b=false){
+        if(!alreadyExecuted) {
             Questionlist();
         }
-            System.out.println("ffff"+value);
 
 
 
@@ -462,11 +461,13 @@ public class TestQuestion extends HiddenCameraActivity {
             @Override
             public void onResponse(String response) {
                 try {
+                    alreadyExecuted=false;
                     JSONObject jobj = new JSONObject(response);
                     String status= jobj.getString("status");
                     float aab=jobj.getLong("theory_time");
                     System.out.println("dddd"+FormatSeconds(aab));
                     if (status.equals("1")){
+                        alreadyExecuted = true;
                         JSONArray jsonArray=jobj.getJSONArray("theory_questions");
                         arraysize=jsonArray.length();
                         timee=arraysize*60*1000;
