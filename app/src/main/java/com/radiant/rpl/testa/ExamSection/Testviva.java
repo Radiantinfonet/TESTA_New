@@ -118,6 +118,7 @@ public class Testviva extends HiddenCameraActivity {
     ArrayList<String> statuss=new ArrayList<>();
     ArrayList<String> questatus=new ArrayList<>();
     SetterGetter setterGetter;
+    int iiiiii;
     String value,batchvalue,studentid;
     String jsonInString;
 SharedPreferences sp;

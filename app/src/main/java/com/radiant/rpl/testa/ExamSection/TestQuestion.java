@@ -154,6 +154,7 @@ public class TestQuestion extends HiddenCameraActivity {
     int arraysize;
     long timee;
     boolean alreadyExecuted=false;
+    int gggg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
