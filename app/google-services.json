@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "245908231505",
+    "firebase_url": "https://testa-6916e.firebaseio.com",
+    "project_id": "testa-6916e",
+    "storage_bucket": "testa-6916e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245908231505:android:9002dfa326a11613",
+        "android_client_info": {
+          "package_name": "com.radiant.rpl.testa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245908231505-45tos21hmfpeqtqhhdjfi794su91ibdr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.radiant.rpl.testa",
+            "certificate_hash": "750f5bc59c8b67f3d6ceeb794461a051a04248b7"
+          }
+        },
+        {
+          "client_id": "245908231505-r31apid3a1vgvv94kidlkkoqmj48bqg1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIAKMfWWMBtsPdyXwrUHUhxnL5XnwAB-A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245908231505-r31apid3a1vgvv94kidlkkoqmj48bqg1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
