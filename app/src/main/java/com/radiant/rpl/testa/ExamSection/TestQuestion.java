@@ -180,7 +180,7 @@ public class TestQuestion extends HiddenCameraActivity {
         mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
         setterGetter =new SetterGetter();
         mNotificationHelper = new NotificationHelper(this);
-        Toast.makeText(getApplicationContext(),"on create running",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),"on create running",Toast.LENGTH_LONG).show();
         Snackbar
                 .make(parentLayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000)
                 .setActionTextColor(Color.MAGENTA)
@@ -273,7 +273,7 @@ public class TestQuestion extends HiddenCameraActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        Toast.makeText(getApplicationContext(),"on restart running",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),"on restart running",Toast.LENGTH_LONG).show();
     }
 
 
@@ -295,7 +295,7 @@ public class TestQuestion extends HiddenCameraActivity {
     @Override
     protected void onStart() {
         super.onStart();
-Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
+//Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
 
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
 
@@ -565,7 +565,7 @@ Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).sho
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getApplicationContext(),"on Resume running",Toast.LENGTH_LONG).show();
+       // Toast.makeText(getApplicationContext(),"on Resume running",Toast.LENGTH_LONG).show();
     }
 
 

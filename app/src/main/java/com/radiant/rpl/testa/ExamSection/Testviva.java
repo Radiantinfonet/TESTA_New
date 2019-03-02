@@ -178,7 +178,7 @@ SharedPreferences sp;
         employeeList=new ArrayList<>();
         sessionManager=new SessionManager();
         dbAutoSave = new DbAutoSave(getApplicationContext());
-        Toast.makeText(getApplicationContext(),"on create running",Toast.LENGTH_LONG).show();
+       // Toast.makeText(getApplicationContext(),"on create running",Toast.LENGTH_LONG).show();
         mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
         //Questionlist();
         setterGetter =new SetterGetter();
@@ -349,7 +349,7 @@ SharedPreferences sp;
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
+       // Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
 
         TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
@@ -567,14 +567,14 @@ SharedPreferences sp;
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getApplicationContext(),"on Resume running",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),"on Resume running",Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Toast.makeText(getApplicationContext(),"on Restart running",Toast.LENGTH_LONG).show();
+       // Toast.makeText(getApplicationContext(),"on Restart running",Toast.LENGTH_LONG).show();
     }
 
     public void getStatusdata(){
