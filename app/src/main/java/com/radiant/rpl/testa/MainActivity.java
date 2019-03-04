@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
@@ -18,6 +19,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -87,11 +89,18 @@ public class MainActivity extends AppCompatActivity{
     SwipeRefreshLayout mySwipeRefreshLayout;
     ArrayAdapter<String> jobroleadapter;
     private android.app.AlertDialog progressDialog;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+  String defaultCameraPackage;
+  PackageManager packageManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
         final Spinner myspinner = findViewById(R.id.input_layout_gender);
         yearofbirth=findViewById(R.id.input_layout_year);
         category=findViewById(R.id.input_layout_category);
@@ -157,6 +166,10 @@ public class MainActivity extends AppCompatActivity{
         jobrolelist=new ArrayList<>(Arrays.asList(jobrole));
         preflang=new ArrayList<>(Arrays.asList(preflangg));
         mySwipeRefreshLayout=new SwipeRefreshLayout(getApplicationContext());
+
+
+
+
         input_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +213,9 @@ public class MainActivity extends AppCompatActivity{
                /*else if (sector1.equals("Select the Sector")){
                     Toast.makeText(getApplicationContext(),"sector must be selected",Toast.LENGTH_LONG).show();
                 }*/
-
+                else if (employer1.equals("Select the Employer")){
+                    Toast.makeText(getApplicationContext(),"Employer must be selected",Toast.LENGTH_LONG).show();
+                }
                else if (bankname1.equals("Select the Bank")){
                     Toast.makeText(getApplicationContext(),"Bank  name must be selected",Toast.LENGTH_LONG).show();
 
@@ -264,6 +279,9 @@ public class MainActivity extends AppCompatActivity{
                     requestPermissions(new String[]{Manifest.permission.CAMERA},
                             MY_CAMERA_PERMISSION_CODE);
                 } else {
+
+
+
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 }
@@ -442,9 +460,7 @@ public class MainActivity extends AppCompatActivity{
                     input_loc.setEnabled(false);
                 }
                 else if (employment1.equals("Yes")){
-                    if (employer1.equals("Select the Employer")){
-                        Toast.makeText(getApplicationContext(),"Employer must be selected",Toast.LENGTH_LONG).show();
-                    }
+
                     employer.setEnabled(true);
                     //sector.setEnabled(true);
                     input_jobrole.setEnabled(true);
@@ -705,6 +721,13 @@ public class MainActivity extends AppCompatActivity{
         });
 
     }
+
+
+
+
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -815,10 +838,6 @@ public class MainActivity extends AppCompatActivity{
                     String status= jobj.getString("status");
 
                     if (status.equals("1")){
-                       /* if (preflang.size()>=1){
-                            preflang.clear();
-                        }
-                        preflang.add("Select the Preffered Language");*/
                         JSONArray jsonArray=jobj.getJSONArray("language");
                         preflang.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -833,8 +852,6 @@ public class MainActivity extends AppCompatActivity{
                         preflanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                         input_layout_prefferedlanguage.setAdapter(preflanguage);
-
-                        // Toast.makeText(getApplicationContext(),"Success"+bankslist,Toast.LENGTH_LONG).show();
 
                     }
                     else {
@@ -1250,12 +1267,18 @@ public class MainActivity extends AppCompatActivity{
         if (requestCode == MY_CAMERA_PERMISSION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+
                 Intent cameraIntent = new
                         Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+               // cameraIntent.setPackage(defaultCameraPackage);
+                if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+                   // startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             } else {
-            }
+                    Toast.makeText(getApplicationContext(),"Click photos using default Camera Of the Device",Toast.LENGTH_LONG).show();
+           }
 
+        }
         }
     }
 

@@ -59,8 +59,8 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationCompat.Builder getSendNotification(String title, long timerNotify, long timerinSec) {
 
-        Intent resultIntent = new Intent(this, Start_Registration.class);
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(this,1,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+       // Intent resultIntent = new Intent(this, Start_Registration.class);
+       /// PendingIntent resultPendingIntent = PendingIntent.getActivity(this,1,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
 
@@ -68,8 +68,8 @@ public class NotificationHelper extends ContextWrapper {
                 .setContentTitle(title)
                 .setContentText("the timer has " +timerNotify +" minutes" +timerinSec +" second left")
                 .setSmallIcon(R.drawable.aadharphoto)
-                .setAutoCancel(true)
-                .setContentIntent(resultPendingIntent);
+                .setAutoCancel(true);
+              //  .setContentIntent(resultPendingIntent);
 
 
 

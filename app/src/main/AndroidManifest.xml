@@ -65,6 +65,7 @@
             />
         <activity
             android:name="com.radiant.rpl.testa.Start_Registration"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme1">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

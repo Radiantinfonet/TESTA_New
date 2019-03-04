@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -152,7 +153,7 @@ SharedPreferences sp;
             "Vishwamitra",
     };
     boolean alreadyExecuted1=false;
-
+    RelativeLayout parentLayout;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,10 +185,12 @@ SharedPreferences sp;
         setterGetter =new SetterGetter();
         mNotificationHelper = new NotificationHelper(this);
 
-        Snackbar
-                .make(parentlayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000)
-                .setActionTextColor(Color.MAGENTA)
-                .show();
+        Snackbar snack = Snackbar.make(parentLayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000);
+        View view = snack.getView();
+        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTextColor(Color.RED);
+
+        snack.show();
 
         Bundle bundle = getIntent().getExtras();
 
@@ -200,12 +203,27 @@ SharedPreferences sp;
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finalSubmitbutton.setEnabled(true);
-                //Do something after 100ms
-            }
-        }, 10000*12);
+                                @Override
+                                public void run() {
+                                    finalSubmitbutton.setVisibility(View.VISIBLE);
+
+                                    //Do something after 100ms
+                                }
+                            },
+                //10000);
+                10000*12);
+
+
+        final Handler handler2 = new Handler();
+        handler2.postDelayed(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     takePicture();
+                                     //Do something after 100ms
+                                 }
+                             },
+                //10000);
+                10000*6);
 
         imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,7 +272,7 @@ SharedPreferences sp;
                     REQ_CODE_CAMERA_PERMISSION);
         }
 
-        if (Build.VERSION.SDK_INT<Build.VERSION_CODES.P) {
+      /*  if (Build.VERSION.SDK_INT<Build.VERSION_CODES.P) {
             Timer t = new Timer();
 //Set the schedule function and rate
             t.scheduleAtFixedRate(new TimerTask() {
@@ -262,7 +280,13 @@ SharedPreferences sp;
                                       @Override
                                       public void run() {
 
-                                          takePicture();
+                                          //Clling Looper to click multiple photos
+                                          new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  takePicture();
+                                              }
+                                          });
 
 
                                           //Called each time when 1000 milliseconds (1 second) (the period parameter)
@@ -275,7 +299,7 @@ SharedPreferences sp;
                     30000 * 2);
         } else{
             System.out.println("Proctoring is now supported below this OS.");
-        }
+        }*/
 
         mdrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
@@ -289,6 +313,7 @@ SharedPreferences sp;
         drawer_Right=findViewById(R.id.drawer_right1);
         imgRight=findViewById(R.id.imgRight1);
         len1=findViewById(R.id.len2);
+        parentLayout=findViewById(R.id.r1);
         mdrawerLayout=findViewById(R.id.activity_main2);
         mdrawerLayout.addDrawerListener(mDrawerToggle1);
 

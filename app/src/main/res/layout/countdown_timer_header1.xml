@@ -21,7 +21,7 @@
 
     <View android:background="#73ffffff" android:layout_width="1.0dip" android:layout_height="fill_parent" />
 
-    <TextView android:textColor="@color/colorAccent" android:gravity="center"
+    <TextView android:textColor="#ffffff" android:gravity="center"
         android:layout_gravity="center" android:id="@+id/timer1"
         android:layout_width="0.0dip" android:layout_height="wrap_content"
         android:text="00:00" android:layout_weight="1.0"
@@ -30,8 +30,8 @@
     <View android:background="#73ffffff" android:layout_width="1.0dip" android:layout_height="fill_parent" />
 
 
-    <TextView android:textColor="@color/colorPrimaryDark" android:gravity="center" android:layout_gravity="center" android:id="@+id/finish1"
+    <TextView android:textColor="#ffffff" android:gravity="center" android:layout_gravity="center" android:id="@+id/finish1"
         android:layout_width="0.0dip"
-        android:enabled="false"
+               android:visibility="invisible"
         android:layout_height="fill_parent" android:text="Submit" android:layout_weight="1.0" style="@style/text_h4" />
 </LinearLayout>
