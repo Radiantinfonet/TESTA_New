@@ -53,7 +53,7 @@ import dmax.dialog.SpotsDialog;
 import radiant.rpl.radiantrpl.R;
 
 public class StudenAtten extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
+   GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
     ImageView img;
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
@@ -74,7 +74,6 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     String encoded;
     SharedPreferences sharedPreferences;
     TextView nameid,addressid;
-
     private android.app.AlertDialog progressDialog;
 
 
@@ -149,8 +148,6 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 addOnConnectionFailedListener(this).build();
     }
 
-
-
     private ArrayList<String> permissionsToRequest(ArrayList<String> wantedPermissions) {
         ArrayList<String> result = new ArrayList<>();
 
@@ -179,6 +176,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
             googleApiClient.connect();
         }
     }
+
 
     @Override
     protected void onResume() {
@@ -253,10 +251,8 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         else {
             buildAlertMessageNoGps();
         }
-
         startLocationUpdates();
     }
-
     private void startLocationUpdates() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);

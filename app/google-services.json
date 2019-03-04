@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "850127438259",
-    "firebase_url": "https://testa-7da7d.firebaseio.com",
-    "project_id": "testa-7da7d",
-    "storage_bucket": "testa-7da7d.appspot.com"
+    "project_number": "681278081098",
+    "firebase_url": "https://testa-f65a2.firebaseio.com",
+    "project_id": "testa-f65a2",
+    "storage_bucket": "testa-f65a2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:850127438259:android:9002dfa326a11613",
+        "mobilesdk_app_id": "1:681278081098:android:9002dfa326a11613",
         "android_client_info": {
           "package_name": "com.radiant.rpl.testa"
         }
       },
       "oauth_client": [
         {
-          "client_id": "850127438259-tdl4f5onmnvo204j7ap1u4eaf9p2pc74.apps.googleusercontent.com",
+          "client_id": "681278081098-jja03r5p31qnbin3l24sabp4jk16r27s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.radiant.rpl.testa",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "850127438259-0m0fc1no99q32kv8f38os18soveqlkel.apps.googleusercontent.com",
+          "client_id": "681278081098-ke5m7frnc3h1b7a70a5soi2pg9jm3iua.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDqbeL4ZZDYIjIAhdgGEMC9VamATmY_8fE"
+          "current_key": "AIzaSyBY2Dqvxv-dQjklKKrhBUxGidLEyUYv4hk"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "850127438259-0m0fc1no99q32kv8f38os18soveqlkel.apps.googleusercontent.com",
+              "client_id": "681278081098-ke5m7frnc3h1b7a70a5soi2pg9jm3iua.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

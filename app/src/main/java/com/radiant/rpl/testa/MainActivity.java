@@ -92,10 +92,6 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
-
         final Spinner myspinner = findViewById(R.id.input_layout_gender);
         yearofbirth=findViewById(R.id.input_layout_year);
         category=findViewById(R.id.input_layout_category);
@@ -709,13 +705,6 @@ public class MainActivity extends AppCompatActivity{
         });
 
     }
-
-
-
-
-
-
-
     @Override
     protected void onResume() {
         super.onResume();

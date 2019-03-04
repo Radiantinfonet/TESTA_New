@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
+import com.radiant.rpl.testa.Start_Registration;
+
 import radiant.rpl.radiantrpl.R;
 
 public class NotificationHelper extends ContextWrapper {
@@ -57,7 +59,7 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationCompat.Builder getSendNotification(String title, long timerNotify, long timerinSec) {
 
-        Intent resultIntent = new Intent(this,TestQuestion.class);
+        Intent resultIntent = new Intent(this, Start_Registration.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this,1,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
@@ -71,7 +73,7 @@ public class NotificationHelper extends ContextWrapper {
 
 
 
-
+ 
     }
 
 }
