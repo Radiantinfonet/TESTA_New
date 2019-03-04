@@ -17,9 +17,11 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -71,7 +73,7 @@ import radiant.rpl.radiantrpl.R;
 
 public class TestQuestion extends HiddenCameraActivity {
     FragmentParent fragmentParent;
-    TextView textView,finalSubmitbutton,reviewlaterr;
+    TextView textView,finalSubmitbutton;
     Cursor cursor,cursor11;
     Toolbar t1;
     LinearLayout len;
@@ -154,6 +156,9 @@ public class TestQuestion extends HiddenCameraActivity {
     int arraysize;
     long timee;
     boolean alreadyExecuted=false;
+    String[] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO};
+    int perm,perm1;
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,6 +185,13 @@ public class TestQuestion extends HiddenCameraActivity {
         mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
         setterGetter =new SetterGetter();
         mNotificationHelper = new NotificationHelper(this);
+
+        perm = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        perm1=ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO);
+        if (perm != PackageManager.PERMISSION_GRANTED || perm1 != PackageManager.PERMISSION_GRANTED ) {
+            requestPermissions(permission, 7882);
+
+        }
         //Toast.makeText(getApplicationContext(),"on create running",Toast.LENGTH_LONG).show();
         Snackbar
                 .make(parentLayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000)
@@ -235,7 +247,7 @@ public class TestQuestion extends HiddenCameraActivity {
 
         //Check for the camera permission for the runtime
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED  ) {
 
             //Start camera preview
             startCamera(mCameraConfig);
@@ -263,7 +275,7 @@ public class TestQuestion extends HiddenCameraActivity {
 //Set the amount of time between each execution (in milliseconds)
                     30000 * 2);
         } else{
-            System.out.println("Proctoring is now supported below this OS.");
+            System.out.println("Proctoring is supported below this OS.");
         }
 
         mdrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -640,7 +652,7 @@ public class TestQuestion extends HiddenCameraActivity {
 
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setMessage("You want to go for next section Test please click  yes and proceed.")
+                .setMessage("For Moving onto the next section click  yes and proceed.")
                 .setPositiveButton("Yes And proceed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -732,7 +744,7 @@ public class TestQuestion extends HiddenCameraActivity {
             new MyThread().start();
         }
         URI imguri=imageFile.toURI();
-        //Toast.makeText(getApplicationContext(),"photo base 64 is"+imguri.toString(),Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"The Image has been captured",Toast.LENGTH_LONG).show();
     }
 
     @Override

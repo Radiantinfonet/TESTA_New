@@ -1,10 +1,15 @@
 package com.radiant.rpl.testa;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,6 +26,8 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
     SharedPreferences prefs;
     Long timereset;
     DbAutoSave dbAutoSave;
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +44,6 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
         String stat=sessionManager.getPreferences(getApplicationContext(),"vipin");
         dbAutoSave = new DbAutoSave(getApplicationContext());
         prefs=getSharedPreferences("prefs", MODE_PRIVATE);
-
-
-
-
 
         if (stat.equals("1")){
 

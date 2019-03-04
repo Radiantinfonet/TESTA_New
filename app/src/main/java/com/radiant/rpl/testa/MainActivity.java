@@ -183,17 +183,15 @@ public class MainActivity extends AppCompatActivity{
              else if (district1.equals("Select the District")){
                     Toast.makeText(getApplicationContext(),"District must be selected",Toast.LENGTH_LONG).show();
                 }
-                 else if (preflang1.equals("Select the Preffered Language")){
+                /* else if (preflang1.equals("Select the Preffered Language")){
                      Toast.makeText(getApplicationContext(),"Language must be selected",Toast.LENGTH_LONG).show();
                  }
 
 
                  else if (jobrole1.equals("Select the Jobrole")){
                      Toast.makeText(getApplicationContext(),"jobrole must be selected",Toast.LENGTH_LONG).show();
-                 }
-                 else if (employer1.equals("Select the Employer")){
-                     Toast.makeText(getApplicationContext(),"Employer must be selected",Toast.LENGTH_LONG).show();
-                 }
+                 }*/
+
 
                else if (eduction1.equals("Select Education")){
                     Toast.makeText(getApplicationContext(),"Education must be selected",Toast.LENGTH_LONG).show();
@@ -203,9 +201,9 @@ public class MainActivity extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(),"Employment Status must be selected",Toast.LENGTH_LONG).show();
                 }
 
-               else if (sector1.equals("Select the Sector")){
+               /*else if (sector1.equals("Select the Sector")){
                     Toast.makeText(getApplicationContext(),"sector must be selected",Toast.LENGTH_LONG).show();
-                }
+                }*/
 
                else if (bankname1.equals("Select the Bank")){
                     Toast.makeText(getApplicationContext(),"Bank  name must be selected",Toast.LENGTH_LONG).show();
@@ -215,9 +213,11 @@ public class MainActivity extends AppCompatActivity{
 
                 else if(awesomeValidation.validate() && !(gender.equals("Select Gender"))&& !state1.equals("Select the State") && !yearobirth.equals("Year")
                          && !district1.equals("Select the District") && !eduction1.equals("Select Education") && !employment1.equals("Are you employed?")
-                         && !employer1.equals("Select the Employer") && !jobrole1.equals("Select the Jobrole") && !(sector1.equals("Select the Sector")) && !(preflang1.equals("Select the Preffered Language"))
-                         && !(bankname1.equals("Select the Bank"))
-                         && checkBox.isChecked() && encodedphoto!=null) {
+                         && !employer1.equals("Select the Employer") && !(bankname1.equals("Select the Bank")) && checkBox.isChecked() && encodedphoto!=null) {
+
+                    //&& !(sector1.equals("Select the Sector"))
+                    //&& !(preflang1.equals("Select the Preffered Language"))
+                    //&& !jobrole1.equals("Select the Jobrole")
 
                     Intent ii = new Intent(MainActivity.this, Reverify.class);
                     ii.putExtra("first_namee", input_name.getText().toString());
@@ -446,6 +446,9 @@ public class MainActivity extends AppCompatActivity{
                     input_loc.setEnabled(false);
                 }
                 else if (employment1.equals("Yes")){
+                    if (employer1.equals("Select the Employer")){
+                        Toast.makeText(getApplicationContext(),"Employer must be selected",Toast.LENGTH_LONG).show();
+                    }
                     employer.setEnabled(true);
                     //sector.setEnabled(true);
                     input_jobrole.setEnabled(true);
@@ -479,14 +482,14 @@ public class MainActivity extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id)
             {
-                //if(position > 0) {
+                if(position > 0) {
                     employer1 = employer.getSelectedItem().toString();
                     employeridname = employdetail.get(employer1);
                     Sectorlist(employeridname);
                     languageSelect(employeridname);
                     getJobroleList(employeridname);
 
-               // }
+                }
             }
 
             @Override
@@ -682,7 +685,10 @@ public class MainActivity extends AppCompatActivity{
         myAdapterDistrict.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         district.setAdapter(myAdapterDistrict);
-
+      /*  if (districtlist.size()>1){
+            districtlist.clear();
+        }
+        districtlist.add("Select the District");*/
         district.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
@@ -691,8 +697,6 @@ public class MainActivity extends AppCompatActivity{
             {
                 district1=district.getSelectedItem().toString();
                 districtiddd=districtdetail.get(district1);
-                //Toast.makeText(getApplicationContext(),"emp"+districtiddd,Toast.LENGTH_LONG).show();
-
             }
 
             @Override
@@ -822,10 +826,10 @@ public class MainActivity extends AppCompatActivity{
                     String status= jobj.getString("status");
 
                     if (status.equals("1")){
-                       /* if (preflang.size()<=1){
+                       /* if (preflang.size()>=1){
                             preflang.clear();
                         }
-                        preflang.add("Choose the Prefferred Language");*/
+                        preflang.add("Select the Preffered Language");*/
                         JSONArray jsonArray=jobj.getJSONArray("language");
                         preflang.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -977,10 +981,7 @@ public class MainActivity extends AppCompatActivity{
                 try {
                     JSONObject jobj = new JSONObject(response);
                     String status= jobj.getString("status");
-                    if (districtlist.size()>2){
-                        districtlist.clear();
-                    }
-                    districtlist.add("Choose the District");
+
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("district");
                         for (int i = 0; i < jsonArray.length(); i++) {
