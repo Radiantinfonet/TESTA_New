@@ -19,7 +19,7 @@ public class App  extends Application {
         final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
         Map<String,Object> defaultValue = new HashMap<>();
         defaultValue.put(UpdateHelper.KEY_UPDATE_ENABLE,false);
-        defaultValue.put(UpdateHelper.KEY_UPDATE_VERSION,"2.1.6");
+        defaultValue.put(UpdateHelper.KEY_UPDATE_VERSION,"2.1.9");
         defaultValue.put(UpdateHelper.KEY_UPDATE_URL,"url");
         remoteConfig.setDefaults(defaultValue);
         remoteConfig.fetch(5)

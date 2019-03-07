@@ -164,7 +164,7 @@ public class SignInAct extends AppCompatActivity {
                     exam_status=jobj.getString("exam_status");
 
                     if (status.equals("1")) {
-                    if (exam_status.equals("Not Attempted")){
+                   // if (exam_status.equals("Not Attempted")){
                         JSONObject jsonObject = jobj.getJSONObject("student_details");
                         for (int i = 0; i < jsonObject.length(); i++) {
                             name = jsonObject.getString("name");
@@ -184,8 +184,9 @@ public class SignInAct extends AppCompatActivity {
                             Intent ii=new Intent(SignInAct.this, Welcome_page.class);
                             startActivity(ii);
                         }
-                    }
-                    else{
+
+                  //  }
+                  /*  else{
                         AlertDialog alertDialog = new AlertDialog.Builder(SignInAct.this)
                                 .setMessage("You have already attempted the exam.")
                                 .setCancelable(false)
@@ -196,7 +197,7 @@ public class SignInAct extends AppCompatActivity {
                                     }
                                 }).create();
                         alertDialog.show();
-                    }
+                    }*/
 
                     }
 

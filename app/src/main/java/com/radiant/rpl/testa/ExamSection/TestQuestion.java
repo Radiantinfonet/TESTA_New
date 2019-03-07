@@ -1,6 +1,7 @@
 package com.radiant.rpl.testa.ExamSection;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -394,7 +395,16 @@ public class TestQuestion extends HiddenCameraActivity {
                 TimerRunning = false;
                 updateButtons();
                 resetTimer();
-                showDialog11();
+                Context context = TestQuestion.this;
+
+                if (! ((Activity) context).isFinishing()) {
+                    //  Activity is running
+                    showDialog11();
+                } else {
+                    System.out.println("THeory has been attempted");
+                    //  Activity has been finished
+                }
+
 
 
             }

@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity{
         monthofbirth=findViewById(R.id.input_layout_month);
         dateofbirth=findViewById(R.id.input_layout_date);
         education=findViewById(R.id.input_layout_Education);
-        employment=findViewById(R.id.input_layout_Employment);
+        //employment=findViewById(R.id.input_layout_Employment);
         employer=findViewById(R.id.input_layout_Employer);
         sector=findViewById(R.id.input_layout_Sector);
         bankname=findViewById(R.id.input_layout_bankname);
@@ -144,12 +144,12 @@ public class MainActivity extends AppCompatActivity{
         awesomeValidation.addValidation(MainActivity.this, R.id.input_mobile_no,"^[0-9]{10}$", R.string.err_msg_formobile);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_username,"[a-zA-Z\\s]+", R.string.err_msg_for_namein_bank);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
-        sector.setEnabled(false);
+       /* sector.setEnabled(false);
         employer.setEnabled(false);
         input_jobrole.setEnabled(false);
         input_empid.setEnabled(false);
         input_loc.setEnabled(false);
-        input_layout_prefferedlanguage.setEnabled(false);
+        input_layout_prefferedlanguage.setEnabled(false);*/
         Bankdetails();
         Statedetails();
         Employerlist();
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-
+                 // try{
                  if(yearobirth.equals("Year")){
                     Toast.makeText(getApplicationContext(),"Year must be selected",Toast.LENGTH_LONG).show();
                 }
@@ -192,27 +192,11 @@ public class MainActivity extends AppCompatActivity{
              else if (district1.equals("Select the District")){
                     Toast.makeText(getApplicationContext(),"District must be selected",Toast.LENGTH_LONG).show();
                 }
-                /* else if (preflang1.equals("Select the Preffered Language")){
-                     Toast.makeText(getApplicationContext(),"Language must be selected",Toast.LENGTH_LONG).show();
-                 }
-
-
-                 else if (jobrole1.equals("Select the Jobrole")){
-                     Toast.makeText(getApplicationContext(),"jobrole must be selected",Toast.LENGTH_LONG).show();
-                 }*/
-
 
                else if (eduction1.equals("Select Education")){
                     Toast.makeText(getApplicationContext(),"Education must be selected",Toast.LENGTH_LONG).show();
                 }
 
-               else if (employment1.equals("Are you employed?")){
-                    Toast.makeText(getApplicationContext(),"Employment Status must be selected",Toast.LENGTH_LONG).show();
-                }
-
-               /*else if (sector1.equals("Select the Sector")){
-                    Toast.makeText(getApplicationContext(),"sector must be selected",Toast.LENGTH_LONG).show();
-                }*/
                 else if (employer1.equals("Select the Employer")){
                     Toast.makeText(getApplicationContext(),"Employer must be selected",Toast.LENGTH_LONG).show();
                 }
@@ -223,12 +207,9 @@ public class MainActivity extends AppCompatActivity{
 
 
                 else if(awesomeValidation.validate() && !(gender.equals("Select Gender"))&& !state1.equals("Select the State") && !yearobirth.equals("Year")
-                         && !district1.equals("Select the District") && !eduction1.equals("Select Education") && !employment1.equals("Are you employed?")
+                         && !district1.equals("Select the District") && !eduction1.equals("Select Education")
                          && !employer1.equals("Select the Employer") && !(bankname1.equals("Select the Bank")) && checkBox.isChecked() && encodedphoto!=null) {
 
-                    //&& !(sector1.equals("Select the Sector"))
-                    //&& !(preflang1.equals("Select the Preffered Language"))
-                    //&& !jobrole1.equals("Select the Jobrole")
 
                     Intent ii = new Intent(MainActivity.this, Reverify.class);
                     ii.putExtra("first_namee", input_name.getText().toString());
@@ -270,6 +251,8 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+
+        try{
         input_photograph.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -287,7 +270,9 @@ public class MainActivity extends AppCompatActivity{
                 }
 
             }
-        });
+        });}catch (Exception e){
+            e.printStackTrace();
+        }
         input_aadharpic.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -439,48 +424,6 @@ public class MainActivity extends AppCompatActivity{
 
         });
 
-        //Employment
-        ArrayAdapter<String> myAdapterEmployment = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Employment));
-        myAdapterEmployment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        employment.setAdapter(myAdapterEmployment);
-        employment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                employment1=employment.getSelectedItem().toString();
-
-                if (employment1.equals("No")){
-                    sector.setEnabled(false);
-                    employer.setEnabled(false);
-                    input_jobrole.setEnabled(false);
-                    input_empid.setEnabled(false);
-                    input_loc.setEnabled(false);
-                }
-                else if (employment1.equals("Yes")){
-
-                    employer.setEnabled(true);
-                    //sector.setEnabled(true);
-                    input_jobrole.setEnabled(true);
-                    input_empid.setEnabled(true);
-                    input_loc.setEnabled(true);
-                    input_layout_prefferedlanguage.setEnabled(true);
-                }
-                employeridd=employerdetail.get(employment1);
-                //Toast.makeText(getApplicationContext(),"emp"+employeridd,Toast.LENGTH_LONG).show();
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-
-            }
-
-
-        });
 
         //Employer
         ArrayAdapter<String> myAdapterEmployer = new ArrayAdapter<String>(MainActivity.this,
@@ -494,6 +437,7 @@ public class MainActivity extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id)
             {
+
                 if(position > 0) {
                     employer1 = employer.getSelectedItem().toString();
                     employeridname = employdetail.get(employer1);
@@ -501,6 +445,8 @@ public class MainActivity extends AppCompatActivity{
                     languageSelect(employeridname);
                     getJobroleList(employeridname);
 
+                } else{
+                    employer1=employer.getSelectedItem().toString();
                 }
             }
 
@@ -636,7 +582,6 @@ public class MainActivity extends AppCompatActivity{
                 bankname1=bankname.getSelectedItem().toString();
                 if(position > 0){
                     bankiddd= bankdetail.get(bankname1);
-                    //Toast.makeText(getApplicationContext(),"emp"+bankiddd,Toast.LENGTH_LONG).show();
 
 
                 }
@@ -672,7 +617,6 @@ public class MainActivity extends AppCompatActivity{
                 if(position > 0){
                     String value= Statedetail.get(selectedstatetext);
                     stateiddd=value;
-                    //Toast.makeText(getApplicationContext(), "Selected : " + stateiddd, Toast.LENGTH_SHORT).show();
                     DistrictDetails(value);
 
                 }
@@ -1283,34 +1227,45 @@ public class MainActivity extends AppCompatActivity{
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            int currentBitmapWidth = photo.getWidth();
-            int currentBitmapHeight = photo.getHeight();
-            input_photograph.setImageBitmap(photo);
-            int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) currentBitmapWidth / (double) currentBitmapWidth));
-            Bitmap newbitMap = Bitmap.createScaledBitmap(photo, currentBitmapWidth, newHeight, true);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            newbitMap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream .toByteArray();
-            encodedphoto = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        try {
+            if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+                if(data.getExtras()==null || (data.getExtras().get("data")==null ||  !(data.getExtras().get("data") instanceof Bitmap))){
+                    //todo - show error
+                    Toast.makeText(getApplicationContext(),"The file picked is invalid.Please use default camera to click Photos",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
 
+                int currentBitmapWidth = photo.getWidth();
+                int currentBitmapHeight = photo.getHeight();
+                input_photograph.setImageBitmap(photo);
+                int newHeight = (int) Math.floor((double) currentBitmapHeight * ((double) currentBitmapWidth / (double) currentBitmapWidth));
+                Bitmap newbitMap = Bitmap.createScaledBitmap(photo, currentBitmapWidth, newHeight, true);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                newbitMap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                encodedphoto = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+            }
+
+            if (requestCode == CAMERA_AADHAR_REQUEST && resultCode == Activity.RESULT_OK) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                int currentBitmapWidth = photo.getWidth();
+                int currentBitmapHeight = photo.getHeight();
+                mySwipeRefreshLayout.setRefreshing(false);
+                input_aadharpic.setImageBitmap(photo);
+                int newHeight = (int) Math.floor((double) currentBitmapHeight * ((double) currentBitmapWidth / (double) currentBitmapWidth));
+                Bitmap newbitMap = Bitmap.createScaledBitmap(photo, currentBitmapWidth, newHeight, true);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                newbitMap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                encodedphotoaadhar = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
-        if (requestCode == CAMERA_AADHAR_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            int currentBitmapWidth = photo.getWidth();
-            int currentBitmapHeight = photo.getHeight();
-            mySwipeRefreshLayout.setRefreshing(false);
-            input_aadharpic.setImageBitmap(photo);
-            int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) currentBitmapWidth / (double) currentBitmapWidth));
-            Bitmap newbitMap = Bitmap.createScaledBitmap(photo, currentBitmapWidth, newHeight, true);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            newbitMap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream .toByteArray();
-            encodedphotoaadhar = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-        }
     }
 
     @Override

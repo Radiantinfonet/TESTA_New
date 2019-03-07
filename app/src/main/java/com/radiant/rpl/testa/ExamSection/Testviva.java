@@ -1,6 +1,7 @@
 package com.radiant.rpl.testa.ExamSection;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -185,12 +186,12 @@ SharedPreferences sp;
         setterGetter =new SetterGetter();
         mNotificationHelper = new NotificationHelper(this);
 
-        Snackbar snack = Snackbar.make(parentLayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000);
+       /* Snackbar snack = Snackbar.make(parentLayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000);
         View view = snack.getView();
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
         tv.setTextColor(Color.RED);
 
-        snack.show();
+        snack.show();*/
 
         Bundle bundle = getIntent().getExtras();
 
@@ -379,6 +380,7 @@ SharedPreferences sp;
 
         TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
         TimerRunning = prefs.getBoolean("timerRunning", false);
+        TimerRunning = prefs.getBoolean("timerRunning", false);
 
         updateCountDownText();
         updateButtons();
@@ -473,7 +475,14 @@ SharedPreferences sp;
                 TimerRunning = false;
                 updateButtons();
                 resetTimer();
-                showDialog1();
+                Context context = Testviva.this;
+                if (! ((Activity) context).isFinishing()) {
+                    //  Activity is running
+                    showDialog1();
+                } else {
+                    System.out.println("THeory has been attempted");
+                    //  Activity has been finished
+                }
                 //getalldata();
             }
         }.start();

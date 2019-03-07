@@ -102,7 +102,10 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         if (sharedPreferences.contains("userid")){
             studentidd=sharedPreferences.getString("userid","");
         }
+
+        try{
         img.setOnClickListener(new View.OnClickListener() {
+
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
@@ -119,7 +122,10 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 }
 
             }
-        });
+
+        });}catch (Exception e){
+            e.printStackTrace();
+        }
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -306,7 +312,13 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+        try {
+            if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+                if(data.getExtras()==null || (data.getExtras().get("data")==null ||  !(data.getExtras().get("data") instanceof Bitmap))){
+                    //todo - show error
+                    Toast.makeText(getApplicationContext(),"The file picked is invalid.Please use default camera to click Photos",Toast.LENGTH_LONG).show();
+                    return;
+                }
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             //img.setImageBitmap(photo);
             int currentBitmapWidth = photo.getWidth();
@@ -326,6 +338,9 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
             byte[] byteArray = byteArrayOutputStream .toByteArray();
             encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
             //Toast.makeText(this,"encoded is"+encoded,Toast.LENGTH_LONG).show();
+        }
+    }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

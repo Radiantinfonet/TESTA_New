@@ -51,6 +51,7 @@
             android:textColor="@color/colorBackground"
             android:textSize="25sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/readItTogetherTextView"
             android:layout_width="match_parent"

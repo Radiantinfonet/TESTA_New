@@ -319,7 +319,7 @@
                 android:spinnerMode="dialog"
                 android:textSize="14sp"
                 />
-            <Spinner
+            <!--<Spinner
                 android:id="@+id/input_layout_Employment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -334,7 +334,7 @@
                 style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:spinnerMode="dialog"
                 android:textSize="14sp"
-                />
+                />-->
             <Spinner
                 android:id="@+id/input_layout_Employer"
                 android:layout_width="match_parent"
