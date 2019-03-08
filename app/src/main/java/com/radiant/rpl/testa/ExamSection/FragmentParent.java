@@ -1,5 +1,6 @@
 package com.radiant.rpl.testa.ExamSection;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
 
@@ -23,12 +26,14 @@ public class FragmentParent extends Fragment {
     DbAutoSave dbAutoSave;
     String queidd,queiddd;
     int pageno;
+    TextView bbb;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_parent, container, false);
         dbAutoSave=new DbAutoSave(getContext());
         getIDs(view);
+
 
         return view;
     }
@@ -37,7 +42,6 @@ public class FragmentParent extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.my_viewpager);
         adapter = new ViewPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapter);
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             Boolean first = true;
             @Override
@@ -50,6 +54,11 @@ public class FragmentParent extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 pageno=viewPager.getCurrentItem();
+
+                if (pageno == adapter.getCount()-1){
+                    System.out.println("page no. is"+pageno);
+
+                }
 
             }
 

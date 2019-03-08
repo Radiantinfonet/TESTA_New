@@ -204,6 +204,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/activity_main1"
             >
+
         <include android:id="@+id/count_down_strip" layout="@layout/countdown_timer_header"
             android:layout_height="60dp"
             android:layout_width="match_parent"

@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -36,8 +39,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,6 +66,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     ImageView img;
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     TextView tv;
     List<Address> addresses;
     Button b1;
@@ -75,6 +85,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     SharedPreferences sharedPreferences;
     TextView nameid,addressid;
     private android.app.AlertDialog progressDialog;
+    LocationManager lm;
 
 
     @Override
@@ -154,6 +165,8 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 addOnConnectionFailedListener(this).build();
     }
 
+
+
     private ArrayList<String> permissionsToRequest(ArrayList<String> wantedPermissions) {
         ArrayList<String> result = new ArrayList<>();
 
@@ -166,6 +179,8 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         return result;
     }
 
+
+
     private boolean hasPermission(String permission) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
@@ -173,6 +188,8 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
 
         return true;
     }
+
+
 
     @Override
     protected void onStart() {
@@ -187,7 +204,9 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     @Override
     protected void onResume() {
         super.onResume();
-
+        if (googleApiClient!=null){
+        buildGoogleApiClient();
+        }
         if (!checkPlayServices()) {
             Toast.makeText(this,"You need to install Google Play Services to use the App properly",Toast.LENGTH_LONG).show();
         }
@@ -259,6 +278,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         }
         startLocationUpdates();
     }
+
     private void startLocationUpdates() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -323,21 +343,16 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
             //img.setImageBitmap(photo);
             int currentBitmapWidth = photo.getWidth();
             int currentBitmapHeight = photo.getHeight();
-
             int ivWidth = img.getWidth();
             int ivHeight = img.getHeight();
             int newWidth = ivWidth;
-
             int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) ivWidth / (double) currentBitmapWidth));
-
             Bitmap newbitMap = Bitmap.createScaledBitmap(photo, newWidth, newHeight, true);
-
             img.setImageBitmap(newbitMap);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             photo.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream .toByteArray();
             encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            //Toast.makeText(this,"encoded is"+encoded,Toast.LENGTH_LONG).show();
         }
     }catch (Exception e){
             e.printStackTrace();
@@ -346,21 +361,47 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
 
 
     private void buildAlertMessageNoGps() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.alertDialogstyle);
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+         GoogleApiClient googleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                    .addApi(LocationServices.API).build();
+            googleApiClient.connect();
+
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest.setInterval(10000);
+            locationRequest.setFastestInterval(10000 / 2);
+
+            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+            builder.setAlwaysShow(true);
+
+            PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+            result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+                @Override
+                public void onResult(LocationSettingsResult result) {
+                    final Status status = result.getStatus();
+                    switch (status.getStatusCode()) {
+                        case LocationSettingsStatusCodes.SUCCESS:
+                            Log.i("TAG", "All location settings are satisfied.");
+                            startLocationUpdates();
+                            break;
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            Log.i("TAG", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+
+                            try {
+                                // Show the dialog by calling startResolutionForResult(), and check the result
+                                // in onActivityResult().
+                                status.startResolutionForResult(StudenAtten.this, REQUEST_CHECK_SETTINGS);
+                            } catch (IntentSender.SendIntentException e) {
+                                Log.i("TAG", "PendingIntent unable to execute request.");
+                            }
+                            break;
+                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                            Log.i("TAG", "Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                            break;
                     }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        dialog.cancel();
-                    }
-                });
-        builder.create().show();
-    }
+                }
+            });
+        }
+
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -381,18 +422,17 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                   // Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
+                    System.out.println("ddd"+response);
                     String status= jobj.getString("status");
                     String message= jobj.getString("msg");
-
-                    if (encoded!=null) {
-                        Intent ii = new Intent(StudenAtten.this, Testinstruction.class);
-                        startActivity(ii);
-                    }else {
-                        Toast.makeText(getApplicationContext(),"You can't Continue without Uploading your Photo",Toast.LENGTH_LONG).show();
+                      if (status.equals("1")) {
+                          Intent ii = new Intent(StudenAtten.this, Testinstruction.class);
+                          startActivity(ii);
+                      }else {
+                          Toast.makeText(getApplicationContext(),"Unable to mark Attendance.Try again later",Toast.LENGTH_LONG).show();
+                      }
                     }
-
-                } catch (JSONException e) {
+                    catch (JSONException e) {
                     e.printStackTrace();
                 }
 

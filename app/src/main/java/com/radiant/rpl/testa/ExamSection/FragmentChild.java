@@ -29,9 +29,9 @@ import static android.content.Context.MODE_PRIVATE;
 public class FragmentChild extends Fragment implements View.OnClickListener {
     String childname,quename,option1,option2,option3,option4;
     int pgnn;
-    String dummystuid="aman";
+    String dummystuid;
     SharedPreferences sp;
-
+    String getoptiona,getoptionb,getoptionc,getoptiond;
     TextView textViewChildName,t1,optiona,optionb,optionc,optiond,titlea,titleb,titlec,titled;
     LinearLayout l1,l2,l3,l4;
     DbAutoSave dbAutoSave;
@@ -59,6 +59,16 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         setEvents();
         idd=dbAutoSave.getDataOfSingleClient(query);
         dummystuid=sp.getString("userid","");
+
+        getoptiona=optiona.getText().toString();
+        getoptionb=optionb.getText().toString();
+        getoptionc=optionc.getText().toString();
+        getoptiond=optionc.getText().toString();
+
+        System.out.println("abcc"+getoptiona+"  "+getoptionb+"   "+getoptionc+"   "+getoptiond);
+
+
+
         return view;
     }
 

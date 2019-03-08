@@ -202,7 +202,9 @@ public class TestQuestion extends HiddenCameraActivity {
 
                 snack.show();
 
-        final Handler handler = new Handler();
+
+
+        /*final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -212,7 +214,7 @@ public class TestQuestion extends HiddenCameraActivity {
             }
         },
                 //10000);
-                10000*12);
+                10000*12);*/
 
         final Handler handler2 = new Handler();
         handler2.postDelayed(new Runnable() {
@@ -316,7 +318,6 @@ public class TestQuestion extends HiddenCameraActivity {
     private void getIDs() {
         fragmentParent = (FragmentParent) this.getSupportFragmentManager().findFragmentById(R.id.fragmentParent);
         View vv=findViewById(R.id.count_down_strip);
-        //reviewlaterr=vv.findViewById(R.id.mark);
         textView=vv.findViewById(R.id.timer);
         finalSubmitbutton=vv.findViewById(R.id.finish);
         drawer_Right=findViewById(R.id.drawer_right);
@@ -325,7 +326,6 @@ public class TestQuestion extends HiddenCameraActivity {
         len=findViewById(R.id.len1);
         mdrawerLayout=findViewById(R.id.activity_main1);
         mdrawerLayout.addDrawerListener(mDrawerToggle);
-
     }
 
     @Override
@@ -439,19 +439,7 @@ public class TestQuestion extends HiddenCameraActivity {
     }
 
     private void updateButtons() {
-//        if (TimerRunning) {
-//        } else {
-//
-//            if (TimeLeftInMillis < 1000) {
-//            } else {
-//            }
-//
-//            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
-//
-//            } else {
-//
-//            }
-//        }
+
     }
 
     @Override

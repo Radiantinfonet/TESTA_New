@@ -144,7 +144,8 @@ public class MainActivity extends AppCompatActivity{
         awesomeValidation.addValidation(MainActivity.this, R.id.input_mobile_no,"^[0-9]{10}$", R.string.err_msg_formobile);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_username,"[a-zA-Z\\s]+", R.string.err_msg_for_namein_bank);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
-       /* sector.setEnabled(false);
+        sector.setEnabled(false);
+       /*
         employer.setEnabled(false);
         input_jobrole.setEnabled(false);
         input_empid.setEnabled(false);
@@ -171,12 +172,17 @@ public class MainActivity extends AppCompatActivity{
 
 
         input_submit.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-
+                  Toast.makeText(getApplicationContext(),"employer is"+employeridname,Toast.LENGTH_LONG).show();
                  // try{
                  if(yearobirth.equals("Year")){
                     Toast.makeText(getApplicationContext(),"Year must be selected",Toast.LENGTH_LONG).show();
+                }
+               else if (employeridname.equals("4")){
+                     Toast.makeText(getApplicationContext(),"Employee ID/Seller ID must be filled",Toast.LENGTH_LONG).show();
+                    awesomeValidation.addValidation(MainActivity.this, R.id.input_empid,"^[a-zA-Z0-9]{5,14}$", R.string.err_msg_for_ifsc);
                 }
                else if (gender.equals("Select Gender")){
                     Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
@@ -184,7 +190,6 @@ public class MainActivity extends AppCompatActivity{
                  else if (gender.equals("Select categroy")){
                      Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
                  }
-
                  else if (state1.equals("Select the State")){
                     Toast.makeText(getApplicationContext(),"State must be selected",Toast.LENGTH_LONG).show();
                 }
