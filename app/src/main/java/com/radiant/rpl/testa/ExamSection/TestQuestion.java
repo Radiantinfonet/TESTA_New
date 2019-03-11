@@ -86,6 +86,7 @@ public class TestQuestion extends HiddenCameraActivity {
     Context con=this;
     CustomAdapter cl1,cl2;
     String  encodedd;
+
     private NotificationHelper mNotificationHelper;
     private android.app.AlertDialog progressDialog;
 

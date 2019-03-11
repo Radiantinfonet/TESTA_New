@@ -122,8 +122,6 @@ public class Testviva extends HiddenCameraActivity {
     SetterGetter setterGetter;
     String value,batchvalue,studentid;
     String jsonInString;
-    long timee;
-    int arraysize;
 
     SharedPreferences sp;
     String[] title = {
@@ -347,18 +345,11 @@ public class Testviva extends HiddenCameraActivity {
        // Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
-        TimeLeftInMillis = prefs.getLong("millisLeft",timee);
-        TimerRunning = prefs.getBoolean("timerRunning", false);
+        TimerRunning = prefs.getBoolean("timerRunning",false);
 
         updateCountDownText();
         updateButtons();
         resetTimer();
-
-        if(!alreadyExecuted1) {
-            if (value!=null){
-                Questionlist();
-            }
-        }
 
         if (TimerRunning) {
             EndTime = prefs.getLong("endTime", 0);
@@ -373,6 +364,15 @@ public class Testviva extends HiddenCameraActivity {
                 startTimer();
             }
         }
+
+        if(!alreadyExecuted1) {
+            if (value!=null){
+                Questionlist();
+            }
+        }
+        startTimer();
+
+
 
         finalSubmitbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -397,39 +397,16 @@ public class Testviva extends HiddenCameraActivity {
         });
 
 
-        startTimer();
 
 
-    }
-
-
-    public void showDialog1() {
-
-
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setMessage("Your time is over.Press Yes to Schedule the test for the Final submit.")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getalldata();
-                        sessionManager.setPreferences(getApplicationContext(),"vipin","0");
-                        if (jsonInString!=null){
-                            Questionlist1();
-                        }
-                    }
-                }).create();
-
-
-        alertDialog.show();
 
     }
+
 
 
 
     private void startTimer() {
         EndTime = System.currentTimeMillis() + TimeLeftInMillis;
-
         CountDownTimer = new CountDownTimer(TimeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -439,7 +416,6 @@ public class Testviva extends HiddenCameraActivity {
 
             @Override
             public void onFinish() {
-
                 TimerRunning = false;
                 updateButtons();
                 resetTimer();
@@ -511,8 +487,26 @@ public class Testviva extends HiddenCameraActivity {
 
     }
 
+    public void showDialog1() {
 
 
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage("Your time is over.Press Yes to Schedule the test for the Final submit.")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getalldata();
+                        sessionManager.setPreferences(getApplicationContext(), "vipin", "0");
+                        if (jsonInString != null) {
+                            Questionlist1();
+                        }
+                    }
+                }).create();
+
+
+        alertDialog.show();
+    }
 
     public void getalldata(){
         cursor=dbAutoSave.getData(studentid);
@@ -615,9 +609,7 @@ public class Testviva extends HiddenCameraActivity {
                     if (status.equals("1")){
                         alreadyExecuted1=true;
                         JSONArray jsonArray=jobj.getJSONArray("practical_questions");
-                        arraysize=jsonArray.length();
-                        timee=arraysize*60*1000;
-                        System.out.println("bsdfsdf"+timee+"   "+START_TIME_IN_MILLIS);
+
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             if (qnooo.size()<=jsonArray.length()-1){qnooo.add(i+1);}
