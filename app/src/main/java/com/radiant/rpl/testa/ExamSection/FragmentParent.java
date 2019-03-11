@@ -35,7 +35,6 @@ public class FragmentParent extends Fragment {
         dbAutoSave=new DbAutoSave(getContext());
         getIDs(view);
 
-
         return view;
     }
 

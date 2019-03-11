@@ -40,6 +40,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
     boolean statusvalue;
     HashMap<String,String> hm=new HashMap<>();
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -262,5 +263,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 default:
                 break;
         }
+
+
     }
 }
