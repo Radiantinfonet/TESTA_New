@@ -60,7 +60,7 @@ public class Reverify extends AppCompatActivity {
         statee=ii.getStringExtra("state");
         districtt=ii.getStringExtra("district");
         educationn=ii.getStringExtra("education");
-        employedd=ii.getStringExtra("employed");
+        //employedd=ii.getStringExtra("employed");
         employerr=ii.getStringExtra("employer");
         sectorr=ii.getStringExtra("sector");
         addline11=ii.getStringExtra("addline1");
@@ -169,12 +169,16 @@ public class Reverify extends AppCompatActivity {
                 map.put("mobile",mobbb);
                 map.put("aadhar",aadhaar);
                 map.put("bankac",bankacccc);
-                map.put("dob",yearobirth+"-"+monthobirth+"-"+dateobirthh);
+                if (monthobirth!=null || dateobirthh!=null){
+                map.put("dob",yearobirth+"-"+monthobirth+"-"+dateobirthh);}
+                else{
+                    map.put("dob",yearobirth);
+                }
                 map.put("gender",gender);
                 map.put("qualification",educationn);
-                map.put("employment",employedd);
                 map.put("address1",addline11);
-                map.put("address2",addline22);
+                if (addline22!=null){
+                map.put("address2",addline22);}
                 map.put("state_id",statee);
                 map.put("district_id",districtt);
                 map.put("pincode",pincode1);
@@ -186,11 +190,15 @@ public class Reverify extends AppCompatActivity {
                 map.put("name_in_bank",nameasinbank1);
                 map.put("ifsc",iffccode1);
                 map.put("jobrole_id",jobrolee);
-                map.put("employee_id",empidd);
+                if (empidd!=null){
+                map.put("employee_id",empidd);}
                 map.put("language",language);
-                map.put("StoreLocation",locationn);
-                map.put("category",category1);
-                map.put("email",Email1);
+                if (locationn!=null){
+                map.put("StoreLocation",locationn);}
+                if (category1!=null){
+                map.put("category",category1);}
+                if (Email1!=null){
+                map.put("email",Email1);}
 
 
                 if (aadharpic!=null){

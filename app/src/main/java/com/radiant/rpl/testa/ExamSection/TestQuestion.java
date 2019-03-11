@@ -324,15 +324,18 @@ public class TestQuestion extends HiddenCameraActivity {
             }
         }
 
+        startTimer();
+
         finalSubmitbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog();
                 resetTimer();
+                TimerRunning=false;
             }
         });
 
-        startTimer();
+
 
 
         if(!alreadyExecuted) {

@@ -365,12 +365,14 @@ public class Testviva extends HiddenCameraActivity {
             }
         }
 
+        startTimer();
+
         if(!alreadyExecuted1) {
             if (value!=null){
                 Questionlist();
             }
         }
-        startTimer();
+
 
 
 
@@ -392,7 +394,7 @@ public class Testviva extends HiddenCameraActivity {
 
 
                 alertDialog.show();
-                resetTimer();
+              TimerRunning=false;
             }
         });
 
@@ -440,7 +442,7 @@ public class Testviva extends HiddenCameraActivity {
     private void resetTimer() {
         TimeLeftInMillis = START_TIME_IN_MILLIS;
         updateCountDownText();
-        TimerRunning = false;
+      //  TimerRunning = false;
         updateButtons();
     }
 

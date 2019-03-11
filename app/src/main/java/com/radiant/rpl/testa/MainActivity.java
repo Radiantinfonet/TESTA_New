@@ -54,6 +54,8 @@ import java.util.Map;
 import dmax.dialog.SpotsDialog;
 import radiant.rpl.radiantrpl.R;
 
+import static android.view.View.GONE;
+
 public class MainActivity extends AppCompatActivity{
 
     Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,
@@ -176,18 +178,14 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                 // try{
-                 if(yearobirth.equals("Year")){
+               if(yearobirth.equals("Year")){
                     Toast.makeText(getApplicationContext(),"Year must be selected",Toast.LENGTH_LONG).show();
                 }
-               else if (employeridname.equals("4")){
-                     Toast.makeText(getApplicationContext(),"Employee ID/Seller ID must be filled",Toast.LENGTH_LONG).show();
-                    awesomeValidation.addValidation(MainActivity.this, R.id.input_empid,"^[a-zA-Z0-9]{5,14}$", R.string.err_msg_for_ifsc);
-                }
+
                else if (gender.equals("Select Gender")){
                     Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
                 }
-                 else if (gender.equals("Select categroy")){
+                 else if (categoryy.equals("Select categroy")){
                      Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
                  }
                  else if (state1.equals("Select the State")){
@@ -210,10 +208,10 @@ public class MainActivity extends AppCompatActivity{
 
                 }
 
-
-                else if(awesomeValidation.validate() && !(gender.equals("Select Gender"))&& !state1.equals("Select the State") && !yearobirth.equals("Year")
-                         && !district1.equals("Select the District") && !eduction1.equals("Select Education")
-                         && !employer1.equals("Select the Employer") && !(bankname1.equals("Select the Bank")) && checkBox.isChecked() && encodedphoto!=null) {
+                else if(awesomeValidation.validate() && !(gender.equals("Select Gender"))&& !state1.equals("Select the State")
+                       && !yearobirth.equals("Year") && !district1.equals("Select the District") && !eduction1.equals("Select Education")
+                         && !employer1.equals("Select the Employer") && !(bankname1.equals("Select the Bank"))
+                       && checkBox.isChecked() && encodedphoto!=null) {
 
 
                     Intent ii = new Intent(MainActivity.this, Reverify.class);
@@ -230,7 +228,7 @@ public class MainActivity extends AppCompatActivity{
                     ii.putExtra("state", stateiddd);
                     ii.putExtra("district", districtiddd);
                     ii.putExtra("education", eduction1);
-                    ii.putExtra("employed", employment1);
+                    //ii.putExtra("employed", employment1);
                     ii.putExtra("employer", employeridname);
                     ii.putExtra("sector", sectoridd);
                     ii.putExtra("addline1", input_address1.getText().toString());
@@ -446,6 +444,9 @@ public class MainActivity extends AppCompatActivity{
                 if(position > 0) {
                     employer1 = employer.getSelectedItem().toString();
                     employeridname = employdetail.get(employer1);
+                    if (employeridname.equals("4")) {
+                        awesomeValidation.addValidation(MainActivity.this, R.id.input_empid, "^[a-zA-Z0-9]{5,14}$", R.string.err_msg_for_ifsc);
+                    }
                     Sectorlist(employeridname);
                     languageSelect(employeridname);
                     getJobroleList(employeridname);
@@ -453,6 +454,8 @@ public class MainActivity extends AppCompatActivity{
                 } else{
                     employer1=employer.getSelectedItem().toString();
                 }
+
+
             }
 
             @Override
@@ -529,10 +532,10 @@ public class MainActivity extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id)
             {
-                if(position > 0) {
+               // if(position > 0) {
                     categoryy = category.getSelectedItem().toString();
                     //jobroleeiddd=Jobrolelist.get(jobrole1);
-                }
+               // }
             }
 
             @Override
