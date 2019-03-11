@@ -86,8 +86,6 @@ public class TestQuestion extends HiddenCameraActivity {
     Context con=this;
     CustomAdapter cl1,cl2;
     String  encodedd;
-    String name[];
-    String j;
     private NotificationHelper mNotificationHelper;
     private android.app.AlertDialog progressDialog;
 
@@ -104,10 +102,8 @@ public class TestQuestion extends HiddenCameraActivity {
     ArrayList<String> questioniddd;
     ArrayList<String> answeredoptionn;
     private static final int REQ_CODE_CAMERA_PERMISSION = 1253;
-    ArrayList<String> statusoption;
     SharedPreferences sp,sp1;
-    ProgressDialog pdd;
-    String aaa,bbb,ccc;
+    String aaa,bbb;
     DbAutoSave dbAutoSave;
     SQLiteDatabase mDatabase;
     ArrayList<SetterGetter> employeeList;
@@ -204,18 +200,6 @@ public class TestQuestion extends HiddenCameraActivity {
 
 
 
-        /*final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finalSubmitbutton.setVisibility(View.VISIBLE);
-
-                //Do something after 100ms
-            }
-        },
-                //10000);
-                10000*12);*/
-
         final Handler handler2 = new Handler();
         handler2.postDelayed(new Runnable() {
                                 @Override
@@ -273,40 +257,23 @@ public class TestQuestion extends HiddenCameraActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
                     REQ_CODE_CAMERA_PERMISSION);
         }
-     /*   if (Build.VERSION.SDK_INT<Build.VERSION_CODES.P) {
-            Timer t = new Timer();
-//Set the schedule function and rate
-            t.scheduleAtFixedRate(new TimerTask() {
 
-                                      @Override
-                                      public void run() {
+        FragmentParent.aa(new ShowButton() {
+            @Override
+            public void getData(int a) {
+                if (a==1){
+                    finalSubmitbutton.setVisibility(View.VISIBLE);
+                }
 
-                                          //Clling Looper to click multiple photos
-                                          new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                              @Override
-                                              public void run() {
-                                                  takePicture();
-                                              }
-                                          });
-
-
-                                          //Called each time when 1000 milliseconds (1 second) (the period parameter)
-                                      }
-
-                                  },
-//Set how long before to start calling the TimerTask (in milliseconds)
-                    0,
-//Set the amount of time between each execution (in milliseconds)
-                    30000 * 2);
-        } else{
-            System.out.println("Proctoring is supported below this OS.");
-        }*/
-
+            }
+        });
 
 
         mdrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
     }
+
+
 
     @Override
     protected void onRestart() {
@@ -334,9 +301,8 @@ public class TestQuestion extends HiddenCameraActivity {
 //Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
 
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-
         TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
-        TimeLeftInMillis = prefs.getLong("millisLeft", timee);
+        TimeLeftInMillis = prefs.getLong("millisLeft",timee);
         TimerRunning = prefs.getBoolean("timerRunning", false);
 
         updateCountDownText();

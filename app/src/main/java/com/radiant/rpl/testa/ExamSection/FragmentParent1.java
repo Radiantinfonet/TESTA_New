@@ -20,6 +20,7 @@ public class FragmentParent1 extends Fragment {
     DbAutoSave dbAutoSave;
     String queidd,queiddd;
     int pageno;
+    private static ShowButton showbuttonn;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +48,16 @@ public class FragmentParent1 extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 pageno=viewPager.getCurrentItem();
+                if (pageno == adapter.getCount()-1){
+                    //ttv.setVisibility(View.VISIBLE);
+                    showbuttonn.getData(1);
+                    System.out.println("fragment on last page");
 
+                }else{
+                    showbuttonn.getData(0);
+                    System.out.println("not true");
+
+                }
             }
 
             @Override
@@ -55,6 +65,10 @@ public class FragmentParent1 extends Fragment {
             }
         });
 
+    }
+
+    public static void aa(ShowButton ss){
+        showbuttonn=ss;
     }
 
     @Override

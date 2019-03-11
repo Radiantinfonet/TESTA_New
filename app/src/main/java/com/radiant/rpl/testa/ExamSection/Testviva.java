@@ -122,7 +122,10 @@ public class Testviva extends HiddenCameraActivity {
     SetterGetter setterGetter;
     String value,batchvalue,studentid;
     String jsonInString;
-SharedPreferences sp;
+    long timee;
+    int arraysize;
+
+    SharedPreferences sp;
     String[] title = {
             "New Delhi",
             "Mumbai",
@@ -200,27 +203,11 @@ SharedPreferences sp;
             System.out.println("ffff"+value);
         }
 
-
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    finalSubmitbutton.setVisibility(View.VISIBLE);
-
-                                    //Do something after 100ms
-                                }
-                            },
-                //10000);
-                10000*12);
-
-
         final Handler handler2 = new Handler();
         handler2.postDelayed(new Runnable() {
                                  @Override
                                  public void run() {
                                      takePicture();
-                                     //Do something after 100ms
                                  }
                              },
                 //10000);
@@ -273,34 +260,16 @@ SharedPreferences sp;
                     REQ_CODE_CAMERA_PERMISSION);
         }
 
-      /*  if (Build.VERSION.SDK_INT<Build.VERSION_CODES.P) {
-            Timer t = new Timer();
-//Set the schedule function and rate
-            t.scheduleAtFixedRate(new TimerTask() {
 
-                                      @Override
-                                      public void run() {
+        FragmentParent1.aa(new ShowButton() {
+            @Override
+            public void getData(int a) {
+                if (a==1){
+                    finalSubmitbutton.setVisibility(View.VISIBLE);
+                }
 
-                                          //Clling Looper to click multiple photos
-                                          new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                              @Override
-                                              public void run() {
-                                                  takePicture();
-                                              }
-                                          });
-
-
-                                          //Called each time when 1000 milliseconds (1 second) (the period parameter)
-                                      }
-
-                                  },
-//Set how long before to start calling the TimerTask (in milliseconds)
-                    0,
-//Set the amount of time between each execution (in milliseconds)
-                    30000 * 2);
-        } else{
-            System.out.println("Proctoring is now supported below this OS.");
-        }*/
+            }
+        });
 
         mdrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
@@ -377,9 +346,8 @@ SharedPreferences sp;
         super.onStart();
        // Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-
         TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
-        TimerRunning = prefs.getBoolean("timerRunning", false);
+        TimeLeftInMillis = prefs.getLong("millisLeft",timee);
         TimerRunning = prefs.getBoolean("timerRunning", false);
 
         updateCountDownText();
@@ -519,22 +487,6 @@ SharedPreferences sp;
     }
 
     private void updateButtons() {}
-//        if (TimerRunning) {
-//
-//        } else {
-//
-//
-//            if (TimeLeftInMillis < 1000) {
-//            } else {
-//            }
-//
-//            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
-//
-//            } else {
-//
-//            }
-//        }
-//    }
 
     @Override
     protected void onStop() {
@@ -601,14 +553,12 @@ SharedPreferences sp;
     @Override
     public void onResume() {
         super.onResume();
-        //Toast.makeText(getApplicationContext(),"on Resume running",Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-       // Toast.makeText(getApplicationContext(),"on Restart running",Toast.LENGTH_LONG).show();
     }
 
     public void getStatusdata(){
@@ -665,6 +615,9 @@ SharedPreferences sp;
                     if (status.equals("1")){
                         alreadyExecuted1=true;
                         JSONArray jsonArray=jobj.getJSONArray("practical_questions");
+                        arraysize=jsonArray.length();
+                        timee=arraysize*60*1000;
+                        System.out.println("bsdfsdf"+timee+"   "+START_TIME_IN_MILLIS);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             if (qnooo.size()<=jsonArray.length()-1){qnooo.add(i+1);}

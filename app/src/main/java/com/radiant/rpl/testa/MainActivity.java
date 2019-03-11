@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View v) {
-                  Toast.makeText(getApplicationContext(),"employer is"+employeridname,Toast.LENGTH_LONG).show();
+
                  // try{
                  if(yearobirth.equals("Year")){
                     Toast.makeText(getApplicationContext(),"Year must be selected",Toast.LENGTH_LONG).show();
