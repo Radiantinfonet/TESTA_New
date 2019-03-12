@@ -342,10 +342,10 @@ public class Testviva extends HiddenCameraActivity {
     @Override
     protected void onStart() {
         super.onStart();
-       // Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
-        TimerRunning = prefs.getBoolean("timerRunning",false);
+        TimerRunning = prefs.getBoolean("timerRunning", false);
 
         updateCountDownText();
         updateButtons();
@@ -367,13 +367,11 @@ public class Testviva extends HiddenCameraActivity {
 
         startTimer();
 
-        if(!alreadyExecuted1) {
-            if (value!=null){
+        if (!alreadyExecuted1) {
+            if (value != null) {
                 Questionlist();
             }
         }
-
-
 
 
         finalSubmitbutton.setOnClickListener(new View.OnClickListener() {
@@ -385,22 +383,18 @@ public class Testviva extends HiddenCameraActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 getalldata();
-                                if (jsonInString!=null){
+                                if (jsonInString != null) {
                                     Questionlist1();
                                 }
-                                sessionManager.setPreferences(getApplicationContext(),"vipin","0");
+                                sessionManager.setPreferences(getApplicationContext(), "vipin", "0");
                             }
                         }).create();
 
 
                 alertDialog.show();
-              TimerRunning=false;
+                TimerRunning = false;
             }
         });
-
-
-
-
 
     }
 

@@ -331,7 +331,7 @@ public class TestQuestion extends HiddenCameraActivity {
             public void onClick(View v) {
                 showDialog();
                 resetTimer();
-                TimerRunning=false;
+
             }
         });
 
@@ -361,7 +361,6 @@ public class TestQuestion extends HiddenCameraActivity {
 
             @Override
             public void onFinish() {
-
                 TimerRunning = false;
                 updateButtons();
                 resetTimer();
@@ -386,6 +385,7 @@ public class TestQuestion extends HiddenCameraActivity {
 
     private void resetTimer() {
         TimeLeftInMillis = START_TIME_IN_MILLIS;
+        TimerRunning=false;
         updateCountDownText();
         updateButtons();
     }
