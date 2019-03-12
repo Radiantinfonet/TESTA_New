@@ -15,4 +15,5 @@
     <color name="purple">#EE82EE</color>
     <color name="white">#ffffffff</color>
     <color name="darkBlueColor">#ff009ee5</color>
+    <color name="darkblack">#000000</color>
 </resources>

@@ -53,6 +53,8 @@ public class SignInAct extends AppCompatActivity {
     Button loginsubmit;
     TextInputEditText username,passowrd;
     String uname,pass;
+    String geturl;
+    String gettestingurl;
     SessionManager sessionManager;
     SharedPreferences sharedpreferences;
     final String mypreference = "mypref";
@@ -66,7 +68,8 @@ public class SignInAct extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_in);
-
+        geturl= Start_Registration.getURL();
+        gettestingurl=Start_Registration.getTestingURL();
         progressDialog = new SpotsDialog(SignInAct.this, R.style.Custom);
         sessionManager = new SessionManager();
         sharedpreferences=getSharedPreferences(mypreference,Context.MODE_PRIVATE);
@@ -164,28 +167,56 @@ public class SignInAct extends AppCompatActivity {
                     exam_status=jobj.getString("exam_status");
 
                     if (status.equals("1")) {
-                    if (exam_status.equals("Not Attempted")){
+                    if (exam_status.equals("Not Attempted")) {
                         JSONObject jsonObject = jobj.getJSONObject("student_details");
                         for (int i = 0; i < jsonObject.length(); i++) {
                             name = jsonObject.getString("name");
                             batchid = jsonObject.getString("batch_id");
-                            mobile=jsonObject.getString("mobile");
-                            address=jsonObject.getString("address");
-                            userid=jsonObject.getString("user_name");
-                            rascibatchid=jsonObject.getString("batchid");
+                            mobile = jsonObject.getString("mobile");
+                            address = jsonObject.getString("address");
+                            userid = jsonObject.getString("user_name");
+                            rascibatchid = jsonObject.getString("batchid");
                             sessionManager.setPreferences(getApplicationContext(), "status", "1");
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString("Name", name);
                             editor.putString("address", address);
                             editor.putString("batchid", batchid);
-                            editor.putString("assessorid",mobile);
-                            editor.putString("userid",userid);
+                            editor.putString("assessorid", mobile);
+                            editor.putString("userid", userid);
                             editor.apply();
-                            Intent ii=new Intent(SignInAct.this, Welcome_page.class);
+                               if(userid.equals("aman")){
+                                Intent in=new Intent(SignInAct.this,StudenAtten.class);
+                                startActivity(in);
+                            }
+
+                            Intent ii = new Intent(SignInAct.this, Welcome_page.class);
                             startActivity(ii);
                         }
-
                     }
+                    else if (exam_status.equals("Attempted")) {
+                        JSONObject jsonObject = jobj.getJSONObject("student_details");
+                        for (int i = 0; i < jsonObject.length(); i++) {
+                            name = jsonObject.getString("name");
+                            batchid = jsonObject.getString("batch_id");
+                            mobile = jsonObject.getString("mobile");
+                            address = jsonObject.getString("address");
+                            userid = jsonObject.getString("user_name");
+                            rascibatchid = jsonObject.getString("batchid");
+                            sessionManager.setPreferences(getApplicationContext(), "status", "1");
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString("Name", name);
+                            editor.putString("address", address);
+                            editor.putString("batchid", batchid);
+                            editor.putString("assessorid", mobile);
+                            editor.putString("userid", userid);
+                            editor.apply();
+                            if (userid.equals("aman")) {
+                                Intent in = new Intent(SignInAct.this, Welcome_page.class);
+                                startActivity(in);
+                            }
+                        }
+                    }
+
                     else{
                         AlertDialog alertDialog = new AlertDialog.Builder(SignInAct.this)
                                 .setMessage("You have already attempted the exam.")

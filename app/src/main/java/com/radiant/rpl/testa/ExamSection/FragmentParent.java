@@ -24,8 +24,8 @@ public class FragmentParent extends Fragment {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
     DbAutoSave dbAutoSave;
-    int pageno;
-    TextView bbb;
+    int pageno,pagenoo;
+    TextView prev,skip,next;
     private static ShowButton showbuttonn;
 
     @Nullable
@@ -40,8 +40,35 @@ public class FragmentParent extends Fragment {
 
     private void getIDs(View view) {
         viewPager = (ViewPager) view.findViewById(R.id.my_viewpager);
+        View vv=view.findViewById(R.id.count_down_strip_footer);
+        prev=vv.findViewById(R.id.prev);
+        next=vv.findViewById(R.id.next);
+        skip=vv.findViewById(R.id.skip);
         adapter = new ViewPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapter);
+        pagenoo=viewPager.getCurrentItem();
+        prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(getItem(-1), true);
+            }
+        });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(getItem(+1), true);
+            }
+        });
+
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(getItem(+1), true);
+            }
+        });
+
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             Boolean first = true;
             @Override
@@ -74,6 +101,10 @@ public class FragmentParent extends Fragment {
             }
         });
 
+    }
+
+    private int getItem(int i) {
+        return viewPager.getCurrentItem() + i;
     }
 
     public static void aa(ShowButton ss){

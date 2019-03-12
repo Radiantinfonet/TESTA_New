@@ -211,6 +211,7 @@
             android:layout_marginTop="?attr/actionBarSize"
             />
 
+
             <LinearLayout android:orientation="horizontal" android:background="@drawable/bg_card_shadow" android:layout_width="fill_parent"
                 android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginTop="4.0dip"
                 android:layout_marginRight="8.0dip" android:minHeight="52.0dip"
@@ -248,7 +249,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="false"
             android:layout_alignParentRight="true"
-            android:layout_alignParentLeft="true" />
+            android:layout_alignParentLeft="true"
+             />
         </RelativeLayout>
 
 

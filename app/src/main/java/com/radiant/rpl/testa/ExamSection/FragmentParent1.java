@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
 
@@ -19,7 +20,9 @@ public class FragmentParent1 extends Fragment {
     private ViewPagerAdapter adapter;
     DbAutoSave dbAutoSave;
     String queidd,queiddd;
-    int pageno;
+    int pageno,pagenoo;
+    TextView prev,skip,next;
+
     private static ShowButton showbuttonn;
     @Nullable
     @Override
@@ -33,8 +36,34 @@ public class FragmentParent1 extends Fragment {
 
     private void getIDs(View view) {
         viewPager = (ViewPager) view.findViewById(R.id.my_viewpager1);
+        View vv=view.findViewById(R.id.count_down_strip_footer1);
+        prev=vv.findViewById(R.id.prev);
+        next=vv.findViewById(R.id.next);
+        skip=vv.findViewById(R.id.skip);
         adapter = new ViewPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapter);
+
+        pagenoo=viewPager.getCurrentItem();
+        prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(getItem(-1), true);
+            }
+        });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(getItem(+1), true);
+            }
+        });
+
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(getItem(+1), true);
+            }
+        });
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             Boolean first = true;
@@ -69,6 +98,10 @@ public class FragmentParent1 extends Fragment {
 
     public static void aa(ShowButton ss){
         showbuttonn=ss;
+    }
+
+    private int getItem(int i) {
+        return viewPager.getCurrentItem() + i;
     }
 
     @Override

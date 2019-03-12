@@ -192,12 +192,12 @@ public class TestQuestion extends HiddenCameraActivity {
 
         }
         //Toast.makeText(getApplicationContext(),"on create running",Toast.LENGTH_LONG).show();
-        Snackbar snack = Snackbar.make(parentLayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000);
+        /*Snackbar snack = Snackbar.make(parentLayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000);
         View view = snack.getView();
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
         tv.setTextColor(Color.RED);
 
-                snack.show();
+                snack.show();*/
 
 
 
