@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity{
     Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,
             input_layout_prefferedlanguage,category;
     EditText input_name,input_last_name,input_mobile_no,input_address1
-            ,input_address2,input_pincode,input_aadhar,input_bank_ac,input_ifsc_code,input_bank_username,input_empid,input_loc,Email;
+            ,input_address2,input_pincode,input_aadhar,input_pancard,input_bank_ac,input_ifsc_code,input_bank_username,input_empid,input_loc,Email;
     ProgressDialog pd;
     String[] banks,states,districts,employers,jobrole;
     List<String> bankslist,Statelist,districtlist,sectorlist,employerlist,jobrolelist,preflang;
@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity{
         input_empid=findViewById(R.id.input_empid);
         input_loc=findViewById(R.id.input_loc);
         input_aadhar=findViewById(R.id.input_aadhar);
+        input_pancard = findViewById(R.id.input_pancard);
         input_bank_ac=findViewById(R.id.input_bank_ac);
         input_ifsc_code=findViewById(R.id.input_ifsc_code);
         input_bank_username = findViewById(R.id.input_bank_username);
@@ -142,10 +143,10 @@ public class MainActivity extends AppCompatActivity{
         awesomeValidation.addValidation(MainActivity.this, R.id.input_pincode,"^[0-9]{6}$", R.string.err_msg_pincode);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_ac,"^[0-9]{6,18}$", R.string.err_msg_for_acno);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_ifsc_code,"^[a-zA-Z0-9]{5,14}$", R.string.err_msg_for_ifsc);
-        awesomeValidation.addValidation(MainActivity.this, R.id.input_aadhar,"^[0-9]{12}$", R.string.err_msg_foraadhar);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_mobile_no,"^[0-9]{10}$", R.string.err_msg_formobile);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_username,"[a-zA-Z\\s]+", R.string.err_msg_for_namein_bank);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
+       // awesomeValidation.addValidation(MainActivity.this, R.id.input_aadhar,"^[0-9]{12}$", R.string.err_msg_foraadhar);
         sector.setEnabled(false);
        /*
         employer.setEnabled(false);
@@ -186,7 +187,7 @@ public class MainActivity extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
                 }
                  else if (categoryy.equals("Select categroy")){
-                     Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
+                     Toast.makeText(getApplicationContext(),"categroy must be selected",Toast.LENGTH_LONG).show();
                  }
                  else if (state1.equals("Select the State")){
                     Toast.makeText(getApplicationContext(),"State must be selected",Toast.LENGTH_LONG).show();
@@ -207,10 +208,106 @@ public class MainActivity extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(),"Bank  name must be selected",Toast.LENGTH_LONG).show();
 
                 }
+                else  if (employeridname.equals("4") && (input_empid.getText().toString().matches(""))){
+
+                       Toast.makeText(MainActivity.this, "Employee ID/Seller ID Cannot be empty", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+                else if ((stateiddd.equals("2") && (input_pancard.getText().toString().matches(""))) ||
+                       (stateiddd.equals("3") && (input_pancard.getText().toString().matches(""))) ||
+                       (stateiddd.equals("16") && (input_pancard.getText().toString().matches("")))  ||
+                       (stateiddd.equals("17") && (input_pancard.getText().toString().matches(""))) ||
+                       (stateiddd.equals("18") && (input_pancard.getText().toString().matches(""))) ||
+                       (stateiddd.equals("23") && (input_pancard.getText().toString().matches("")))||
+                       (stateiddd.equals("19") && (input_pancard.getText().toString().matches(""))) ||
+                       (stateiddd.equals("26") && (input_pancard.getText().toString().matches("")))||
+                       (stateiddd.equals("10") && (input_pancard.getText().toString().matches(""))) )
+
+                   {
+
+                    Toast.makeText(MainActivity.this, "PAN Card cannot be empty ", Toast.LENGTH_SHORT).show();
+                  }
+
+               else if ((stateiddd.equals("1") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("4") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("5") && (input_aadhar.getText().toString().matches("")))  ||
+                       (stateiddd.equals("6") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("7") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("8") && (input_aadhar.getText().toString().matches("")))||
+                       (stateiddd.equals("9") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("11") && (input_aadhar.getText().toString().matches("")))||
+                       (stateiddd.equals("12") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("13") && (input_aadhar.getText().toString().matches("")))  ||
+                       (stateiddd.equals("14") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("15") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("19") && (input_aadhar.getText().toString().matches("")))||
+                       (stateiddd.equals("20") && (input_aadhar.getText().toString().matches("")))||
+                       (stateiddd.equals("21") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("22") && (input_aadhar.getText().toString().matches("")))  ||
+                       (stateiddd.equals("24") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("25") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("27") && (input_aadhar.getText().toString().matches("")))||
+                       (stateiddd.equals("28") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("30") && (input_aadhar.getText().toString().matches("")))  ||
+                       (stateiddd.equals("31") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("32") && (input_aadhar.getText().toString().matches(""))) ||
+                       (stateiddd.equals("33") && (input_aadhar.getText().toString().matches("")))  ||
+                       (stateiddd.equals("34") && (input_aadhar.getText().toString().matches(""))))
+
+
+
+
+
+               {
+
+                   Toast.makeText(MainActivity.this, "PAN Card  be empty  but not aadhar", Toast.LENGTH_SHORT).show();
+               }
+
+
+
+
 
                 else if(awesomeValidation.validate() && !(gender.equals("Select Gender"))&& !state1.equals("Select the State")
                        && !yearobirth.equals("Year") && !district1.equals("Select the District") && !eduction1.equals("Select Education")
-                         && !employer1.equals("Select the Employer") && !(bankname1.equals("Select the Bank"))
+                         && !employer1.equals("Select the Employer") && !(bankname1.equals("Select the Bank")) && !(employeridname.equals("4") &&
+                       (input_empid.getText().toString().matches("")))
+                       && !(stateiddd.equals("2") && (input_pancard.getText().toString().matches("")))
+                       && !(stateiddd.equals("3") && (input_pancard.getText().toString().matches("")))
+                       && !(stateiddd.equals("16") && (input_pancard.getText().toString().matches("")))
+                       && !(stateiddd.equals("17") && (input_pancard.getText().toString().matches("")))
+                       && !(stateiddd.equals("18") && (input_pancard.getText().toString().matches("")))
+                       && !(stateiddd.equals("23") && (input_pancard.getText().toString().matches("")))
+                       && !(stateiddd.equals("19") && (input_pancard.getText().toString().matches("")))
+                       && !(stateiddd.equals("26") && (input_pancard.getText().toString().matches("")))
+                       && !(stateiddd.equals("10") && (input_pancard.getText().toString().matches("")))
+                       && !(stateiddd.equals("4") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("5") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("6") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("7") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("8") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("9") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("11") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("12") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("13") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("14") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("15") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("19") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("20") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("21") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("22") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("24") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("25") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("27") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("28") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("29") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("30") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("31") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("32") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("33") && (input_aadhar.getText().toString().matches("")))
+                       && !(stateiddd.equals("34") && (input_aadhar.getText().toString().matches("")))
+
                        && checkBox.isChecked() && encodedphoto!=null) {
 
 
@@ -219,6 +316,7 @@ public class MainActivity extends AppCompatActivity{
                     ii.putExtra("last_namee", input_last_name.getText().toString());
                     ii.putExtra("mobile", input_mobile_no.getText().toString());
                     ii.putExtra("aadhar", input_aadhar.getText().toString());
+                    ii.putExtra("pancard", input_pancard.getText().toString());
                     ii.putExtra("bankaccount", input_bank_ac.getText().toString());
                     ii.putExtra("doy", yearobirth);
                     ii.putExtra("dom",monthobirth);
@@ -249,6 +347,7 @@ public class MainActivity extends AppCompatActivity{
 
                 }else
                 {
+
                     Toast.makeText(getApplicationContext(), "The form is not filled correctly.Please verify it and submit.", Toast.LENGTH_LONG).show();
                 }
 
@@ -265,7 +364,6 @@ public class MainActivity extends AppCompatActivity{
                     requestPermissions(new String[]{Manifest.permission.CAMERA},
                             MY_CAMERA_PERMISSION_CODE);
                 } else {
-
 
 
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -394,8 +492,6 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
-
             }
 
 
@@ -444,17 +540,23 @@ public class MainActivity extends AppCompatActivity{
                 if(position > 0) {
                     employer1 = employer.getSelectedItem().toString();
                     employeridname = employdetail.get(employer1);
-                    if (employeridname.equals("4")) {
-                        awesomeValidation.addValidation(MainActivity.this, R.id.input_empid, "^[a-zA-Z0-9]{5,14}$", R.string.err_msg_for_ifsc);
-                    }
+
+//                    if (employeridname.equals("4")) {
+//                        if (input_empid.getText().toString().matches("")) {
+//                            Toast.makeText(MainActivity.this, "Field cannot be empty", Toast.LENGTH_SHORT).show();
+//                       }
+////
+                 //awesomeValidation.addValidation(MainActivity.this, R.id.input_empid, "^[a-zA-Z0-9]{5,14}$", R.string.err_msg_for_ifsc);
+
+                    //}
                     Sectorlist(employeridname);
                     languageSelect(employeridname);
                     getJobroleList(employeridname);
-
-                } else{
-                    employer1=employer.getSelectedItem().toString();
                 }
-
+                else
+                    {
+                        employer1=employer.getSelectedItem().toString();
+                    }
 
             }
 
@@ -620,7 +722,7 @@ public class MainActivity extends AppCompatActivity{
                                        int position, long id)
             {
                 state1=state.getSelectedItem().toString();
-               selectedstatetext  = (String) parent.getItemAtPosition(position);
+               selectedstatetext =(String) parent.getItemAtPosition(position);
 
                 if(position > 0){
                     String value= Statedetail.get(selectedstatetext);
@@ -628,9 +730,6 @@ public class MainActivity extends AppCompatActivity{
                     DistrictDetails(value);
 
                 }
-
-
-
             }
 
             @Override
@@ -644,11 +743,7 @@ public class MainActivity extends AppCompatActivity{
 
 
         //District
-        ArrayAdapter<String> myAdapterDistrict = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,districtlist);
-        myAdapterDistrict.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        district.setAdapter(myAdapterDistrict);
       /*  if (districtlist.size()>1){
             districtlist.clear();
         }
@@ -941,6 +1036,7 @@ public class MainActivity extends AppCompatActivity{
                     String status= jobj.getString("status");
 
                     if (status.equals("1")){
+                        districtlist.clear();
                         JSONArray jsonArray=jobj.getJSONArray("district");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
@@ -951,6 +1047,11 @@ public class MainActivity extends AppCompatActivity{
 
 
                         }
+                        ArrayAdapter<String> myAdapterDistrict = new ArrayAdapter<String>(MainActivity.this,
+                                android.R.layout.simple_list_item_1,districtlist);
+                        myAdapterDistrict.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                        district.setAdapter(myAdapterDistrict);
                         //Toast.makeText(getApplicationContext(),"Success"+districtlist,Toast.LENGTH_LONG).show();
 
                     }

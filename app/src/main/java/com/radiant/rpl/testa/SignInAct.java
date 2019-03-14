@@ -53,8 +53,7 @@ public class SignInAct extends AppCompatActivity {
     Button loginsubmit;
     TextInputEditText username,passowrd;
     String uname,pass;
-    String geturl;
-    String gettestingurl;
+    String geturl,gettestingurl;
     SessionManager sessionManager;
     SharedPreferences sharedpreferences;
     final String mypreference = "mypref";
@@ -155,6 +154,7 @@ public class SignInAct extends AppCompatActivity {
 
         progressDialog.show();
         String serverURL = "https://www.skillassessment.org/sdms/android_connect/login.php";
+        System.out.println("geturll"+" "+serverURL);
         uname=username.getText().toString();
         pass= passowrd.getText().toString();
 

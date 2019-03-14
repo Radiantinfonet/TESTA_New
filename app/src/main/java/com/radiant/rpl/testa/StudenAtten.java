@@ -85,7 +85,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     SharedPreferences sharedPreferences;
     TextView nameid,addressid;
     private android.app.AlertDialog progressDialog;
-    LocationManager lm;
+    String geturl,gettestingurl;
 
 
     @Override
@@ -99,6 +99,8 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         b1 = findViewById(R.id.attendencesubmit);
         nameid=findViewById(R.id.nameid);
         addressid=findViewById(R.id.addressid);
+        geturl= Start_Registration.getURL();
+        gettestingurl=Start_Registration.getTestingURL();
         //getLocation();
         sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         if (sharedPreferences.contains("Name")) {
@@ -306,9 +308,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            //locationTv.setText("Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude());
-            // Toast.makeText(this,"Latitude : "+aaa,Toast.LENGTH_LONG).show();
-            //Toast.makeText(this,"Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude(),Toast.LENGTH_LONG).show();
+
         }
     }
 

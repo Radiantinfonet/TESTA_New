@@ -23,8 +23,8 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
     SharedPreferences prefs;
     Long timereset;
     DbAutoSave dbAutoSave;
-    public static String Baseurll="https://resume.globalhuntindia.com:82/api/HitechApp/";
-    public static String Testing_Baseurll="https://resume.globalhuntindia.com:82/api/HitechApp/";
+    public static String Baseurll="https://www.skillassessment.org/sdms/android_connect/";
+    public static String Testing_Baseurll="https://www.skillassessment.org/sdms/android_connect1/";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -77,7 +77,7 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
     }
 
     public  static  String getTestingURL(){
-        return  Baseurll;
+        return  Testing_Baseurll;
     }
 
     @Override

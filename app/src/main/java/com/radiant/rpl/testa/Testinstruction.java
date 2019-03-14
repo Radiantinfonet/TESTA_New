@@ -38,10 +38,12 @@ public class Testinstruction extends AppCompatActivity {
     CharSequence[] values;
     List<String> listItems = new ArrayList<String>();
     SharedPreferences ssp,sspp;
-String batchidddd;
+         String batchidddd;
     Bundle b;
     SharedPreferences.Editor editor;
     private android.app.AlertDialog progressDialog;
+    String geturl,gettestingurl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,8 @@ String batchidddd;
         b=new Bundle();
         ssp=getSharedPreferences("mypreff",MODE_PRIVATE);
         sspp=getSharedPreferences("mypref",MODE_PRIVATE);
+        geturl= Start_Registration.getURL();
+        gettestingurl=Start_Registration.getTestingURL();
         progressDialog = new SpotsDialog(Testinstruction.this, R.style.Custom);
         batchidddd=sspp.getString("batchid","");
         testinstructproceed.setOnClickListener(new View.OnClickListener() {

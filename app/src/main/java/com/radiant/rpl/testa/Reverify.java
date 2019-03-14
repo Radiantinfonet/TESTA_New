@@ -35,6 +35,7 @@ public class Reverify extends AppCompatActivity {
     ProgressDialog pd;
     Button btn_Register;
     AwesomeValidation awesomeValidation;
+    String geturl,gettestingurl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class Reverify extends AppCompatActivity {
         mob_txt=findViewById(R.id.input_mobile_noo);
         aadharno_txt=findViewById(R.id.input_aadhar_no);
         bankacc_txt=findViewById(R.id.input_bank_acdetails);
+        geturl= Start_Registration.getURL();
+        gettestingurl=Start_Registration.getTestingURL();
         awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
         Intent ii=getIntent();
         fname=ii.getStringExtra("first_namee");

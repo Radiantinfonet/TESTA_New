@@ -14,6 +14,7 @@
     <string name="sign_up">Skip</string>
     <string name="forget_password">Forget Password.?</string>
     <string name="Logout"><u>LOGOUT</u></string>
+    <string name="Update_Profile"><u>Update Profile</u></string>
     <string name="error_cannot_open">Unable to open Camera</string>
     <string name="error_cannot_write">Unable to access Storage</string>
     <string name="error_cannot_get_permission">Permission not granted</string>
@@ -59,6 +60,7 @@ status of each question using one of the following symbols:</string>
     <string name="hint_qualification">Qualification</string>
     <string name="hint_employment">Employment</string>
     <string name="hint_aadhar">Aadhar No</string>
+    <string name="hint_pancard">PAN Card</string>
     <string name="hint_Photograph">Photograph</string>
     <string name="hint_Sector">Sector</string>
     <string name="hint_jobrole">Jobrole</string>
