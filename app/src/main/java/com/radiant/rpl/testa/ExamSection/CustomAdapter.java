@@ -18,7 +18,7 @@ import radiant.rpl.radiantrpl.R;
 public class CustomAdapter extends BaseAdapter{
     String result[];
     Context con;
-    String aa;
+    String aa,b;
     ArrayList<String> queidd=new ArrayList<>();
     ArrayList<String> statussss=new ArrayList<>();
     ArrayList<String> questatuss=new ArrayList<>();
