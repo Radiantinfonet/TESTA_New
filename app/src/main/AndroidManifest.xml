@@ -9,47 +9,96 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:name="com.radiant.rpl.testa.App"
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
-        android:icon="@drawable/testalogo"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/tlogohdd"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@drawable/testalogo"
+        android:roundIcon="@drawable/tlogohdd"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name="com.radiant.rpl.testa.ExamSection.Update_profile"
-            android:theme="@style/AppTheme1"
+        <activity android:name="com.radiant.rpl.testa.Activity_Rplintroduction"
+            android:label="Introduction"
+            android:screenOrientation="portrait"
+            android:theme="@style/Apptheme2"
             ></activity>
+
+        <activity
+            android:name="com.radiant.rpl.testa.Registration.Upica_Registration"
+            android:label="Registration"
+            android:screenOrientation="portrait"
+            android:theme="@style/Apptheme2" />
+        <activity
+            android:name="com.radiant.rpl.testa.Registration.Ola_uber_registration"
+            android:label="Registration"
+            android:screenOrientation="portrait"
+            android:theme="@style/Apptheme2" />
+        <activity
+            android:name="com.radiant.rpl.testa.Registration.Company_dropdown"
+            android:label="Choose Company"
+            android:screenOrientation="portrait"
+            android:theme="@style/Apptheme2"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.radiant.rpl.testa.Barcode_d.SimpleScannerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppOverlayTheme"
+            android:uiOptions="splitActionBarWhenNarrow">
+            <meta-data
+                android:name="android.support.UI_OPTIONS"
+                android:value="splitActionBarWhenNarrow" />
+        </activity>
+        <activity
+            android:name="com.radiant.rpl.testa.ExamSection.Update_profile"
+            android:theme="@style/AppTheme1" />
         <activity
             android:name="com.radiant.rpl.testa.ExamSection.TestQuestion"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1" />
         <activity
+            android:name="com.radiant.rpl.testa.Registration.Amway_Registration"
+            android:label="Registration"
+            android:screenOrientation="portrait"
+            android:theme="@style/Apptheme2" />
+        <activity
             android:name="com.radiant.rpl.testa.StudenAtten"
             android:label="Attendance"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Apptheme2" />
+        <activity
+            android:name="com.radiant.rpl.testa.ExamSection.ContactUsActivity"
+            android:label="Contact Us"
+            android:theme="@style/Apptheme2" />
+        <activity
+            android:name="com.radiant.rpl.testa.ExamSection.Technical_Activity"
+            android:label="Feedback"
+            android:theme="@style/Apptheme2" />
         <activity
             android:name="com.radiant.rpl.testa.Testinstruction"
             android:label="Instructions"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Apptheme2" />
         <activity
             android:name="com.radiant.rpl.testa.Welcome_page"
             android:label="Home"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Apptheme2" />
         <activity
             android:name="com.radiant.rpl.testa.SignInAct"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1" />
         <activity
             android:name="com.radiant.rpl.testa.Reverify"
+            android:label="Reverify"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme1" />
+            android:theme="@style/Apptheme2" />
         <activity
             android:name="com.radiant.rpl.testa.ExamSection.Testviva"
             android:screenOrientation="portrait"
@@ -60,7 +109,12 @@
             android:theme="@style/AppTheme1" />
         <activity
             android:name="com.radiant.rpl.testa.Registration_Done"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Apptheme2" />
+        <activity
+            android:name="com.radiant.rpl.testa.ExamSection.Thankspage"
+            android:label="Thanks"
+            android:theme="@style/AppTheme1" />
         <activity
             android:name="com.radiant.rpl.testa.Start_Registration"
             android:screenOrientation="portrait"

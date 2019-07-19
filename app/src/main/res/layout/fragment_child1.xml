@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D3D3D3"
+    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/questioncaption1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2"
             android:layout_marginLeft="5dp"
             >
             <TextView
                 android:id="@+id/Quesnoo1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="2.)"
-                android:layout_weight=".3"
+                android:layout_gravity="top"
+                android:text="2."
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/que1"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Where is the capital of India."
                 android:layout_marginLeft="2dp"
-                android:layout_weight="1.7"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </LinearLayout>
@@ -79,6 +80,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
+            android:id="@+id/vv11"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="1dp"
@@ -122,6 +124,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
+            android:id="@+id/vv22"
             android:background="#A9A9A9"
             android:layout_marginTop="1dp"
             android:layout_marginLeft="5dp"
@@ -166,6 +169,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
+            android:id="@+id/vv33"
             android:background="#A9A9A9"
             android:layout_marginTop="1dp"
             android:layout_marginLeft="5dp"
@@ -249,4 +253,22 @@
         </LinearLayout>-->
 
     </RelativeLayout>
-</ScrollView>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/markforreviewww1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:text="Mark for Review"
+            android:background="#F0AD4E"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentBottom="true"
+            />
+
+
+</RelativeLayout>

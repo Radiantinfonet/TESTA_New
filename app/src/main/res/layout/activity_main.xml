@@ -2,15 +2,12 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_yourself"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#eeeeee"
     tools:context="com.radiant.rpl.testa.MainActivity">
-
-
-
-
-
-    <android.support.design.widget.AppBarLayout
+    <!--<android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -22,13 +19,8 @@
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.AppBarLayout>-->
 
-
-
-
-
-    />
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -38,24 +30,197 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#ffffff"
+            android:elevation="5dp"
+            android:fadingEdge="vertical"
             android:orientation="vertical"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:elevation="2dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/imageborder"
-            android:paddingTop="20dp">
+            android:paddingTop="20dp"
+            android:paddingRight="20dp">
 
-            <TextView
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/BBlue"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Registration Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_mobile_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_mobile_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_mobile"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                app:cardUseCompatPadding="true"
+                android:elevation="50dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    >
+                    <ImageView
+                        android:id="@+id/actionQrCode"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/ic_qr_code"
+                        android:layout_gravity="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scan Aadhar QR Code"
+                        android:textSize="13sp"
+                        android:fontFamily="sans-serif-black"
+                        android:layout_marginTop="@dimen/horizontal_margin_small_small"
+                        android:layout_gravity="center"
+                        />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Registration for RPL4"
-                android:gravity="center"
-                android:textSize="24sp"
-                android:textColor="#000000"
-                />
+                android:layout_marginTop="10dp"
+                android:weightSum="2">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/input_photograph"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/ic_user"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+
+                <Button
+                    android:id="@+id/input_photograph1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:drawableLeft="@drawable/ic_photo_camera"
+                    android:drawablePadding="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp"
+                    android:text="UPLOAD YOUR PHOTO"
+                    android:textColor="@color/white" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:weightSum="2">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/input_photograph_aadhar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/ic_user"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+                <Button
+                    android:id="@+id/input_photograph_aadhar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:drawableLeft="@drawable/ic_photo_camera"
+                    android:drawablePadding="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp"
+                    android:text="UPLOAD YOUR AAdhar"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Personal Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_name"
@@ -66,10 +231,10 @@
                     android:id="@+id/input_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="@string/hint_name" />
+                    android:hint="@string/hint_name"
+                    android:textColor="#000000"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
-
 
 
             <android.support.design.widget.TextInputLayout
@@ -81,120 +246,40 @@
                     android:id="@+id/input_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
                     android:hint="@string/hint_last_name"
-                    />
+                    android:textColor="#000000"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Date of Birth*"
-                    android:textSize="18sp"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="3"
-                    android:orientation="horizontal"
-                    >
-                    <Spinner
-                        android:id="@+id/input_layout_year"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:fontFamily="sans-serif-condensed"
-                        android:paddingLeft="2dp"
-                        android:paddingStart="5dp"
-                        android:background="@drawable/background"
-                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                        android:spinnerMode="dropdown"
-                        android:textSize="14sp"
-                        />
-                    <Spinner
-                        android:id="@+id/input_layout_month"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:background="@drawable/background"
-                        android:fontFamily="sans-serif-condensed"
-                        android:paddingLeft="2dp"
-                        android:paddingStart="5dp"
-                        android:layout_marginLeft="2dp"
-                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                        android:spinnerMode="dropdown"
-                        android:textSize="14sp"
-                        />
-                    <Spinner
-                        android:id="@+id/input_layout_date"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:background="@drawable/background"
-                        android:fontFamily="sans-serif-condensed"
-                        android:paddingLeft="2dp"
-                        android:layout_marginLeft="2dp"
-                        android:paddingStart="5dp"
-                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                        android:spinnerMode="dropdown"
-                        android:textSize="14sp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
 
             <Spinner
-                android:background="@drawable/background"
-                android:spinnerMode="dialog"
                 android:id="@+id/input_layout_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="3dp"
-                >
-            </Spinner>
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background"
+                android:spinnerMode="dialog"></Spinner>
+
 
             <Spinner
                 android:id="@+id/input_layout_category"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
                 android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="2dp"
+                android:gravity="center"
                 android:paddingStart="5dp"
-                android:layout_marginTop="2dp"
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:paddingLeft="2dp"
                 android:spinnerMode="dialog"
                 android:textSize="14sp"
+
                 />
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_mobile_no"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/input_mobile_no"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:inputType="number"
-                    android:hint="@string/hint_mobile" />
-            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_email"
@@ -205,9 +290,223 @@
                     android:id="@+id/input_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="@string/hint_email" />
+                    android:hint="@string/hint_email"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_alt_mobile_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_alt_mobile_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/alt_hint_mobile"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <Spinner
+                android:id="@+id/input_layout_Disablity_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background"
+                android:spinnerMode="dialog"
+
+                ></Spinner>
+
+
+            <Spinner
+                android:id="@+id/input_layout_type_of_Disablity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background"
+                android:spinnerMode="dialog"
+                android:visibility="gone"></Spinner>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Candidate Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date of Birth*"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <Spinner
+                        android:id="@+id/input_layout_year"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/background"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
+                        android:paddingLeft="2dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="14sp"
+
+                        />
+
+                    <Spinner
+                        android:id="@+id/input_layout_month"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
+                        android:paddingLeft="2dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="14sp" />
+
+                    <Spinner
+                        android:id="@+id/input_layout_date"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
+                        android:paddingLeft="2dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Address Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/input_layout_State"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+
+                />
+
+
+            <Spinner
+                android:id="@+id/input_layout_District"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                android:visibility="gone"
+
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_city"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_address1"
@@ -218,8 +517,9 @@
                     android:id="@+id/input_address1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="@string/hint_address_line1" />
+                    android:hint="@string/hint_address_line1"
+                    android:textColor="#000000"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -231,8 +531,9 @@
                     android:id="@+id/input_address2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="@string/hint_address_line2" />
+                    android:hint="@string/hint_address_line2"
+                    android:textColor="#000000"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -245,163 +546,132 @@
                     android:id="@+id/input_pincode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:hint="@string/hint_pincode"
+                    android:textColor="#000000"
                     android:inputType="number"
-                    android:hint="@string/hint_pincode" />
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/input_layout_State"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="2dp"
-                android:paddingStart="5dp"
-                android:layout_marginTop="2dp"
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                android:spinnerMode="dialog"
-                android:textSize="14sp"
-                />
-            <Spinner
-                android:id="@+id/input_layout_District"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="2dp"
-                android:paddingStart="5dp"
-                android:layout_marginTop="2dp"
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                android:spinnerMode="dialog"
-                android:textSize="14sp"
-                />
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
 
 
-            <!--<Spinner
-                android:background="@drawable/background"
-                android:spinnerMode="dialog"
-                android:id="@+id/input_layout_state"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                >
-            </Spinner>
-            <Spinner
-                android:background="@drawable/background"
-                android:spinnerMode="dialog"
-                android:id="@+id/input_layout_district"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                >
-            </Spinner>-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Qualification"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
 
             <Spinner
                 android:id="@+id/input_layout_Education"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
                 android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="2dp"
+                android:gravity="center"
                 android:paddingStart="5dp"
-                android:layout_marginTop="2dp"
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:paddingLeft="2dp"
                 android:spinnerMode="dialog"
                 android:textSize="14sp"
+
                 />
-            <!--<Spinner
-                android:id="@+id/input_layout_Employment"
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_Eduction_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_Eduction_other"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_other"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:layout_marginTop="2dp"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="2dp"
-                android:paddingStart="5dp"
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                android:spinnerMode="dialog"
-                android:textSize="14sp"
-                />-->
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Employer Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
             <Spinner
                 android:id="@+id/input_layout_Employer"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
                 android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="2dp"
+                android:gravity="center"
                 android:paddingStart="5dp"
-                android:layout_marginTop="2dp"
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:paddingLeft="2dp"
                 android:spinnerMode="dialog"
-                android:textSize="14sp"
-                />
+                android:textSize="14sp" />
 
             <Spinner
                 android:id="@+id/input_layout_Sector"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
                 android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="2dp"
+                android:gravity="center"
                 android:paddingStart="5dp"
-                android:layout_marginTop="2dp"
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:paddingLeft="2dp"
                 android:spinnerMode="dialog"
                 android:textSize="14sp"
-                />
+                android:visibility="gone" />
 
-            <Spinner
-                android:id="@+id/input_layout_jobrole"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="2dp"
-                android:paddingStart="5dp"
-                android:layout_marginTop="2dp"
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                android:spinnerMode="dialog"
-                android:textSize="14sp"
-                />
-
-            <Spinner
-                android:id="@+id/input_layout_prefferedlanguage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="2dp"
-                android:paddingStart="5dp"
-                android:layout_marginTop="2dp"
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                android:spinnerMode="dialog"
-                android:textSize="14sp"
-                />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_empid"
@@ -412,8 +682,8 @@
                     android:id="@+id/input_empid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="@string/hint_empid" />
+                    android:hint="@string/hint_empid"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -425,11 +695,145 @@
                     android:id="@+id/input_loc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:hint="@string/hint_location"
                     android:inputType="text"
-                    android:hint="@string/hint_location" />
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:id="@+id/course_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Course Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:visibility="gone"
+
+                    />
+
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/input_layout_jobrole"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+
+            <Spinner
+                android:id="@+id/input_layout_prefferedlanguage"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Employment Status"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/employment_status"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Identification Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
 
 
             <android.support.design.widget.TextInputLayout
@@ -441,9 +845,10 @@
                     android:id="@+id/input_aadhar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:hint="@string/hint_aadhar"
+                    android:textColor="#000000"
                     android:inputType="number"
-                    android:hint="@string/hint_aadhar" />
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -456,27 +861,89 @@
                     android:id="@+id/input_pancard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:hint="@string/hint_pancard"
                     android:inputType="text"
-                    android:hint="@string/hint_pancard" />
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
+
+            <Spinner
+                android:id="@+id/otherIdproof"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_Id_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_Id_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_other_id"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Bank Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
 
 
             <Spinner
                 android:id="@+id/input_layout_bankname"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
                 android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="2dp"
+                android:gravity="center"
                 android:paddingStart="5dp"
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:paddingLeft="2dp"
                 android:spinnerMode="dialog"
                 android:textSize="14sp"
+
                 />
 
 
@@ -489,9 +956,9 @@
                     android:id="@+id/input_bank_ac"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:hint="@string/hint_bank_ac"
                     android:inputType="number"
-                    android:hint="@string/hint_bank_ac" />
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -503,8 +970,8 @@
                     android:id="@+id/input_bank_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="Name as in Bank" />
+                    android:hint="Name as in Bank"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -517,84 +984,57 @@
                     android:id="@+id/input_ifsc_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="@string/hint_ifsc_code" />
+                    android:hint="@string/hint_ifsc_code"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
-
-
-
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                >
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:id="@+id/input_photograph"
-                    android:background="@drawable/selfphoto"
-                    android:layout_weight="1"
-                    android:scaleType="fitXY"
-                    android:layout_marginRight="4dp"
-                    />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:id="@+id/input_photograph_aadhar"
-                    android:background="@drawable/aadharphoto"
-                    android:layout_weight="1"
-                    android:scaleType="fitXY"
-                    android:layout_marginRight="4dp"
-                    />
-
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:weightSum="2"
                 android:orientation="horizontal"
-                >
+                android:weightSum="2">
+
                 <CheckBox
                     android:id="@+id/checkBox"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="I am willing to declare my aadhar details for PMKVY RPL4 project"
-                    />
+                    android:text="I am willing to declare my aadhar details for PMKVY RPL4 project" />
 
 
             </LinearLayout>
 
-            <Button android:id="@+id/btn_signup"
+            <Button
+                android:id="@+id/btn_signup"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/mybuttons"
                 android:text="Register"
-                android:textSize="24sp"
-                android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary"
-                android:textColor="@android:color/white"
+                android:textColor="@drawable/button_text_color"
+                android:textSize="18sp" />
+
+
+            <Button
+                android:id="@+id/btn_already_register"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="60dp"
-                />
+                android:background="@drawable/mybuttons"
+                android:text="Already Registered"
+                android:textColor="@drawable/button_text_color"
+                android:textSize="18sp" />
+
 
         </LinearLayout>
 
     </ScrollView>
-
-
-
-
-
 
 
 </android.support.design.widget.CoordinatorLayout>

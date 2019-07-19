@@ -1,0 +1,1054 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_yourself_Upica"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    tools:context="com.radiant.rpl.testa.Registration.Upica_Registration">
+
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#ffffff"
+            android:elevation="5dp"
+            android:fadingEdge="vertical"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/BBlue"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Registration Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_mobile_no_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_mobile_no_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_mobile"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                app:cardUseCompatPadding="true"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    >
+                    <ImageView
+                        android:id="@+id/actionQrCode"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/ic_qr_code"
+                        android:layout_gravity="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scan Aadhar QR Code"
+                        android:textSize="13sp"
+                        android:fontFamily="sans-serif-black"
+                        android:layout_marginTop="@dimen/horizontal_margin_small_small"
+                        android:layout_gravity="center"
+                        />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:weightSum="2">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/input_photograph_Upica"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/ic_user"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+
+                <Button
+                    android:id="@+id/input_photograph1_Upica"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:drawableLeft="@drawable/ic_photo_camera"
+                    android:drawablePadding="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp"
+                    android:text="UPLOAD YOUR PHOTO"
+                    android:textColor="@color/white" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:weightSum="2">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/input_photograph_aadhar_Upica"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/ic_user"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+                <Button
+                    android:id="@+id/input_photograph_aadhar1_Upica"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:drawableLeft="@drawable/ic_photo_camera"
+                    android:drawablePadding="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp"
+                    android:text="UPLOAD YOUR AADHAR"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Personal Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_name_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_name_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_name"
+                    android:textColor="#000000"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_last_name_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_last_name_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_last_name"
+                    android:textColor="#000000"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <Spinner
+                android:id="@+id/input_layout_gender_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background"
+                android:spinnerMode="dialog">
+
+
+            </Spinner>
+
+
+            <Spinner
+                android:id="@+id/input_layout_category_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_email_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_email_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_email"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_alt_mobile_no_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_alt_mobile_no_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/alt_hint_mobile"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <Spinner
+                android:id="@+id/input_layout_Disablity_type_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background"
+                android:spinnerMode="dialog"
+                >
+
+            </Spinner>
+
+
+            <Spinner
+                android:id="@+id/input_layout_type_of_Disablity_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background"
+                android:spinnerMode="dialog"
+                android:visibility="gone">
+
+            </Spinner>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Candidate Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date of Birth*"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <Spinner
+                        android:id="@+id/input_layout_year_Upica"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/background"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
+                        android:paddingLeft="2dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="14sp"
+
+                        />
+
+                    <Spinner
+                        android:id="@+id/input_layout_month_Upica"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
+                        android:paddingLeft="2dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="14sp" />
+
+                    <Spinner
+                        android:id="@+id/input_layout_date_Upica"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
+                        android:paddingLeft="2dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Address Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/input_layout_State_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+
+                />
+
+
+            <Spinner
+                android:id="@+id/input_layout_District_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                android:visibility="gone"
+
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_city_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_city_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_city"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_address1_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_address1_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_address_line1"
+                    android:textColor="#000000"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_address2_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_address2_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_address_line2"
+                    android:textColor="#000000"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_pincode_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_pincode_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_pincode"
+                    android:textColor="#000000"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Qualification"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+
+            <Spinner
+                android:id="@+id/input_layout_Education_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_Eduction_other_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_Eduction_other_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_other"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Employer Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/input_layout_Employer_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/input_layout_Sector_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <Spinner
+                android:id="@+id/input_layout_Sector_Upica_emp_id"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dropdown"
+                android:textSize="14sp"
+                />
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_storeloc_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_loc_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_location"
+                    android:inputType="text"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:id="@+id/course_detail_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Course Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:visibility="gone"
+
+                    />
+
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/input_layout_jobrole_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+
+            <Spinner
+                android:id="@+id/input_layout_prefferedlanguage_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Employment Status"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/employment_status_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Identification Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_aadhar_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_aadhar_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_aadhar"
+                    android:textColor="#000000"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_pancard_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_pancard_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_pancard"
+                    android:inputType="text"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <Spinner
+                android:id="@+id/otherIdproof_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_Id_no_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_Id_no_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_other_id"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/BBlue"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:text="Bank Details"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    />
+
+
+            </LinearLayout>
+
+
+            <Spinner
+                android:id="@+id/input_layout_bankname_Upica"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_bank_ac_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_bank_ac_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_bank_ac"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_bank_username_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_bank_username_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name as in Bank"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_ifsc_code_Upica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_ifsc_code_Upica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_ifsc_code"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <CheckBox
+                    android:id="@+id/checkBox_Upica"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I am willing to declare my aadhar details for PMKVY RPL4 project" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_signup_Upica"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/mybuttons"
+                android:text="Register"
+                android:textColor="@drawable/button_text_color"
+                android:textSize="18sp" />
+
+
+            <Button
+                android:id="@+id/btn_already_register_Upica"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="60dp"
+                android:background="@drawable/mybuttons"
+                android:text="Already Registered"
+                android:textColor="@drawable/button_text_color"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+
+</android.support.design.widget.CoordinatorLayout>

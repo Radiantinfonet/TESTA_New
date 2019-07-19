@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.radiant.rpl.testa.ExamSection.ContactUsActivity">
+
+
+
+
+
+
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Helpline"
+            android:layout_marginTop="14dp"
+            android:text="HelpLine No"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textColor="@color/nliveo_black_light"
+            android:textSize="24sp"
+            android:layout_centerHorizontal="true"
+
+
+            />
+
+
+
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="7dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:cardElevation="20dp"
+
+            >
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/no11"
+                android:layout_marginLeft="20dp"
+                android:text="1)"
+                android:textAllCaps="true"
+                android:textColor="@color/nliveo_black_light"
+                android:textSize="18sp"
+                />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/no1"
+            android:textAllCaps="false"
+            android:text="Helpline No 1"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/nliveo_black_light"
+            android:textSize="18sp"
+            />
+
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Helpline222"
+                android:textAllCaps="true"
+                android:textColor="@color/BBlue"
+                android:textSize="18sp"
+                android:autoLink="phone"
+                android:layout_marginLeft="200dp"
+                android:layout_toRightOf="@+id/no1"
+                android:paddingLeft="20dp"
+                android:layout_marginRight="10dp"
+                />
+
+        </android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cn11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="7dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="100dp"
+            app:cardElevation="20dp"
+            >
+
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/no2"
+            android:textAllCaps="false"
+            android:text="Helpline No 2"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/nliveo_black_light"
+            android:textSize="18sp"
+            />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/no22"
+                android:text="2)"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/nliveo_black_light"
+                android:textSize="18sp"
+                />
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Helpline2222"
+                android:textAllCaps="true"
+                android:textColor="@color/BBlue"
+                android:textSize="18sp"
+                android:autoLink="phone"
+                android:layout_marginLeft="200dp"
+                android:layout_toRightOf="@+id/no2"
+                android:paddingLeft="20dp"
+                android:layout_marginRight="10dp"
+
+                />
+
+
+
+
+        </android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cn111"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="7dp"
+            android:layout_marginTop="140dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:cardElevation="20dp"
+            >
+
+
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/no3"
+            android:textAllCaps="false"
+            android:text="Helpline No 3"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/nliveo_black_light"
+            android:textSize="18sp"
+            />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/no33"
+                android:text="3)"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/nliveo_black_light"
+                android:textSize="18sp"
+                />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Helpline22222"
+                android:textAllCaps="true"
+                android:textColor="@color/BBlue"
+                android:textSize="18sp"
+                android:autoLink="phone"
+                android:layout_marginLeft="200dp"
+                android:layout_toRightOf="@+id/no3"
+                android:paddingLeft="20dp"
+                android:layout_marginRight="10dp"
+
+                />
+
+
+        </android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cn1111"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="7dp"
+            android:layout_marginTop="180dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:cardElevation="20dp"
+            >
+
+
+
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/no4"
+            android:textAllCaps="false"
+            android:layout_marginLeft="50dp"
+            android:text="Helpline No 4"
+            android:textColor="@color/nliveo_black_light"
+            android:textSize="18sp"
+            />
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/no44"
+                android:text="4)"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/nliveo_black_light"
+                android:textSize="18sp"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Helpline222222"
+                android:textAllCaps="true"
+                android:textColor="@color/BBlue"
+                android:textSize="18sp"
+                android:autoLink="phone"
+                android:layout_marginLeft="200dp"
+                android:layout_toRightOf="@+id/no4"
+                android:paddingLeft="20dp"
+                android:layout_marginRight="10dp"
+
+
+
+
+
+                />
+
+
+
+
+
+        </android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cn11111"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="7dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardElevation="20dp"
+        >
+
+
+
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/no5"
+            android:textAllCaps="false"
+            android:text="Helpline No 5"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/nliveo_black_light"
+            android:textSize="18sp"
+
+            />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/no55"
+            android:text="5)"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/nliveo_black_light"
+            android:textSize="18sp"
+
+            />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Helpline2222222"
+            android:textAllCaps="true"
+            android:textColor="@color/BBlue"
+            android:textSize="18sp"
+            android:autoLink="phone"
+            android:layout_marginLeft="200dp"
+            android:layout_toRightOf="@+id/no5"
+            android:paddingLeft="20dp"
+            android:layout_marginRight="10dp"
+
+            />
+
+
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Helpline2"
+            android:text=" for Technical Assistance please call"
+            android:textAllCaps="true"
+            android:textColor="@color/nliveo_black_light"
+            android:textSize="14sp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="70dp"
+            android:layout_centerHorizontal="true"
+
+
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Helpline22"
+            android:text="@string/technical_no"
+            android:textAllCaps="true"
+            android:textColor="@color/BBlue"
+            android:textSize="18sp"
+            android:autoLink="phone"
+            android:linksClickable="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:layout_centerHorizontal="true"
+
+
+            />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

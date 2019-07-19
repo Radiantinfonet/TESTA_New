@@ -12,21 +12,25 @@ import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +51,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.radiant.rpl.testa.ExamSection.ContactUsActivity;
+import com.radiant.rpl.testa.ExamSection.Technical_Activity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,10 +89,13 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     String aaa,batchidd,studentidd;
     String encoded;
     SharedPreferences sharedPreferences;
-    TextView nameid,addressid;
+    TextView nameid,addressid,batchid;
     private android.app.AlertDialog progressDialog;
     String geturl,gettestingurl;
-
+    LinearLayout linearlayout;
+    Button bb;
+   String uid;
+    String stringLatitude,stringLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +106,12 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         img = findViewById(R.id.assessorpic);
         tv = findViewById(R.id.locationn);
         b1 = findViewById(R.id.attendencesubmit);
+        bb=findViewById(R.id.uploadphoto);
         nameid=findViewById(R.id.nameid);
         addressid=findViewById(R.id.addressid);
+        batchid=findViewById(R.id.jobroleid);
         geturl= Start_Registration.getURL();
+        linearlayout = findViewById(R.id.linearlayout);
         gettestingurl=Start_Registration.getTestingURL();
         //getLocation();
         sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
@@ -112,8 +124,48 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         if (sharedPreferences.contains("batchid")){
             batchidd=sharedPreferences.getString("batchid","");
         }
+        if (sharedPreferences.contains("jobrole")){
+            batchid.setText(sharedPreferences.getString("jobrole",""));
+        }else{
+            batchid.setText("NA");
+        }
         if (sharedPreferences.contains("userid")){
+            uid=sharedPreferences.getString("userid","");
             studentidd=sharedPreferences.getString("userid","");
+        }
+
+
+        try{
+            bb.setOnClickListener(new View.OnClickListener() {
+
+                @RequiresApi(api = Build.VERSION_CODES.M)
+                @Override
+                public void onClick(View v) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (checkSelfPermission(Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                    MY_CAMERA_PERMISSION_CODE);
+                        } else {
+                            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                            cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
+                            cameraIntent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
+                            cameraIntent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
+                            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        }
+
+                    }
+                    else {
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
+                        cameraIntent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
+                        cameraIntent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    }
+                }
+
+            });}catch (Exception e){
+            e.printStackTrace();
         }
 
         try{
@@ -122,6 +174,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (checkSelfPermission(Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.CAMERA},
@@ -134,6 +187,14 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 }
 
+            }
+                else {
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
+                    cameraIntent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
+                    cameraIntent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                }
             }
 
         });}catch (Exception e){
@@ -167,6 +228,44 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 addOnConnectionFailedListener(this).build();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.save_menu:
+                Intent i = new Intent(getApplicationContext(), ContactUsActivity.class);
+                startActivity(i);
+                //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+
+                return true;
+            case R.id.search_menu:
+                Intent viewIntent =
+                        new Intent("android.intent.action.VIEW",
+                                Uri.parse("https://www.skillassessment.org/ssc/FAQ.html"));
+                startActivity(viewIntent);
+
+                return true;
+
+
+
+
+            case R.id.save_technical:
+                Intent j = new Intent(getApplicationContext(), Technical_Activity.class);
+                startActivity(j);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
 
 
     private ArrayList<String> permissionsToRequest(ArrayList<String> wantedPermissions) {
@@ -258,6 +357,8 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
 
         if (location != null) {
             try {
+                stringLatitude= Double.toString(location.getLatitude());
+                stringLongitude= Double.toString(location.getLongitude());
 
                 addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 
@@ -412,9 +513,65 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
 
     }
 
+
+    private void saveLog(final String fnamee, final String ip, final String activity, final String lat, final String longi,final String cmpid) {
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_logs.php";
+
+
+        StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jobj = new JSONObject(response);
+                    System.out.println("sss"+response);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error Saving the details", Toast.LENGTH_LONG).show();
+                System.out.println("aa"+error);
+            }
+        })
+
+        {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                super.getHeaders();
+                Map<String, String> map = new HashMap<>();
+                return map;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                super.getParams();
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/x-www-form-urlencoded");
+                map.put("username",fnamee);
+                map.put("ip",ip);
+                map.put("company_id",cmpid);
+                map.put("activity",activity);
+                map.put("lat",lat);
+                map.put("longi",longi);
+                System.out.println("map of student atten"+map);
+                return map;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(20000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
+    }
+
+
     private void AssessorAttendance() {
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_student_attendance.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_student_attendance.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -426,6 +583,11 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                     String status= jobj.getString("status");
                     String message= jobj.getString("msg");
                       if (status.equals("1")) {
+                          SharedPreferences.Editor editor = sharedPreferences.edit();
+                          editor.putString("lat", stringLatitude);
+                          editor.putString("long", stringLongitude);
+                          editor.commit();
+                          saveLog(uid,"","Instructions",stringLatitude,stringLongitude,"");
                           Intent ii = new Intent(StudenAtten.this, Testinstruction.class);
                           startActivity(ii);
                       }else {
@@ -447,7 +609,9 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-                Toast.makeText(getApplicationContext(), "Error: Please try again Later", Toast.LENGTH_LONG).show();
+                Snackbar snackbar = Snackbar
+                        .make(linearlayout,"Internet not available,Cross check your internet connectivity.",Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
         }) {
             @Override

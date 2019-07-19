@@ -19,15 +19,15 @@ public SetterGetter(){}
         this.attenstatuss = attenstatuss;
     }
 
-    public String getAssessorid() {
+    public String getAssessorid(){
         return Assessorid;
     }
 
-    public void setAssessorid(String Assessorid) {
+    public void setAssessorid(String Assessorid){
         this.Assessorid = Assessorid;
     }
 
-    public String getAttenstatuss() {
+    public String getAttenstatuss(){
         return attenstatuss;
     }
 

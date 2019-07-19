@@ -1,0 +1,1163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+    android:id="@+id/amwayreg"
+android:layout_height="match_parent"
+android:background="#eeeeee"
+tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+</android.support.design.widget.AppBarLayout>-->
+
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:elevation="5dp"
+        android:fadingEdge="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#ffffff"
+        android:paddingTop="20dp">
+
+
+        <LinearLayout
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:background="@color/BBlue"
+            android:layout_marginBottom="20dp"
+            android:layout_height="40dp">
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="Registration Details"
+                android:gravity="left"
+                android:textSize="22sp"
+                android:paddingLeft="15dp"
+                android:textColor="@color/white"
+
+                />
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_mobile_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_mobile_no_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="number"
+                android:hint="@string/hint_mobile" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            app:cardUseCompatPadding="true"
+            android:elevation="3dp"
+            android:background="@color/cardview_light_background"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:id="@+id/actionQrCode"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_qr_code"
+                    android:layout_gravity="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Scan Aadhar QR Code"
+                    android:textSize="13sp"
+                    android:fontFamily="sans-serif-black"
+                    android:layout_marginTop="@dimen/horizontal_margin_small_small"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_gravity="left"
+                android:id="@+id/input_photograph_amway"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:src="@drawable/ic_user"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FF000000"
+                android:layout_weight="1"/>
+
+
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/input_photograph1_amway"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@color/BBlue"
+                android:drawableLeft="@drawable/ic_photo_camera"
+                android:text="UPLOAD YOUR PHOTO"
+                android:drawablePadding="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/white" />
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_gravity="left"
+                android:id="@+id/input_photograph_aadhar_amway"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:src="@drawable/ic_user"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FF000000"
+                android:layout_weight="1"/>
+
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/input_photograph_aadhar1_amway"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@color/BBlue"
+                android:drawableLeft="@drawable/ic_photo_camera"
+                android:text="UPLOAD YOUR AAdhar"
+                android:drawablePadding="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Personal Details"
+                android:gravity="left"
+                android:textSize="22sp"
+                android:paddingLeft="15dp"
+                android:textColor="@color/white"
+                android:background="@color/BBlue"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+
+                />
+
+
+
+        </LinearLayout>
+
+
+
+        <Spinner
+            android:background="@drawable/background"
+            android:spinnerMode="dialog"
+            android:id="@+id/input_layout_title_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            >
+        </Spinner>
+
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_name_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_name_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_name"
+                android:textColor="#000000"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_last_name_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_last_name_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_last_name"
+                android:textColor="#000000"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_fatherfirst_name_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_fatherfirst_name_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Father First Name*"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_fatherlast_name_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_fatherlast_name_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Father Last Name*"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <Spinner
+            android:background="@drawable/background"
+            android:spinnerMode="dialog"
+            android:id="@+id/input_layout_Guardiantype_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            >
+        </Spinner>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_guardianfirst_name_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_guardianfirst_name_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Guardian First Name"
+                android:textColor="#000000"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_guardianlast_name_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_guardianlast_name_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Guardian Last Name"
+                android:textColor="#000000"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+
+
+        <Spinner
+            android:background="@drawable/background"
+            android:spinnerMode="dialog"
+            android:id="@+id/input_layout_gender_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            >
+        </Spinner>
+
+
+        <Spinner
+            android:id="@+id/input_layout_category_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="2dp"
+            android:paddingStart="5dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:spinnerMode="dialog"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+
+            />
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_email_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_email_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="@string/hint_email" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_alt_mobile_no_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_alt_mobile_no_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="number"
+                android:hint="@string/alt_hint_mobile" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+
+        <Spinner
+            android:background="@drawable/background"
+            android:spinnerMode="dialog"
+            android:id="@+id/input_layout_Disablity_type_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+
+            >
+        </Spinner>
+
+
+
+        <Spinner
+            android:background="@drawable/background"
+            android:spinnerMode="dialog"
+            android:id="@+id/input_layout_type_of_Disablity_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            >
+        </Spinner>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Candidate Details"
+                android:gravity="left"
+                android:textSize="22sp"
+                android:paddingLeft="15dp"
+                android:textColor="@color/white"
+                android:background="@color/BBlue"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+
+                />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_Birthplace_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_Birthplace_amway"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Birth Place"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date of Birth*"
+                android:textSize="18sp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                >
+                <Spinner
+                    android:id="@+id/input_layout_year_amway"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="2dp"
+                    android:paddingStart="5dp"
+                    android:background="@drawable/background"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:spinnerMode="dropdown"
+                    android:textSize="14sp"
+
+                    />
+                <Spinner
+                    android:id="@+id/input_layout_month_amway"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@drawable/background"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="2dp"
+                    android:paddingStart="5dp"
+                    android:layout_marginLeft="2dp"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:spinnerMode="dropdown"
+                    android:textSize="14sp"
+                    />
+                <Spinner
+                    android:id="@+id/input_layout_date_amway"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@drawable/background"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:paddingStart="5dp"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:spinnerMode="dropdown"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Address Details"
+                android:gravity="left"
+                android:textSize="22sp"
+                android:paddingLeft="15dp"
+                android:textColor="@color/white"
+                android:background="@color/BBlue"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+
+                />
+
+
+
+        </LinearLayout>
+        <Spinner
+            android:id="@+id/input_layout_State_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="2dp"
+            android:paddingStart="5dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:spinnerMode="dialog"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+
+            />
+
+
+
+
+
+        <Spinner
+            android:id="@+id/input_layout_District_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="2dp"
+            android:paddingStart="5dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:spinnerMode="dialog"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+
+            />
+
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_city_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="@string/hint_city" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_address1_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_address1_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:hint="@string/hint_address_line1" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_address2_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_address2_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:hint="@string/hint_address_line2" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_pincode_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_pincode_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="number"
+                android:textColor="#000000"
+                android:hint="@string/hint_pincode" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Qualification"
+                android:gravity="left"
+                android:textSize="22sp"
+                android:paddingLeft="15dp"
+                android:textColor="@color/white"
+                android:background="@color/BBlue"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+
+                />
+
+
+
+        </LinearLayout>
+
+
+
+        <Spinner
+            android:id="@+id/input_layout_Education_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="2dp"
+            android:paddingStart="5dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:spinnerMode="dialog"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+
+            />
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_Eduction_other_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_Eduction_other_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:hint="@string/hint_other" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Employer Details"
+                android:gravity="left"
+                android:textSize="22sp"
+                android:paddingLeft="15dp"
+                android:textColor="@color/white"
+                android:background="@color/BBlue"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+
+                />
+
+
+
+        </LinearLayout>
+        <Spinner
+            android:id="@+id/input_layout_Employer_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="2dp"
+            android:paddingStart="5dp"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:spinnerMode="dialog"
+            android:textSize="14sp"
+            />
+
+        <Spinner
+            android:id="@+id/input_layout_Sector_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="2dp"
+            android:paddingStart="5dp"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:spinnerMode="dialog"
+            android:textSize="14sp"
+            android:visibility="gone"
+            />
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_empid_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_empid_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="@string/hint_empid" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_storeloc_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_loc_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="text"
+                android:hint="@string/hint_location" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+        <LinearLayout
+
+            android:layout_marginTop="20dp"
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:id="@+id/course_detail_amway"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Course Details"
+                android:gravity="left"
+                android:textSize="22sp"
+                android:paddingLeft="15dp"
+                android:textColor="@color/white"
+                android:background="@color/BBlue"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"
+
+                />
+
+
+
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/input_layout_jobrole_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="2dp"
+            android:paddingStart="5dp"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:spinnerMode="dialog"
+            android:textSize="14sp"
+            android:visibility="gone"
+            />
+
+
+
+
+
+        <Spinner
+            android:id="@+id/input_layout_prefferedlanguage_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="2dp"
+            android:paddingStart="5dp"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:spinnerMode="dialog"
+            android:textSize="14sp"
+            android:visibility="gone"
+            />
+
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Employment Status"
+                android:gravity="left"
+                android:textSize="22sp"
+                android:paddingLeft="15dp"
+                android:textColor="@color/white"
+                android:background="@color/BBlue"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+
+                />
+
+
+
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/employment_status_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="2dp"
+            android:paddingStart="8dp"
+            android:layout_marginTop="5dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:spinnerMode="dialog"
+            android:textSize="14sp"
+            />
+
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Identification Details"
+                android:gravity="left"
+                android:textSize="22sp"
+                android:paddingLeft="15dp"
+                android:textColor="@color/white"
+                android:background="@color/BBlue"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+
+                />
+
+
+
+        </LinearLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_aadhar_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_aadhar_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="number"
+                android:textColor="#000000"
+                android:hint="@string/hint_aadhar" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_pancard_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_pancard_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="text"
+                android:hint="@string/hint_pancard" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+        <Spinner
+            android:id="@+id/otherIdproof_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="2dp"
+            android:paddingStart="5dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:spinnerMode="dialog"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+
+            />
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_Id_no_amway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_Id_no_amway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:hint="@string/hint_other_id" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            >
+            <CheckBox
+                android:id="@+id/checkBox_amway"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I am willing to declare my aadhar details for PMKVY RPL4 project"
+                />
+
+
+        </LinearLayout>
+
+        <Button android:id="@+id/btn_signup_amway"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="Register"
+            android:textColor="@drawable/button_text_color"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/mybuttons"
+            android:layout_marginBottom="10dp"
+            />
+
+
+
+        <Button android:id="@+id/btn_already_register"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="Already Registered"
+            android:textColor="@drawable/button_text_color"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/mybuttons"
+            android:layout_marginBottom="60dp"
+            />
+
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>
+
+
+
+
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+

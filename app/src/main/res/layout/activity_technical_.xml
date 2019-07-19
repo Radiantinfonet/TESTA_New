@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="com.radiant.rpl.testa.ExamSection.Technical_Activity">
+
+
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card1"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:cardCornerRadius="7dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardElevation="20dp"
+        app:cardBackgroundColor="#F4F5F7"
+
+        >
+
+
+        <EditText
+            android:id="@+id/etproblem"
+            android:layout_marginLeft="10dp"
+            android:hint="Desribe your problem"
+            android:layout_width="match_parent"
+            android:gravity="left|top"
+            android:layout_height="100dp"
+            app:backgroundTint="#2E78B5"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"
+            android:textCursorDrawable ="@drawable/cursor_color"
+
+            />
+
+    </android.support.v7.widget.CardView>
+
+
+    <TextView
+        android:layout_marginTop="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="add screenshot (optional)"
+        android:textColor="#2E78B5"/>
+
+
+
+    <LinearLayout
+        android:layout_marginTop="230dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+
+        >
+
+        <android.support.v7.widget.CardView
+        android:id="@+id/card2"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="7dp"
+        android:layout_margin="10dp"
+        app:cardElevation="20dp"
+        android:layout_weight="1"
+        app:cardBackgroundColor="#F4F5F7"
+        android:layout_alignParentLeft="true">
+
+
+
+        <ImageView
+            android:id="@+id/img1"
+            android:src="@drawable/add_circle_outline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:padding="30dp"
+            />
+
+
+            <ImageView
+                android:id="@+id/img11"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card3"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="7dp"
+        android:layout_toRightOf="@+id/cn11"
+        android:layout_toLeftOf="@+id/cn1111"
+        android:layout_margin="10dp"
+        app:cardElevation="20dp"
+        android:layout_weight="1"
+        app:cardBackgroundColor="#F4F5F7"
+        >
+
+
+        <ImageView
+            android:id="@+id/img2"
+            android:src="@drawable/add_circle_outline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:padding="30dp"
+            />
+
+        <ImageView
+            android:id="@+id/img22"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+
+    </android.support.v7.widget.CardView>
+
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cn1111"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="100dp"
+        app:cardCornerRadius="7dp"
+        android:layout_margin="10dp"
+        app:cardElevation="20dp"
+        app:cardBackgroundColor="#F4F5F7"
+        android:layout_alignParentRight="true"
+
+        >
+
+        <ImageView
+            android:id="@+id/img3"
+            android:src="@drawable/add_circle_outline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:padding="30dp"
+            />
+
+
+        <ImageView
+            android:id="@+id/img33"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+    </LinearLayout>
+
+
+
+    <Button
+        android:id="@+id/submitbtn"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="submit"
+        android:background="@drawable/mybuttons"
+        android:textColor="@drawable/button_text_color"
+        />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

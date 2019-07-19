@@ -1,13 +1,16 @@
 package com.radiant.rpl.testa.ExamSection;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,7 +42,9 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
     String query;
     boolean statusvalue;
     HashMap<String,String> hm=new HashMap<>();
-
+    private static GetStatusQue getStatusQue;
+    boolean anyButtonClicked=false;
+    TextView mfr;
 
     @Nullable
     @Override
@@ -53,6 +58,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         option2=bundle.getString("op2");
         option3=bundle.getString("op3");
         option4=bundle.getString("op4");
+
         hm.put(quename,childname);
         sp=getActivity().getSharedPreferences("mypref", MODE_PRIVATE);
         dbAutoSave = new DbAutoSave(getContext());
@@ -60,16 +66,11 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         setEvents();
         idd=dbAutoSave.getDataOfSingleClient(query);
         dummystuid=sp.getString("userid","");
-
         getoptiona=optiona.getText().toString();
         getoptionb=optionb.getText().toString();
         getoptionc=optionc.getText().toString();
         getoptiond=optionc.getText().toString();
-
-        System.out.println("abcc"+getoptiona+"  "+getoptionb+"   "+getoptionc+"   "+getoptiond);
-
-
-
+        System.out.println("abcc"+pgnn);
         return view;
     }
 
@@ -84,21 +85,43 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         titleb=view.findViewById(R.id.optionnob);
         titlec=view.findViewById(R.id.optionnoc);
         titled=view.findViewById(R.id.optionnod);
+        View vv1=view.findViewById(R.id.vv1);
+        View vv2=view.findViewById(R.id.vv2);
+        View vv3=view.findViewById(R.id.vv3);
         l1=view.findViewById(R.id.option1);
         l2=view.findViewById(R.id.option2);
         l3=view.findViewById(R.id.option3);
         l4=view.findViewById(R.id.option4);
+        mfr=view.findViewById(R.id.markforreviewww);
         l1.setOnClickListener(this);
         l2.setOnClickListener(this);
         l3.setOnClickListener(this);
         l4.setOnClickListener(this);
-        textViewChildName.setText(pgnn+".)");
+        mfr.setOnClickListener(this);
+        textViewChildName.setText(pgnn+".");
         //textViewChildName.setText(childname+".)");
         t1.setText(quename);
+
         optiona.setText(option1);
         optionb.setText(option2);
         optionc.setText(option3);
         optiond.setText(option4);
+
+        if(TextUtils.isEmpty(option1)){
+            titlea.setVisibility(View.GONE);
+            vv1.setVisibility(View.GONE);
+        }
+        if(TextUtils.isEmpty(option2)){
+            titleb.setVisibility(View.GONE);
+            vv2.setVisibility(View.GONE);
+        }
+        if(TextUtils.isEmpty(option3)){
+            titlec.setVisibility(View.GONE);
+            vv3.setVisibility(View.GONE);
+        }
+        if(TextUtils.isEmpty(option4)){
+            titled.setVisibility(View.GONE);
+        }
 
 
     }
@@ -113,14 +136,28 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
 
+        System.out.println("vasdfd"+getoptiona);
+        System.out.println("vasdfd"+getoptionb);
+        System.out.println("vasdfd"+getoptionc);
+        System.out.println("vasdfd"+getoptiond);
+
+    }
+    public static void aaa(GetStatusQue gettt){
+        getStatusQue=gettt;
+    }
     @Override
     public void setUserVisibleHint(boolean visible)
     {
         super.setUserVisibleHint(visible);
+
         if (visible && isResumed())
         {
+            System.out.println("Visible Resume");
+            if (dbAutoSave.getDataOfSingleClientstatus(""+pgnn)!=null && dbAutoSave.getStatusDataOfSingleClientstatus(""+pgnn).equals("3")){
+                dbAutoSave.updateDataunanswered(dummystuid,""+pgnn,"0",""+pgnn);
+                System.out.println("Case with 3 status ");
+            }
             onResume();
         }
     }
@@ -130,6 +167,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
     {
         super.onResume();
         String aab;
+        System.out.println("ttttt on resume running");
         if (!getUserVisibleHint())
         {
             return;
@@ -156,47 +194,30 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         else {
 
         }
-        //Show Answer updated in Db
-        l1.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
 
-        l2.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
-        l3.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
-        l4.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
 
-        if (statusvalue){
-        }
-        else{
-        }
+
 
     }
 
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(getStatusQue!=null){
+        getStatusQue.gets(anyButtonClicked);
+        System.out.println("ttttt on pause running");
+        }
+    }
 
     private void setEvents() {
 
     }
 
 
+    @SuppressLint("ResourceAsColor")
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -206,18 +227,34 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         changeColorBack(titlec);
         changeColorBack(titled);
 
+        String statussdata=dbAutoSave.getDataOfSingleClientstatus(hm.get(quename));
+
+
+        if (anyButtonClicked) {
+            System.out.println("ttttt button clicked captured");
+        } else {
+            anyButtonClicked = true;
+        }
+
         switch (v.getId()) {
             case R.id.option1:
                 titlea.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_txt));
                 idd=dbAutoSave.getDataOfSingleClient(hm.get(quename));
                 if (idd!=(null)){
                     dbAutoSave.updateData(hm.get(quename),dummystuid,titlea.getText().toString(),idd);
-                    statusvalue=true;
+                   // statusvalue=true;
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titlea.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,hm.get(quename),"1");
-                    statusvalue=true;
+
+                    if (dbAutoSave.getDataOfSingleClientstatus(Integer.toString(pgnn))!=null){
+                        dbAutoSave.updateDataunanswered(dummystuid,Integer.toString(pgnn),"1",Integer.toString(pgnn));
+
+                    }else {
+                        dbAutoSave.insertDataunanswered(dummystuid,Integer.toString(pgnn),"1");
+                    }
+
+                  //  statusvalue=true;
                 }
                 break;
             case R.id.option2:
@@ -225,12 +262,19 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 idd=dbAutoSave.getDataOfSingleClient(hm.get(quename));
                 if (idd!=(null)){
                     dbAutoSave.updateData(hm.get(quename),dummystuid,titleb.getText().toString(),idd);
-                    statusvalue=true;
+                    //statusvalue=true;
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titleb.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,hm.get(quename),"1");
-                    statusvalue=true;
+
+                    if (dbAutoSave.getDataOfSingleClientstatus(Integer.toString(pgnn))!=null){
+                        dbAutoSave.updateDataunanswered(dummystuid,Integer.toString(pgnn),"1",Integer.toString(pgnn));
+
+                    }else {
+                        dbAutoSave.insertDataunanswered(dummystuid,Integer.toString(pgnn),"1");
+                    }
+
+                    //statusvalue=true;
                 }
                 break;
             case R.id.option3:
@@ -238,12 +282,18 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 idd=dbAutoSave.getDataOfSingleClient(hm.get(quename));
                 if (idd!=(null)){
                     dbAutoSave.updateData(hm.get(quename),dummystuid,titlec.getText().toString(),idd);
-                    statusvalue=true;
+                    //statusvalue=true;
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titlec.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,hm.get(quename),"1");
-                    statusvalue=true;
+
+                    if (dbAutoSave.getDataOfSingleClientstatus(Integer.toString(pgnn))!=null){
+                        dbAutoSave.updateDataunanswered(dummystuid,Integer.toString(pgnn),"1",Integer.toString(pgnn));
+
+                    }else {
+                        dbAutoSave.insertDataunanswered(dummystuid,Integer.toString(pgnn),"1");
+                    }
+
                 }
                 break;
             case  R.id.option4:
@@ -252,12 +302,32 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 idd=dbAutoSave.getDataOfSingleClient(hm.get(quename));
                 if (idd!=(null)){
                     dbAutoSave.updateData(hm.get(quename),dummystuid,titled.getText().toString(),idd);
-                    statusvalue=true;
+                    //statusvalue=true;
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename), dummystuid,  titled.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,hm.get(quename),"1");
-                    statusvalue=true;
+
+                    if (dbAutoSave.getDataOfSingleClientstatus(Integer.toString(pgnn))!=null){
+                        dbAutoSave.updateDataunanswered(dummystuid,Integer.toString(pgnn),"1",Integer.toString(pgnn));
+
+                    }else {
+                        dbAutoSave.insertDataunanswered(dummystuid,Integer.toString(pgnn),"1");
+                    }
+
+                    //statusvalue=true;
+                }
+                break;
+
+            case R.id.markforreviewww:
+                mfr.setBackgroundColor(Color.parseColor("#f89c1b"));
+
+                // mfr.setBackgroundColor(R.color.yellowdark);
+                mfr.setText("Marked");
+                if (dbAutoSave.getDataOfSingleClientstatus(Integer.toString(pgnn))!=null){
+                    dbAutoSave.updateDataunanswered(dummystuid,Integer.toString(pgnn),"2",Integer.toString(pgnn));
+
+                }else {
+                    dbAutoSave.insertDataunanswered(dummystuid,Integer.toString(pgnn),"2");
                 }
                 break;
                 default:

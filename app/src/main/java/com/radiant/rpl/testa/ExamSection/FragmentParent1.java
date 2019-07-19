@@ -1,5 +1,6 @@
 package com.radiant.rpl.testa.ExamSection;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,8 @@ import com.radiant.rpl.testa.LocalDB.DbAutoSave;
 
 import radiant.rpl.radiantrpl.R;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class FragmentParent1 extends Fragment {
     // private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -22,14 +25,52 @@ public class FragmentParent1 extends Fragment {
     String queidd,queiddd;
     int pageno,pagenoo;
     TextView prev,skip,next;
+    SharedPreferences spp1;
+    String pgnoo1;
+    String statussdata11,stuidd1;
+    String dd1,EE1;
+    int gg1,pp1;
 
     private static ShowButton showbuttonn;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_parent1, container, false);
         dbAutoSave=new DbAutoSave(getContext());
         getIDs(view);
+        statussdata11=dbAutoSave.getDataOfSingleClientstatus(pgnoo1);
+
+        spp1=getActivity().getSharedPreferences("mypref", MODE_PRIVATE);
+        stuidd1=spp1.getString("userid","");
+
+        CustomAdapter1.aa(new GotoQuestion() {
+            @Override
+            public void getposition(int a) {
+                viewPager.setCurrentItem(a-1);
+                showbuttonn.dd(true);
+                if (dbAutoSave.getDataOfSingleClientstatus1(""+a)!=null && dbAutoSave.getStatusDataOfSingleClientstatus1(""+a).equals("3")){
+                    dbAutoSave.updateDataunanswered1(stuidd1,""+a,"0",""+a);
+                    System.out.println("Case with 3 status ");
+                }
+            }
+        });
+
+
+       /* markforreview11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gg1=viewPager.getCurrentItem()+1;
+                dd1=Integer.toString(gg1);
+                System.out.println("markforreview"+stuidd1+" "+dd1);
+                if (dbAutoSave.getDataOfSingleClientstatus1(dd1)!=null){
+                    dbAutoSave.updateDataunanswered1(stuidd1,dd1,"2",dd1);
+                }else {
+                    dbAutoSave.insertDataunanswered1(stuidd1,dd1,"2");
+                }
+            }
+        });
+*/
 
         return view;
     }
@@ -91,6 +132,26 @@ public class FragmentParent1 extends Fragment {
 
             @Override
             public void onPageScrollStateChanged(int i) {
+                System.out.println("page scrolled");
+
+                FragmentChild.aaa(new GetStatusQue() {
+                    @Override
+                    public void gets(boolean b) {
+                        if (!b){
+                            for (int i=1;i<=1;i++){
+                                pp1=viewPager.getCurrentItem()+1;
+                                EE1=Integer.toString(pp1);
+                                System.out.println("On page change"+stuidd1+" "+EE1);
+                                /*if (dbAutoSave.getDataOfSingleClientstatus1(EE1)!=null){
+                                    dbAutoSave.updateDataunanswered1(stuidd1,EE1,"0",EE1);
+                                }else {
+                                    dbAutoSave.insertDataunanswered1(stuidd1,EE1,"0");
+
+                                }*/
+                            }
+                        }
+                    }
+                });
             }
         });
 

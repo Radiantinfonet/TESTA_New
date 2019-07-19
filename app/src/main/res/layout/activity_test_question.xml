@@ -2,10 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/r1"
     tools:context="com.radiant.rpl.testa.ExamSection.TestQuestion">
 
 
+    <TextureView
+        android:id="@+id/texture"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"/>
 
 
     <android.support.v4.widget.DrawerLayout
@@ -19,28 +25,29 @@
     <include layout="@layout/app_bar"></include>
 
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/len1"
-            android:weightSum="4"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="end">
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="#211E1E"
-                android:layout_weight="0.2">
+                android:layout_height="wrap_content"
+                android:background="#FBFBFB"
+                android:id="@+id/headerr1"
+                android:layout_alignParentTop="true"
+               >
 
                 <TextView
-                    android:textColor="@color/white"
+                    android:textColor="@color/darkblack"
                     android:id="@+id/qno"
                     android:layout_width="80dp"
                     android:layout_height="60dp"
-                    android:text="Question:" />
+                    android:textSize="18sp"
+                    android:text="Theory Question:" />
 
                 <TextView
                     android:id="@+id/qtv"
@@ -51,46 +58,58 @@
 
             </LinearLayout>
 
-
+            <!--<android.support.v4.widget.NestedScrollView
+                android:id="@+id/quepellete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/headerr1"
+                android:layout_above="@+id/footerpellete">-->
         <LinearLayout
+            android:id="@+id/quepellete"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3.2">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headerr1"
+            android:background="#FBFBFB"
+            android:layout_above="@+id/footerpellete"
+            >
 
 
 
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
             <GridView
                 android:id="@+id/drawer_right"
                 android:divider="@android:color/transparent"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:numColumns="4"
                 android:padding="10dp"
                 android:horizontalSpacing="5dp"
                 android:verticalSpacing="5dp"
-                android:scrollbars="vertical"
-                android:background="#453D3D">
-
-                
-                
+                android:background="#FBFBFB">
             </GridView>
+
+            </LinearLayout>
 
 
 
         </LinearLayout>
-
-
+            <!--</android.support.v4.widget.NestedScrollView>
+-->
 
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="#201919"
+            android:layout_height="wrap_content"
+            android:background="#FBFBFB"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/footerpellete"
             android:orientation="vertical"
-            android:layout_weight="0.6">
+            >
 
 
             <LinearLayout
@@ -109,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/darkblack"
                 />
 
 
@@ -122,8 +141,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:textAlignment="center"
-                android:textColor="@color/white"
-                android:drawableLeft="@drawable/not_answered"
+                android:textColor="@color/darkblack"
+                android:drawableLeft="@drawable/notvisited"
 
 
                 />
@@ -148,7 +167,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/darkblack"
                 android:drawableLeft="@drawable/marked_for_review"
                 />
 
@@ -160,8 +179,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:drawableLeft="@drawable/notvisited"
+                    android:textColor="@color/darkblack"
+                    android:drawableLeft="@drawable/not_answered"
                     />
 
 
@@ -194,7 +213,7 @@
 
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
 
@@ -212,32 +231,7 @@
             />
 
 
-            <LinearLayout android:orientation="horizontal" android:background="@drawable/bg_card_shadow" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginTop="4.0dip"
-                android:layout_marginRight="8.0dip" android:minHeight="52.0dip"
-                android:layout_below="@+id/count_down_strip"
-               >
 
-
-
-
-
-                <View android:background="#73ffffff" android:layout_width="1.0dip" android:layout_height="fill_parent" />
-
-                <TextView android:textColor="#ffffff" android:gravity="center"
-                    android:layout_gravity="center" android:id="@+id/timer"
-                    android:layout_width="0.0dip" android:layout_height="wrap_content"
-                    android:text="00:00" android:layout_weight="1.0"
-                    style="@style/text_h4" />
-
-                <View android:background="#73ffffff" android:layout_width="1.0dip" android:layout_height="fill_parent" />
-
-
-                <TextView android:textColor="#ffffff" android:gravity="center" android:layout_gravity="center" android:id="@+id/finish"
-                    android:layout_width="0.0dip"
-                    android:visibility="invisible"
-                    android:layout_height="fill_parent" android:text="Submit" android:layout_weight="1.0" style="@style/text_h4" />
-            </LinearLayout>
 
         <fragment
             android:id="@+id/fragmentParent"

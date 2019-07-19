@@ -13,7 +13,16 @@
     <color name="grey">#d9d9d9</color>
     <color name="lightgrey">#D3D3D3</color>
     <color name="purple">#EE82EE</color>
+    <color name="yellowdark">#f89c1b</color>
     <color name="white">#ffffffff</color>
     <color name="darkBlueColor">#ff009ee5</color>
     <color name="darkblack">#000000</color>
+    <color name="actionbar_opacity">#33000000</color>
+    <color name="BBlue">#2E78B5</color>
+    <color name="Btext">#707070</color>
+    <color name="Border">#A5A5A5</color>
+    <color name="green">#47c10c</color>
+    <color name="yelloww">#F0AD4E</color>
+    <color name="nliveo_black_light">#222222</color>
+
 </resources>

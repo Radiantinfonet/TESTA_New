@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D3D3D3">
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,24 +22,22 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:orientation="horizontal"
-            android:weightSum="2">
+            >
 
             <TextView
                 android:id="@+id/Quesnoo"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight=".3"
-                android:text="2.)"
+                android:layout_gravity="top"
+                android:text="2."
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/que"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1.7"
+                android:layout_gravity="top"
+                android:layout_marginLeft="3dp"
                 android:text="Where is the capital of India."
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -77,6 +81,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/vv1"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_below="@id/option1"
@@ -122,6 +127,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/vv2"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_below="@id/option2"
@@ -167,6 +173,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/vv3"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_below="@id/option3"
@@ -211,8 +218,22 @@
 
         </LinearLayout>
 
-
     </RelativeLayout>
+    </ScrollView>
 
+    <TextView
+        android:id="@+id/markforreviewww"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@color/white"
+        android:text="Mark for Review"
+        android:background="#F0AD4E"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>
 
-</ScrollView>

@@ -1,4 +1,5 @@
 package com.radiant.rpl.testa;
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
+import com.radiant.rpl.testa.Registration.Company_dropdown;
 
 import radiant.rpl.radiantrpl.R;
 
@@ -23,8 +26,9 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
     SharedPreferences prefs;
     Long timereset;
     DbAutoSave dbAutoSave;
-    public static String Baseurll="https://www.skillassessment.org/sdms/android_connect/";
-    public static String Testing_Baseurll="https://www.skillassessment.org/sdms/android_connect1/";
+    public static String Baseurll="https://www.skillassessment.org/sdms/android_connect1/";
+    public static String Testing_Baseurll="https://www.skillassessment.org/sdms/android_connect11/";
+    private static final int REQUEST_PHONE_CALL = 1;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -57,7 +61,7 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent ii=new Intent(Start_Registration.this, MainActivity.class);
+                Intent ii=new Intent(Start_Registration.this, Activity_Rplintroduction.class);
                 startActivity(ii);
             }
         }
@@ -65,6 +69,7 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent ii=new Intent(Start_Registration.this,SignInAct.class);
                 startActivity(ii);
             }
@@ -109,7 +114,7 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
     }
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            exitByBackKey();
+            //exitByBackKey();
 
             moveTaskToBack(true);
 
@@ -118,10 +123,10 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
         return super.onKeyDown(keyCode, event);
     }
 
-    protected void exitByBackKey() {
+   /* protected void exitByBackKey() {
 finish();
 
 
-    }
+    }*/
 
 }

@@ -7,7 +7,7 @@ xmlns:android="http://schemas.android.com/apk/res/android" >
 <android.support.v7.widget.Toolbar
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/colorPrimary"
+    android:background="@color/BBlue"
     android:id="@+id/toolbar"
     >
     <RelativeLayout
@@ -18,8 +18,9 @@ xmlns:android="http://schemas.android.com/apk/res/android" >
             android:layout_height="wrap_content"
             android:text="THEORY QUESTIONS"
             android:gravity="center"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:layout_marginTop="15dp"
+            android:textColor="@color/white"
             />
         <ImageButton
             android:id="@+id/imgRight"

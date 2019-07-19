@@ -4,11 +4,17 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,14 +28,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.ebanx.swipebtn.OnActiveListener;
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
+import com.radiant.rpl.testa.ExamSection.ContactUsActivity;
+import com.radiant.rpl.testa.ExamSection.Technical_Activity;
 import com.radiant.rpl.testa.ExamSection.Update_profile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
 import radiant.rpl.radiantrpl.R;
 
@@ -44,21 +54,26 @@ public class Welcome_page extends AppCompatActivity {
     private android.app.AlertDialog progressDialog;
     String userid;
     SwipeButton enableButton;
-
+    String img;
+    ByteArrayOutputStream baos;
+    byte[] imageBytes;
+    CircleImageView imgview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
         progressDialog = new SpotsDialog(Welcome_page.this, R.style.Custom);
-        blink();
+        //blink();
         session = new SessionManager();
         textView2=findViewById(R.id.textView2);
         ttv=findViewById(R.id.textView);
         logoutt=findViewById(R.id.logouttext);
         alertmessage=findViewById(R.id.textView3);
+        imgview=findViewById(R.id.set_photo);
         geturl= Start_Registration.getURL();
         gettestingurl=Start_Registration.getTestingURL();
         enableButton = (SwipeButton) findViewById(R.id.swipe_btn);
+        baos = new ByteArrayOutputStream();
         enableButton.setOnStateChangeListener(new OnStateChangeListener() {
             @Override
             public void onStateChange(boolean active) {
@@ -92,6 +107,45 @@ public class Welcome_page extends AppCompatActivity {
                 startActivity(in);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.save_menu:
+                Intent i = new Intent(getApplicationContext(), ContactUsActivity.class);
+                startActivity(i);
+                //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+
+                return true;
+            case R.id.search_menu:
+                Intent viewIntent =
+                        new Intent("android.intent.action.VIEW",
+                                Uri.parse("https://www.skillassessment.org/ssc/FAQ.html"));
+                startActivity(viewIntent);
+
+                return true;
+
+
+
+
+            case R.id.save_technical:
+                Intent j = new Intent(getApplicationContext(), Technical_Activity.class);
+                startActivity(j);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
 
@@ -131,7 +185,7 @@ public class Welcome_page extends AppCompatActivity {
 
     private void Check_Profille() {
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect/check_student_profile.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/check_student_profile.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -142,7 +196,13 @@ public class Welcome_page extends AppCompatActivity {
                     System.out.println("ddd"+response);
                     String status= jobj.getString("status");
                     String message= jobj.getString("msg");
+                    img=jobj.getString("student_img");
+                    imageBytes = Base64.decode(img, Base64.DEFAULT);
+                    Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    imgview.setImageBitmap(decodedImage);
+
                     if (status.equals("1")) {
+
                         alertmessage.setText("Mark Your Attendance on the next page and kindly follow the instructions to start the Assessment.");
                         enableButton.setVisibility(View.VISIBLE);
                         logoutt.setVisibility(View.GONE);

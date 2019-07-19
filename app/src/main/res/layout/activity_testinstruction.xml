@@ -5,14 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/pl"
+
     tools:context="com.radiant.rpl.testa.Testinstruction">
 
     <LinearLayout
-        android:id="@+id/len2"
+        android:id="@+id/len22"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5">
         <TextView
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="General Instructions:-"
@@ -42,11 +45,22 @@
 
 
             <TextView
+
                 android:id="@+id/tv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 android:text="@string/line1" />
+
+            <TextView
+
+                android:id="@+id/tv22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/line22" />
 
             <TextView
                 android:id="@+id/tv2"
@@ -121,7 +135,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
-
                 android:text="@string/line11" />
 
             <TextView
@@ -129,8 +142,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
+                android:text="@string/line13" />
 
-                android:text="@string/line8" />
+           <!-- <TextView
+                android:id="@+id/tv12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+
+                android:text="@string/line8" />-->
 
 
 
@@ -143,7 +163,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="1"
         android:gravity="center|bottom"
         android:orientation="vertical">
 
@@ -152,12 +172,15 @@
             android:id="@+id/testinstructproceed"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="150dp"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:text="Start"
-            android:textSize="24sp" />
+            android:shadowColor="@color/BBlue"
+            android:background="@drawable/mybuttons1"
+            android:textSize="18sp" />
 
 
     </LinearLayout>

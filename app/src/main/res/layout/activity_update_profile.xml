@@ -25,11 +25,6 @@
     </android.support.design.widget.AppBarLayout>
 
 
-
-
-
-    />
-
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -86,6 +81,53 @@
                     />
             </android.support.design.widget.TextInputLayout>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Year of Birth*"
+                android:textSize="18sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+
+            <Spinner
+                android:id="@+id/input_layout_year_update"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dropdown"
+                android:textSize="14sp"
+
+                />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+
+
             <Spinner
                 android:id="@+id/input_layout_gender_update"
                 android:background="@drawable/background"
@@ -121,6 +163,70 @@
                 android:textSize="14sp"
                 />
 
+            <Spinner
+                android:id="@+id/input_layout_Education_update"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_Eduction_other_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_Eduction_other_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_other"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <Spinner
+                android:id="@+id/input_layout_Disablity_type_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background"
+                android:spinnerMode="dialog">
+
+            </Spinner>
+
+
+            <Spinner
+                android:id="@+id/input_layout_type_of_Disablity_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background"
+                android:spinnerMode="dialog"
+                android:visibility="gone">
+
+            </Spinner>
+
+
+
+
+
+
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_mobile_no_update"
                 android:layout_width="match_parent"
@@ -132,9 +238,172 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:inputType="number"
-                    android:editable="false"
+
                     android:hint="@string/hint_mobile" />
             </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_email_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_email_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_email"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_address1_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_address1_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_address_line1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_pincode_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_pincode_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_pincode"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+            <Spinner
+                android:id="@+id/input_layout_State_update"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+
+                />
+
+
+            <Spinner
+                android:id="@+id/input_layout_District_update"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"      />
+                <!--android:visibility="gone"-->
+
+
+
+
+            <Spinner
+                android:id="@+id/input_layout_Employer_update"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/input_layout_Sector_update"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+
+
+            <Spinner
+                android:id="@+id/input_layout_jobrole_update"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+
+
+            <Spinner
+                android:id="@+id/employment_status_update"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp" />
+
+
 
 
 
@@ -154,6 +423,43 @@
                     android:hint="@string/hint_aadhar" />
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_pan_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_pan_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="text"
+
+                    android:hint="@string/hint_pancard" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <Spinner
+                android:id="@+id/input_layout_bankname_update"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingLeft="2dp"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+
+                />
+
+
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_bank_ac_update"
@@ -168,6 +474,8 @@
                     android:inputType="number"
                     android:hint="@string/hint_bank_ac" />
             </android.support.design.widget.TextInputLayout>
+
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_bank_username_update"
@@ -202,26 +510,6 @@
 
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                >
-
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:id="@+id/input_photograph_aadhar_update"
-                    android:background="@drawable/aadharphoto"
-                    android:layout_weight="1"
-                    android:scaleType="fitXY"
-                    android:layout_marginRight="4dp"
-                    />
-
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -247,10 +535,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
                 android:text="UPDATE"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary"
-                android:textColor="@android:color/white"
+                android:background="@drawable/mybuttons"
+                android:textColor="@drawable/button_text_color"
                 android:layout_marginBottom="60dp"
                 />
 
