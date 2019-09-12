@@ -54,10 +54,11 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
 
 
             <TextView
+                android:id="@+id/Registration_heading"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:text="Registration Details"
+                android:text="@string/registration_details"
                 android:gravity="left"
                 android:textSize="22sp"
                 android:paddingLeft="15dp"
@@ -79,6 +80,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_mobile_no"
             android:layout_width="match_parent"
+            android:hint="@string/hint_mobile"
             android:layout_height="wrap_content">
 
             <EditText
@@ -87,8 +89,9 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:inputType="number"
-                android:hint="@string/hint_mobile" />
+                />
         </android.support.design.widget.TextInputLayout>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="160dp"
@@ -112,7 +115,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Scan Aadhar QR Code"
+                    android:text="@string/scan_aadhar_qr_code"
                     android:textSize="13sp"
                     android:fontFamily="sans-serif-black"
                     android:layout_marginTop="@dimen/horizontal_margin_small_small"
@@ -154,7 +157,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_marginTop="10dp"
                 android:background="@color/BBlue"
                 android:drawableLeft="@drawable/ic_photo_camera"
-                android:text="UPLOAD YOUR PHOTO"
+                android:text="@string/upload_your_photo"
                 android:drawablePadding="5dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="10dp"
@@ -203,7 +206,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_marginTop="10dp"
                 android:background="@color/BBlue"
                 android:drawableLeft="@drawable/ic_photo_camera"
-                android:text="UPLOAD YOUR AAdhar"
+                android:text="@string/upload_your_aadhar"
                 android:drawablePadding="5dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="10dp"
@@ -224,10 +227,11 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
 
 
             <TextView
+                android:id="@+id/personal_heading"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Personal Details"
+                android:text="@string/personal_details"
                 android:gravity="left"
                 android:textSize="22sp"
                 android:paddingLeft="15dp"
@@ -261,13 +265,13 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_name_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_name"
             android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/input_name_amway"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_name"
                 android:textColor="#000000"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
@@ -276,13 +280,13 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_last_name_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_last_name"
             android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/input_last_name_amway"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_last_name"
                 android:textColor="#000000"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
@@ -294,13 +298,13 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_fatherfirst_name_amway"
             android:layout_width="match_parent"
+            android:hint="@string/father_first_name"
             android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/input_fatherfirst_name_amway"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Father First Name*"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 
@@ -308,13 +312,13 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_fatherlast_name_amway"
             android:layout_width="match_parent"
+            android:hint="@string/father_last_name"
             android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/input_fatherlast_name_amway"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Father Last Name*"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 
@@ -335,13 +339,13 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_guardianfirst_name_amway"
             android:layout_width="match_parent"
+            android:hint="@string/guardian_first_name"
             android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/input_guardianfirst_name_amway"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Guardian First Name"
                 android:textColor="#000000"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
@@ -350,13 +354,13 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_guardianlast_name_amway"
             android:layout_width="match_parent"
+            android:hint="@string/guardian_last_name"
             android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/input_guardianlast_name_amway"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Guardian Last Name"
                 android:textColor="#000000"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
@@ -403,6 +407,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_email_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_email"
             android:layout_height="wrap_content">
 
             <EditText
@@ -410,7 +415,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:hint="@string/hint_email" />
+                />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -418,6 +423,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_alt_mobile_no_amway"
             android:layout_width="match_parent"
+            android:hint="@string/alt_hint_mobile"
             android:layout_height="wrap_content">
 
             <EditText
@@ -426,7 +432,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:inputType="number"
-                android:hint="@string/alt_hint_mobile" />
+               />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -468,10 +474,11 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
 
 
             <TextView
+                android:id="@+id/candidates_heading"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Candidate Details"
+                android:text="@string/candidate_details"
                 android:gravity="left"
                 android:textSize="22sp"
                 android:paddingLeft="15dp"
@@ -496,13 +503,14 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_Birthplace_amway"
                 android:layout_width="match_parent"
+                android:hint="@string/birth_place"
                 android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/input_Birthplace_amway"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Birth Place"
+
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
@@ -511,9 +519,10 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
 
 
             <TextView
+                android:id="@+id/dob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Date of Birth*"
+                android:text="@string/date_of_birth"
                 android:textSize="18sp"
                 />
             <LinearLayout
@@ -594,10 +603,11 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
 
 
             <TextView
+                android:id="@+id/address_heading"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Address Details"
+                android:text="@string/address_details"
                 android:gravity="left"
                 android:textSize="22sp"
                 android:paddingLeft="15dp"
@@ -658,6 +668,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_city"
             android:layout_width="match_parent"
+            android:hint="@string/hint_city"
             android:layout_height="wrap_content">
 
             <EditText
@@ -665,7 +676,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:hint="@string/hint_city" />
+               />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -677,6 +688,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_address1_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_address_line1"
             android:layout_height="wrap_content">
 
             <EditText
@@ -685,12 +697,13 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textColor="#000000"
-                android:hint="@string/hint_address_line1" />
+                 />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_address2_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_address_line2"
             android:layout_height="wrap_content">
 
             <EditText
@@ -699,13 +712,14 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textColor="#000000"
-                android:hint="@string/hint_address_line2" />
+                 />
         </android.support.design.widget.TextInputLayout>
 
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_pincode_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_pincode"
             android:layout_height="wrap_content">
 
             <EditText
@@ -715,7 +729,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:singleLine="true"
                 android:inputType="number"
                 android:textColor="#000000"
-                android:hint="@string/hint_pincode" />
+                 />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -730,10 +744,11 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
 
 
             <TextView
+                android:id="@+id/qualification_heading"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Qualification"
+                android:text="@string/qualification"
                 android:gravity="left"
                 android:textSize="22sp"
                 android:paddingLeft="15dp"
@@ -772,6 +787,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_Eduction_other_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_other"
             android:layout_height="wrap_content">
 
             <EditText
@@ -780,7 +796,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:visibility="gone"
-                android:hint="@string/hint_other" />
+                 />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -795,10 +811,11 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
 
 
             <TextView
+                android:id="@+id/Employer_heading"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Employer Details"
+                android:text="@string/employer_details"
                 android:gravity="left"
                 android:textSize="22sp"
                 android:paddingLeft="15dp"
@@ -852,6 +869,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_empid_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_empid"
             android:layout_height="wrap_content">
 
             <EditText
@@ -859,12 +877,13 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:hint="@string/hint_empid" />
+               />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_storeloc_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_location"
             android:layout_height="wrap_content">
 
             <EditText
@@ -873,7 +892,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:inputType="text"
-                android:hint="@string/hint_location" />
+               />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -895,7 +914,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Course Details"
+                android:text="@string/course_details"
                 android:gravity="left"
                 android:textSize="22sp"
                 android:paddingLeft="15dp"
@@ -962,10 +981,11 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
 
 
             <TextView
+                android:id="@+id/employment_status_heading"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Employment Status"
+                android:text="@string/employment_status"
                 android:gravity="left"
                 android:textSize="22sp"
                 android:paddingLeft="15dp"
@@ -1008,10 +1028,11 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
 
 
             <TextView
+                android:id="@+id/identifications_heading"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Identification Details"
+                android:text="@string/identification_details"
                 android:gravity="left"
                 android:textSize="22sp"
                 android:paddingLeft="15dp"
@@ -1030,6 +1051,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_aadhar_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_aadhar"
             android:layout_height="wrap_content">
 
             <EditText
@@ -1039,13 +1061,14 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:singleLine="true"
                 android:inputType="number"
                 android:textColor="#000000"
-                android:hint="@string/hint_aadhar" />
+                 />
         </android.support.design.widget.TextInputLayout>
 
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_pancard_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_pancard"
             android:layout_height="wrap_content">
 
             <EditText
@@ -1054,7 +1077,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:inputType="text"
-                android:hint="@string/hint_pancard" />
+                />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -1084,6 +1107,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_Id_no_amway"
             android:layout_width="match_parent"
+            android:hint="@string/hint_other_id"
             android:layout_height="wrap_content">
 
             <EditText
@@ -1092,7 +1116,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:visibility="gone"
-                android:hint="@string/hint_other_id" />
+                 />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -1112,9 +1136,10 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
                 android:layout_height="wrap_content"
                 />
             <TextView
+                android:id="@+id/dec2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="I am willing to declare my aadhar details for PMKVY RPL4 project"
+                android:text="@string/i_am_willing_to_declare_my_aadhar_details_for_pmkvy_rpl4_project"
                 />
 
 
@@ -1123,7 +1148,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <Button android:id="@+id/btn_signup_amway"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:text="Register"
+            android:text="@string/register"
             android:textColor="@drawable/button_text_color"
             android:textSize="18sp"
             android:layout_marginTop="20dp"
@@ -1136,7 +1161,7 @@ tools:context="com.radiant.rpl.testa.Registration.Amway_Registration"><!--<andro
         <Button android:id="@+id/btn_already_register"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:text="Already Registered"
+            android:text="@string/already_registered"
             android:textColor="@drawable/button_text_color"
             android:textSize="18sp"
             android:layout_marginTop="8dp"

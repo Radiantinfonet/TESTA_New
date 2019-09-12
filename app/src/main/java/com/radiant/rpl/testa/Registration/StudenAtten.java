@@ -1,4 +1,4 @@
-package com.radiant.rpl.testa.Initials;
+package com.radiant.rpl.testa.Registration;
 
 import android.Manifest;
 import android.app.Activity;
@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,8 +24,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.util.Base64OutputStream;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,29 +51,21 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.radiant.rpl.testa.Common.CommonUtils;
 import com.radiant.rpl.testa.ExamSection.ContactUsActivity;
-import com.radiant.rpl.testa.ExamSection.FragmentParent;
 import com.radiant.rpl.testa.ExamSection.Technical_Activity;
-import com.radiant.rpl.testa.Registration.ProctoringcomparisonClass;
-import com.radiant.rpl.testa.EyeBlink.Eye_blinkActivity;
-import com.radiant.rpl.testa.Registration.SavephotoComparison;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 public class StudenAtten extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -87,7 +77,6 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     TextView tv;
     List<Address> addresses;
     Button b1;
-    Bitmap myBitmap;
     public static final String mypreference = "mypref";
     GoogleApiClient mGoogleApiClient;
     private Location location;
@@ -100,26 +89,30 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     private static final int ALL_PERMISSIONS_RESULT = 1011;
     String aaa,batchidd,studentidd;
     String encoded;
-    SharedPreferences sharedPreferences;
-    TextView nameid,addressid,batchid;
+    SharedPreferences sharedPreferences,language_prefs;
+    TextView nameid,addressid,batchid,student_name,jobrole_id,Address_id;
     private android.app.AlertDialog progressDialog;
     String geturl,gettestingurl;
     LinearLayout linearlayout;
     Button bb;
-   String uid;
-    String stringLatitude,stringLongitude;
-    String UserMobile,Name;
-    private String proc_status;
-    private String student_type;
-    private String imagebase64;
+    String uid, msg,msg1,msg2,msg3,msg4,msg5,msg6,msg7,msg8,msg9,msg10,msg11,msg12;
+    String stringLatitude,stringLongitude,selected_language;;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_studen_atten);
 
-       // progressDialog = new SpotsDialog(StudenAtten.this, R.style.Custom);
+
+        language_prefs = getSharedPreferences("language_prefs", MODE_PRIVATE);
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
+
+
+
         progressDialog = new SpotsDialog(StudenAtten.this, R.style.Custom);
         img = findViewById(R.id.assessorpic);
         tv = findViewById(R.id.locationn);
@@ -131,21 +124,62 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         geturl= Start_Registration.getURL();
         linearlayout = findViewById(R.id.linearlayout);
         gettestingurl=Start_Registration.getTestingURL();
+        student_name = findViewById(R.id.student_name);
+        jobrole_id = findViewById(R.id.jobrole_id);
+        Address_id = findViewById(R.id.address_iddd);
+
+
+        Resources resources = getResources();
+        msg = resources.getString(R.string.Camera_Warning);
+        msg1 = resources.getString(R.string.Google_Play_Req);
+        msg2 = resources.getString(R.string.Location_Req);
+        msg3 = resources.getString(R.string.Camera_Denied);
+        msg4 = resources.getString(R.string.Internet_connectivity);
+        msg5 = resources.getString(R.string.Camera_granted);
+        msg6 = resources.getString(R.string.Camera_Message);
+        msg7 = resources.getString(R.string.Global_ErrorResponse_Message);
+        msg8 = resources.getString(R.string.Attend_ERR_msg);
+        msg9 = resources.getString(R.string.Exit_Alert_Message);
+        msg10 = resources.getString(R.string.amway_Disablity_yes);
+        msg11 = resources.getString(R.string.No);
+
+
+
+        //changed
+        Paper.init(this);
+        String language = Paper.book().read("language");
+        if(language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("hindi", ""));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("english", ""));
+
+
+        }
+
+
+
+
         //getLocation();
         sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         if (sharedPreferences.contains("Name")) {
             nameid.setText(sharedPreferences.getString("Name", ""));
-            Name= sharedPreferences.getString("Name","");
         }
         if (sharedPreferences.contains("address")){
             addressid.setText(sharedPreferences.getString("address",""));
         }
-
-        if (sharedPreferences.contains("proctor_status")){
-            proc_status= sharedPreferences.getString("proctor_status","");
-
-        }
-
         if (sharedPreferences.contains("batchid")){
             batchidd=sharedPreferences.getString("batchid","");
         }
@@ -159,16 +193,6 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
             studentidd=sharedPreferences.getString("userid","");
         }
 
-        if (sharedPreferences.contains("assessorid")){
-            UserMobile=sharedPreferences.getString("assessorid","");
-            System.out.println("huygauyyf" +UserMobile);
-        }
-
-        if (sharedPreferences.contains("student_type")){
-            student_type=sharedPreferences.getString("student_type","");
-        }
-
-
 
         try{
             bb.setOnClickListener(new View.OnClickListener() {
@@ -176,27 +200,26 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-
-
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (checkSelfPermission(Manifest.permission.CAMERA)
                                 != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(new String[]{Manifest.permission.CAMERA},
                                     MY_CAMERA_PERMISSION_CODE);
                         } else {
-                            Intent ii=new Intent(StudenAtten.this, Eye_blinkActivity.class);
-                            startActivityForResult(ii,1);
+                            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                            cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
+                            cameraIntent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
+                            cameraIntent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
+                            startActivityForResult(cameraIntent, CAMERA_REQUEST);
                         }
 
                     }
                     else {
-                        Intent ii=new Intent(StudenAtten.this, Eye_blinkActivity.class);
-                        startActivityForResult(ii,1);
-                       /* Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                         cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
                         cameraIntent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
                         cameraIntent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     }
                 }
 
@@ -210,31 +233,26 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (checkSelfPermission(Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.CAMERA},
                             MY_CAMERA_PERMISSION_CODE);
                 } else {
-                    Intent ii=new Intent(StudenAtten.this, Eye_blinkActivity.class);
-                    startActivityForResult(ii,1);
-                   /* Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
                     cameraIntent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
                     cameraIntent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 }
 
             }
                 else {
-                    Intent ii=new Intent(StudenAtten.this, Eye_blinkActivity.class);
-                    startActivityForResult(ii,1);
-                    /*Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
                     cameraIntent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
                     cameraIntent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 }
             }
 
@@ -244,24 +262,16 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (encoded != null) {
-                    System.out.println("proc status is"+proc_status+ "  and student type is "+student_type);
-                    //AssessorAttendance();
-                    if (proc_status.equals("1") && student_type.equals("RPL")){
-                        new SavephotoComparison(getApplicationContext()).PhotoApiREc(encoded,UserMobile,Name,StudenAtten.this);
-                    }
-                    else {
-                        AssessorAttendance();
-                    }
+           if (encoded!=null) {
+                   AssessorAttendance();
+               }else {
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
 
-                } else {
-                    Toast.makeText(getApplicationContext(),"Please wait.Your photo is still getting uploaded",Toast.LENGTH_LONG).show();
-                }
+           }
             }
         });
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-
         permissionsToRequest = permissionsToRequest(permissions);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -271,14 +281,6 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
             }
         }
 
-
-        SavephotoComparison.aa(new ProctoringcomparisonClass() {
-            @Override
-            public void saveatten(int a) {
-                AssessorAttendance();
-            }
-        });
-
         // we build google api client
         googleApiClient = new GoogleApiClient.Builder(this).
                 addApi(LocationServices.API).
@@ -287,15 +289,20 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     }
 
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+
+        if (  selected_language!=null && selected_language.equals("1")) {
+            getMenuInflater().inflate(R.menu.main1, menu);
+
+        }
+        else
+            getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -322,10 +329,34 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 startActivity(j);
                 return true;
 
-            default:
-                return super.onOptionsItemSelected(item);
+           }
 
+
+        if(item.getItemId() == R.id.language_en)
+        {
+            Paper.book().write("language","en");
+            updateView((String)Paper.book().read("language"));
         }
+
+
+        if(item.getItemId() == R.id.language_hi)
+        {
+            Paper.book().write("language","hi");
+            updateView((String)Paper.book().read("language"));
+        }
+
+
+
+
+        // default:
+        return super.onOptionsItemSelected(item);
+
+
+
+
+
+
+
     }
 
 
@@ -370,9 +401,8 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         buildGoogleApiClient();
         }
         if (!checkPlayServices()) {
-            Toast.makeText(this,"You need to install Google Play Services to use the App properly",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,msg1,Toast.LENGTH_LONG).show();
         }
-
 
 
     }
@@ -380,6 +410,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     @Override
     protected void onPause() {
         super.onPause();
+
         // stop location updates
         if (googleApiClient != null  &&  googleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, (com.google.android.gms.location.LocationListener) this);
@@ -455,7 +486,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 &&  ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "You need to enable permissions to display location !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, msg2, Toast.LENGTH_SHORT).show();
         }
 
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
@@ -476,17 +507,20 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         }
     }
 
+
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_CAMERA_PERMISSION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                Toast.makeText(this,msg5, Toast.LENGTH_LONG).show();
                 Intent cameraIntent = new
                         Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             } else {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+                Toast.makeText(this,msg3, Toast.LENGTH_LONG).show();
             }
 
         }
@@ -494,26 +528,10 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
-
-            if (resultCode == 3 && requestCode == 1 ){
-                Bundle extras1 = data.getExtras();
-                String byteArrayy = extras1.getString("ss");
-                System.out.println("the path is"+byteArrayy);
-                File file = new File(byteArrayy);
-                if(file.exists()) {
-                    myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                    img.setImageBitmap(myBitmap);
-                }
-
-                imagebase64=getStringFile(file);
-
-
-            }
-
             if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
                 if(data.getExtras()==null || (data.getExtras().get("data")==null ||  !(data.getExtras().get("data") instanceof Bitmap))){
                     //todo - show error
-                    Toast.makeText(getApplicationContext(),"The file picked is invalid.Please use default camera to click Photos",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),msg6,Toast.LENGTH_LONG).show();
                     return;
                 }
             Bitmap photo = (Bitmap) data.getExtras().get("data");
@@ -557,22 +575,18 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                     final Status status = result.getStatus();
                     switch (status.getStatusCode()) {
                         case LocationSettingsStatusCodes.SUCCESS:
-                            Log.i("TAG", "All location settings are satisfied.");
                             startLocationUpdates();
                             break;
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                            Log.i("TAG", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
 
                             try {
                                 // Show the dialog by calling startResolutionForResult(), and check the result
                                 // in onActivityResult().
                                 status.startResolutionForResult(StudenAtten.this, REQUEST_CHECK_SETTINGS);
                             } catch (IntentSender.SendIntentException e) {
-                                Log.i("TAG", "PendingIntent unable to execute request.");
                             }
                             break;
                         case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                            Log.i("TAG", "Location settings are inadequate, and cannot be fixed here. Dialog not created.");
                             break;
                     }
                 }
@@ -591,7 +605,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
 
 
     private void saveLog(final String fnamee, final String ip, final String activity, final String lat, final String longi,final String cmpid) {
-        String serverURL = CommonUtils.url+"save_logs.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_logs.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -599,7 +613,6 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    System.out.println("sss"+response);
 
 
                 } catch (JSONException e) {
@@ -611,8 +624,8 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error Saving the details", Toast.LENGTH_LONG).show();
-                System.out.println("aa"+error);
+                Toast.makeText(getApplicationContext(), msg7, Toast.LENGTH_LONG).show();
+
             }
         })
 
@@ -630,8 +643,13 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
+                map.put("username",fnamee);
+                map.put("ip",ip);
+                map.put("company_id",cmpid);
+                map.put("activity",activity);
+                map.put("lat",lat);
+                map.put("longi",longi);
 
-                System.out.println("map of student atten"+map);
                 return map;
             }
         };
@@ -640,9 +658,9 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     }
 
 
-    public void AssessorAttendance() {
+    private void AssessorAttendance() {
         progressDialog.show();
-        String serverURL = CommonUtils.url+"save_student_attendance.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_student_attendance.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -658,10 +676,11 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                           editor.putString("lat", stringLatitude);
                           editor.putString("long", stringLongitude);
                           editor.commit();
+                          saveLog(uid,"","Instructions",stringLatitude,stringLongitude,"");
                           Intent ii = new Intent(StudenAtten.this, Testinstruction.class);
                           startActivity(ii);
                       }else {
-                          Toast.makeText(getApplicationContext(),"Unable to mark Attendance.Try again later",Toast.LENGTH_LONG).show();
+                          Toast.makeText(getApplicationContext(),msg8,Toast.LENGTH_LONG).show();
                       }
                     }
                     catch (JSONException e) {
@@ -680,7 +699,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                     progressDialog.dismiss();
                 }
                 Snackbar snackbar = Snackbar
-                        .make(linearlayout,"Internet not available,Cross check your internet connectivity.",Snackbar.LENGTH_LONG);
+                        .make(linearlayout,msg4, Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         }) {
@@ -697,18 +716,10 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("student_id", studentidd);
-                map.put("student_image",imagebase64);
+                map.put("student_image",encoded);
                 map.put("location",tv.getText().toString());
                 map.put("attendance","PRESENT");
                 map.put("batch_id",batchidd);
-                map.put("username",uid);
-                map.put("mobile_imei","");
-                map.put("ip","");
-                map.put("company_id","");
-                map.put("activity","Instructions");
-                map.put("lat",stringLatitude);
-                map.put("longi",stringLongitude);
-                map.put("student_type",student_type);
                 return map;
             }
         };
@@ -730,8 +741,8 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     protected void exitByBackKey() {
 
         AlertDialog alertbox = new AlertDialog.Builder(this)
-                .setMessage("Do you Really want to exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setMessage(msg9)
+                .setPositiveButton(msg10, new DialogInterface.OnClickListener() {
 
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -742,7 +753,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
 
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(msg11, new DialogInterface.OnClickListener() {
 
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -752,33 +763,49 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
 
     }
 
-    public String getStringFile(File f) {
-        InputStream inputStream = null;
-        String encodedFile= "", lastVal;
-        try {
-            inputStream = new FileInputStream(f.getAbsolutePath());
 
-            byte[] buffer = new byte[10240];//specify the size to allow
-            int bytesRead;
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            Base64OutputStream output64 = new Base64OutputStream(output, Base64.DEFAULT);
 
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                output64.write(buffer, 0, bytesRead);
-            }
-            output64.close();
-            encoded =  output.toString();
 
-        }
-        catch (FileNotFoundException e1 ) {
-            e1.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        lastVal = encoded;
-        return lastVal;
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+
+        Context context = LocaleHelper.setLocale(this,lang);
+        final Resources resources = context.getResources();
+        b1.setText(resources.getString(R.string.proceed));
+        bb.setText(resources.getString(R.string.upload_your_photo));
+        student_name.setText(resources.getString(R.string.student_name));
+        jobrole_id.setText(resources.getString(R.string.jobrole));
+        Address_id.setText(resources.getString(R.string.address));
+        msg = resources.getString(R.string.Camera_Warning);
+        msg1 = resources.getString(R.string.Google_Play_Req);
+        msg2 = resources.getString(R.string.Location_Req);
+        msg3 = resources.getString(R.string.Camera_Denied);
+        msg4 = resources.getString(R.string.Internet_connectivity);
+        msg5 = resources.getString(R.string.Camera_granted);
+        msg6 = resources.getString(R.string.Camera_Message);
+        msg7 = resources.getString(R.string.Global_ErrorResponse_Message);
+        msg8 = resources.getString(R.string.Attend_ERR_msg);
+        msg9 = resources.getString(R.string.Exit_Alert_Message);
+        msg10 = resources.getString(R.string.amway_Disablity_yes);
+        msg11 = resources.getString(R.string.No);
+
+        setTitle(resources.getString(R.string.Attendence));
+
+
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 }
 

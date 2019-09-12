@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -64,11 +65,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.androidhiddencamera.CameraConfig;
 import com.google.gson.Gson;
-import com.radiant.rpl.testa.Common.CommonUtils;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
-import com.radiant.rpl.testa.Initials.MyNetwork;
-import com.radiant.rpl.testa.Initials.SessionManager;
+import com.radiant.rpl.testa.LocaleHelper;
+import com.radiant.rpl.testa.MyNetwork;
+import com.radiant.rpl.testa.SessionManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,12 +97,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import dmax.dialog.SpotsDialog;
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 
 public class Testviva extends AppCompatActivity {
     FragmentParent1 fragmentParent;
-    TextView textView, finalSubmitbutton, reviewlaterr;
+    TextView textView, finalSubmitbutton, reviewlaterr,tv1;
     Cursor cursor, cursor11;
     Toolbar t1;
     RelativeLayout len1;
@@ -112,6 +116,13 @@ public class Testviva extends AppCompatActivity {
     SessionManager sessionManager;
     String name[];
     String j;
+
+
+
+
+
+    //camera by pk
+
     private static final String TAG = "AndroidCameraApi";
     private Button takePictureButton;
     private TextureView textureView;
@@ -146,6 +157,21 @@ public class Testviva extends AppCompatActivity {
     private boolean mFlashSupported;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private NotificationHelper mNotificationHelper;
     private android.app.AlertDialog progressDialog;
     long START_TIME_IN_MILLIS;
@@ -154,6 +180,7 @@ public class Testviva extends AppCompatActivity {
     private boolean TimerRunning;
     private long TimeLeftInMillis;
     private long EndTime;
+    private CameraConfig mCameraConfig;
     private static final int REQ_CODE_CAMERA_PERMISSION = 1253;
     ArrayList<String> studentidlist;
     ArrayList<String> questioniddd;
@@ -179,50 +206,14 @@ public class Testviva extends AppCompatActivity {
     String value, batchvalue, studentid;
     String jsonInString;
 long practical_timeee;
-    SharedPreferences sp,sp1;
-    String[] title = {
-            "New Delhi",
-            "Mumbai",
-            "Bangalore",
-            "Ahmedabad",
-    };
-    String[] title1 = {
-            "Narendra Modi",
-            "Jawahar Lal Nehru",
-            "Karamchand Ghandhi",
-            "Anil Kapoor",
-    };
-    String[] title2 = {
-            "Shiela Dixit",
-            "Arvind Kejriwal",
-            "Manish Shishodia",
-            "Rajat Sharma",
-    };
-    String[] title3 = {
-            "Imraan Khan",
-            "Kapil Dev",
-            "Mahendra Singh Dhoni",
-            "Ravindra Jadeja",
-    };
-    String[] title4 = {
-            "Ved Vyas",
-            "TulsiDas",
-            "Ramanand sagar",
-            "Vishwamitra",
-    };
+    SharedPreferences sp,sp1,language_prefs;
+
     boolean alreadyExecuted1 = false;
     boolean alreadyExecuted1_timer = false;
     RelativeLayout parentLayout;
     int que_count,answersofpreviouspage;
-    String stringLatitude1,stringLongitude1;
-    public String student_type;
-
-
-    ArrayList<String> Que_image_viva=new ArrayList<>();
-    ArrayList<String> Que_option1_viva=new ArrayList<>();
-    ArrayList<String> Que_option2_viva=new ArrayList<>();
-    ArrayList<String> Que_option3_viva=new ArrayList<>();
-    ArrayList<String> Que_option4_viva=new ArrayList<>();
+    String stringLatitude1,stringLongitude1,selected_language
+            ,msg1,msg2,msg3,msg4,msg5,msg6,msg7,msg8,msg9,msg10,msg11,msg12,msg13,msg14,msg15,msg16;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -252,19 +243,92 @@ long practical_timeee;
         studentidlist = new ArrayList<>();
         questioniddd = new ArrayList<>();
         answeredoptionn = new ArrayList<>();
-        options.add(title);
-        options.add(title1);
-        options.add(title2);
-        options.add(title3);
-        options.add(title4);
+
         employeeList = new ArrayList<>();
         sessionManager = new SessionManager();
         dbAutoSave = new DbAutoSave(getApplicationContext());
-        // Toast.makeText(getApplicationContext(),"on create running",Toast.LENGTH_LONG).show();
         mDatabase = openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
         //Questionlist();
         setterGetter = new SetterGetter();
         mNotificationHelper = new NotificationHelper(this);
+
+
+
+
+
+
+
+        language_prefs = getSharedPreferences("language_prefs", MODE_PRIVATE);
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
+
+        Resources resources = getResources();
+        msg1  = resources.getString(R.string.ok_button);
+        msg2 = resources.getString(R.string.Info);
+        msg3  = resources.getString(R.string.Internet_connectivity);
+        msg4 = resources.getString(R.string.Mandatory_All_Question);
+        msg5 = resources.getString(R.string.Final_Message_submit);
+
+        msg6  = resources.getString(R.string.amway_Disablity_yes);
+        msg7 = resources.getString(R.string.Successfully_Attempted);
+        msg8 = resources.getString(R.string.Global_ErrorResponse_Message);
+
+
+        msg9  = resources.getString(R.string.No_question_Ans);
+        msg10 = resources.getString(R.string.TimeOver_Alert);
+        msg11 = resources.getString(R.string.Yes_Proceed);
+
+
+        msg12  = resources.getString(R.string.Suceesfully_submit);
+        msg13 = resources.getString(R.string.Alert_For_Next_Section);
+        msg14 = resources.getString(R.string.Exit_Alert);
+        msg15 = resources.getString(R.string.No);
+
+        msg16 = resources.getString(R.string.Yes1);
+
+        tv1.setText(resources.getString(R.string.Testviva));
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //changed
+        Paper.init(this);
+        String language = Paper.book().read("language");
+        if(language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+
+
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("hindi", ""));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("english", ""));
+
+
+        }
+
+
+
 
 
         //camera change by pk
@@ -280,7 +344,7 @@ long practical_timeee;
 
 
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         }
 
@@ -297,10 +361,6 @@ long practical_timeee;
             System.out.println("ffff" + value);
         }
 
-        if (sp.contains("student_type")){
-            student_type=sp.getString("student_type","");
-        }
-        
         cursor = dbAutoSave.getData(studentid);
         answersofpreviouspage= cursor.getCount();
         System.out.println("difference is"+answersofpreviouspage);
@@ -357,9 +417,6 @@ long practical_timeee;
             }
         });
 
-
-
-
         FragmentParent1.aa(new ShowButton() {
             @Override
             public void getData(int a) {
@@ -385,20 +442,18 @@ long practical_timeee;
             try {
                 AlertDialog alertDialog = new AlertDialog.Builder(con)
                         .setCancelable(false)
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(msg1, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
                                 Intent intent = getIntent();
                                 finish();
                                 startActivity(intent);
-
-
                             }
                         }).create();
 
-                alertDialog.setTitle("Info");
-                alertDialog.setMessage("Internet not available,Cross check your internet connectivity.");
+                alertDialog.setTitle(msg2);
+                alertDialog.setMessage(msg3);
                 alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
                 alertDialog.show();
             } catch (Exception e) {
@@ -407,6 +462,42 @@ long practical_timeee;
 
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+
+        Context context = LocaleHelper.setLocale(this,lang);
+        Resources resources = context.getResources();
+
+
+
+        msg1  = resources.getString(R.string.ok_button);
+        msg2 = resources.getString(R.string.Info);
+        msg3  = resources.getString(R.string.Internet_connectivity);
+        msg4 = resources.getString(R.string.Mandatory_All_Question);
+        msg5 = resources.getString(R.string.Final_Message_submit);
+
+        msg6  = resources.getString(R.string.amway_Disablity_yes);
+        msg7 = resources.getString(R.string.Successfully_Attempted);
+        msg8 = resources.getString(R.string.Global_ErrorResponse_Message);
+
+
+        msg9  = resources.getString(R.string.No_question_Ans);
+        msg10 = resources.getString(R.string.TimeOver_Alert);
+        msg11 = resources.getString(R.string.Yes_Proceed);
+
+
+        msg12  = resources.getString(R.string.Suceesfully_submit);
+        msg13 = resources.getString(R.string.Alert_For_Next_Section);
+        msg14 = resources.getString(R.string.Exit_Alert);
+        msg15 = resources.getString(R.string.No);
+
+        msg16 = resources.getString(R.string.Yes1);
+
+        tv1.setText(resources.getString(R.string.Testviva));
+
+    }
+
 
 
     private void getIDs() {
@@ -420,7 +511,7 @@ long practical_timeee;
         parentLayout = findViewById(R.id.r1);
         mdrawerLayout = findViewById(R.id.activity_main2);
         mdrawerLayout.addDrawerListener(mDrawerToggle1);
-
+        tv1 = findViewById(R.id.viva_text);
     }
 
 
@@ -455,7 +546,6 @@ long practical_timeee;
 
                     System.out.println("chal" +c);
                     timer.cancel();
-                    //Toast.makeText(getApplicationContext(),"chal gaya",Toast.LENGTH_SHORT).show();
 
 
 
@@ -734,7 +824,7 @@ long practical_timeee;
                 }
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    Toast.makeText(Testviva.this, "Configuration change", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Testviva.this, getResources().getString(R.string.Config_change), Toast.LENGTH_SHORT).show();
                 }
             }, null);
         } catch (CameraAccessException e) {
@@ -805,7 +895,7 @@ long practical_timeee;
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 // close the app
-                Toast.makeText(Testviva.this, "Sorry!!!, you can't use this app without granting permission", Toast.LENGTH_LONG).show();
+                Toast.makeText(Testviva.this,msg6, Toast.LENGTH_LONG).show();
                 finish();
             }
         }
@@ -862,7 +952,7 @@ long practical_timeee;
 
     private void SaveDetail() {
 
-        String serverURL =CommonUtils.url+"save_proctoring.php";
+        String serverURL ="https://www.skillassessment.org/sdms/android_connect/save_proctoring.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -872,13 +962,19 @@ long practical_timeee;
                     System.out.println("sss"+response);
                     String status= jobj.getString("status");
 
+                    //Toast.makeText(getApplicationContext(),"We have Received your query will update soon",Toast.LENGTH_LONG).show();
                     if (status.equals("1")){
-                        Toast.makeText(getApplicationContext(),"Photo Captured",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.Photo_Captured),Toast.LENGTH_SHORT).show();
                         Log.d("Response",response);
 
 
 
                     }
+
+                    /*else if (status.equals("0")){
+                        Toast.makeText(getApplicationContext(),jobj.getString("msg"),Toast.LENGTH_LONG).show();
+                        Log.d("Response",response);
+                    }*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -914,7 +1010,6 @@ long practical_timeee;
                 System.out.println("sccccc" +screenshot1);
                 map.put("student_id",studentid);
                 map.put("image_time",strDate);
-                map.put("student_type",student_type);
                 System.out.println("sccccc" +strDate);
 
 
@@ -948,6 +1043,7 @@ long practical_timeee;
     @Override
     protected void onStart() {
         super.onStart();
+        // Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
         SharedPreferences prefs = getSharedPreferences("pref", MODE_PRIVATE);
         TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
         TimerRunning = prefs.getBoolean("timerRunning", false);
@@ -991,7 +1087,6 @@ long practical_timeee;
 
     }
 
-
     public void getTotalanswercount() {
 
         cursor = dbAutoSave.getData(studentid);
@@ -999,16 +1094,14 @@ long practical_timeee;
         int bbbbb = aa.size();
         int cccc = answersofpreviouspage + bbbbb;
 
-        System.out.println("total saved answers" + aaaa);
-        System.out.println("total que count" + bbbbb);
-        System.out.println("total que from prev page count" + cccc);
+
 
         if (aaaa < cccc) {
-            Toast.makeText(getApplicationContext(), "Please answer all the questions since all questions are mandotary.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), msg4, Toast.LENGTH_LONG).show();
         } else {
             AlertDialog alertDialog = new AlertDialog.Builder(Testviva.this)
-                    .setMessage("Schedule the test for the Final submit.")
-                    .setPositiveButton("Yes ", new DialogInterface.OnClickListener() {
+                    .setMessage(msg5)
+                    .setPositiveButton(msg16, new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -1029,7 +1122,6 @@ long practical_timeee;
             TimeLeftInMillis = START_TIME_IN_MILLISR;
         }
     }
-
     private void startTimer() {
         EndTime = System.currentTimeMillis() + TimeLeftInMillis;
         CountDownTimer = new CountDownTimer(TimeLeftInMillis, 1000) {
@@ -1116,9 +1208,9 @@ long practical_timeee;
 
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setMessage("Your time is over.Press Yes to Schedule the test for the Final submit.")
+                .setMessage(msg10)
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(msg16, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         getalldata();
@@ -1160,14 +1252,13 @@ long practical_timeee;
                 Datalist listOfData = new Datalist();
                 listOfData.dataList = dataList;
                 listOfData.batch_id = batch_id;
-                listOfData.student_type=student_type;
                 Gson gson = new Gson();
                 jsonInString = gson.toJson(listOfData); // Here you go!
                 System.out.println("aasddd" + jsonInString);
                 cursor.close();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "No Questions answered", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),msg9, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -1185,7 +1276,7 @@ long practical_timeee;
         NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
 
         if (netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()) {
-            Toast.makeText(getApplicationContext(), "No Internet connection!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), msg3, Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
@@ -1232,7 +1323,7 @@ long practical_timeee;
     //Fetching Questions
     private void Questionlist() {
         progressDialog.show();
-        String serverURL = CommonUtils.url+"batch_questions.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/batch_questions.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1275,12 +1366,6 @@ long practical_timeee;
                                 options4.add(c.getString("option4"));
                             }
 
-                            if (Que_image_viva.size()<=jsonArray.length()-1){Que_image_viva.add(c.getString("question_image"));}
-                            if (Que_option1_viva.size()<=jsonArray.length()-1){Que_option1_viva.add(c.getString("option1_image"));}
-                            if (Que_option2_viva.size()<=jsonArray.length()-1){Que_option2_viva.add(c.getString("option2_image"));}
-                            if (Que_option3_viva.size()<=jsonArray.length()-1){Que_option3_viva.add(c.getString("option3_image"));}
-                            if (Que_option4_viva.size()<=jsonArray.length()-1){Que_option4_viva.add(c.getString("option4_image"));}
-
                         }
                         System.out.println("aaaa" + aa);
                         for (int ii = 0; ii <= aa.size() - 1; ii++) {
@@ -1292,13 +1377,11 @@ long practical_timeee;
                                 }
 
                             }
-                            fragmentParent.addPage(aa.get(ii) + "", bb.get(ii), qnooo.get(ii), options1.get(ii),
-                                    options2.get(ii), options3.get(ii), options4.get(ii),Que_image_viva.get(ii)
-                                    ,Que_option1_viva.get(ii),Que_option2_viva.get(ii),Que_option3_viva.get(ii),Que_option4_viva.get(ii));
+                            fragmentParent.addPage(aa.get(ii) + "", bb.get(ii), qnooo.get(ii), options1.get(ii), options2.get(ii), options3.get(ii), options4.get(ii));
                         }
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),msg8, Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1333,15 +1416,6 @@ long practical_timeee;
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("batch_id", batchvalue);
                 map.put("language", value);
-                map.put("student_type",student_type);
-                map.put("username",studentid);
-                map.put("mobile_imei","");
-                map.put("ip","");
-                map.put("company_id","");
-                map.put("activity","Start Viva Exam");
-                map.put("lat",stringLatitude1);
-                map.put("longi",stringLongitude1);
-                map.put("mobile_imei","");
                 System.out.println("ddd" + map);
                 return map;
             }
@@ -1354,7 +1428,7 @@ long practical_timeee;
     //Saving all the answers of exam conducted
     private void Questionlist1() {
         progressDialog.show();
-        String serverURL = CommonUtils.url+"save_answers.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_answers.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1363,16 +1437,14 @@ long practical_timeee;
                     JSONObject jobj = new JSONObject(response);
                     String status = jobj.getString("status");
                     if (status.equals("1")) {
-                        Toast.makeText(getApplicationContext(), "You have successfully attempted the Assessment", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),msg12, Toast.LENGTH_LONG).show();
                         dbAutoSave.onDelete();
-                        //saveLog(studentid,"","Logout",stringLatitude1,stringLongitude1,"");
+                        saveLog(studentid,"","Logout",stringLatitude1,stringLongitude1,"");
                         Intent ii = new Intent(Testviva.this, Thankspage.class);
                         startActivity(ii);
 
-                    }
-
-                    else {
-                        Toast.makeText(getApplicationContext(), "Error"+response, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), msg8, Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1389,7 +1461,7 @@ long practical_timeee;
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-                Toast.makeText(getApplicationContext(), "Error: Please try again Later", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), msg8, Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1406,14 +1478,6 @@ long practical_timeee;
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("JSON", jsonInString);
-                map.put("username",studentid);
-                map.put("mobile_imei","");
-                map.put("ip","");
-                map.put("company_id","");
-                map.put("activity","User Logout");
-                map.put("lat",stringLatitude1);
-                map.put("longi",stringLongitude1);
-                map.put("student_type",student_type);
                 System.out.println("ddd" + map);
                 return map;
             }
@@ -1440,8 +1504,8 @@ long practical_timeee;
     protected void exitByBackKey() {
 
         AlertDialog alertbox = new AlertDialog.Builder(this)
-                .setMessage("The viva voce exam will continue and Timer will keep running.Are you sure you want to exit")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setMessage(msg14)
+                .setPositiveButton(msg16, new DialogInterface.OnClickListener() {
 
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -1453,7 +1517,7 @@ long practical_timeee;
 
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(msg15, new DialogInterface.OnClickListener() {
 
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -1464,7 +1528,7 @@ long practical_timeee;
     }
 
     private void saveLog(final String fnamee, final String ip, final String activity, final String lat, final String longi,final String cmpid) {
-        String serverURL = CommonUtils.url+"save_logs.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_logs.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1484,7 +1548,7 @@ long practical_timeee;
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error Saving the details", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), msg8, Toast.LENGTH_LONG).show();
                 System.out.println("aa"+error);
             }
         })
@@ -1509,7 +1573,6 @@ long practical_timeee;
                 map.put("activity",activity);
                 map.put("lat",lat);
                 map.put("longi",longi);
-                map.put("student_type",student_type);
                 System.out.println("map in test viva is"+map);
                 return map;
             }

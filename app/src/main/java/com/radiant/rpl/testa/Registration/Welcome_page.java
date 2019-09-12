@@ -1,24 +1,17 @@
-package com.radiant.rpl.testa.Initials;
+package com.radiant.rpl.testa.Registration;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.Menu;
@@ -36,8 +29,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.ebanx.swipebtn.OnActiveListener;
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
-import com.radiant.rpl.testa.Common.CommonUtils;
-import com.radiant.rpl.testa.ExamSection.Certificate_details;
 import com.radiant.rpl.testa.ExamSection.ContactUsActivity;
 import com.radiant.rpl.testa.ExamSection.Technical_Activity;
 import com.radiant.rpl.testa.ExamSection.Update_profile;
@@ -51,36 +42,46 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
-public class Welcome_page extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Welcome_page extends AppCompatActivity {
     SessionManager session;
-    SharedPreferences sharedpreferences;
+    SharedPreferences sharedpreferences,language_prefs;
     public static final String mypreference = "mypref";
     TextView textView2,logoutt,alertmessage;
     TextView ttv;
     boolean active;
     String geturl,gettestingurl;
     private android.app.AlertDialog progressDialog;
-    String userid;
+    String userid,selected_language;;
     SwipeButton enableButton;
-    String img;
+    String img,msg,msg1,msg2,msg3;
     ByteArrayOutputStream baos;
     byte[] imageBytes;
     CircleImageView imgview;
-    private String student_type;
-    String exam_statuss;
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToogle;
-    private TextView headertext;
-    int itemid;
 
 
+
+      //changed
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase,"en"));
+    }
+
+
+
+
+
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
-
         progressDialog = new SpotsDialog(Welcome_page.this, R.style.Custom);
         //blink();
         session = new SessionManager();
@@ -92,66 +93,46 @@ public class Welcome_page extends AppCompatActivity implements NavigationView.On
         geturl= Start_Registration.getURL();
         gettestingurl=Start_Registration.getTestingURL();
         enableButton = (SwipeButton) findViewById(R.id.swipe_btn);
-
-
-
-        mDrawerLayout = findViewById(R.id.drawer);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-
-        mToogle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
-        mDrawerLayout.addDrawerListener(mToogle);
-        mToogle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Home");
-
-        navigationView.setNavigationItemSelectedListener(this);
-        View header = navigationView.getHeaderView(0);
-        headertext = header.findViewById(R.id.textview2);
+        baos = new ByteArrayOutputStream();
 
 
 
 
-
-        sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        if (sharedpreferences.contains("exam_status")) {
-            exam_statuss=sharedpreferences.getString("exam_status", "");
+        language_prefs = getSharedPreferences("language_prefs", MODE_PRIVATE);
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
         }
 
-        baos = new ByteArrayOutputStream();
-        enableButton.setOnStateChangeListener(new OnStateChangeListener() {
-            @Override
+        Resources resources = getResources();
+
+        msg = resources.getString(R.string.Global_ErrorResponse_Message);
+        msg1 = resources.getString(R.string.Mark_Your_Atten_Welcome);
+        msg2 = resources.getString(R.string.profile_incomp);
+
+      //changed
+        Paper.init(this);
+        String language = Paper.book().read("language");
+        if(language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+
+     enableButton.setOnStateChangeListener(new OnStateChangeListener() {
+         @Override
             public void onStateChange(boolean active) {
             }
         });
         enableButton.setOnActiveListener(new OnActiveListener() {
             @Override
             public void onActive() {
+                Intent ii=new Intent(Welcome_page.this, StudenAtten.class);
+                startActivity(ii);
 
-                if (exam_statuss.equals("Attempted")){
-                    if (userid.equals("aman")) {
-                        Intent in = new Intent(Welcome_page.this, StudenAtten.class);
-                        startActivity(in);
-                    }
-                    else{
-                    AlertDialog alertDialog = new AlertDialog.Builder(Welcome_page.this)
-                            .setMessage("You have already attempted the exam.")
-                            .setCancelable(false)
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            }).show();
-                }
-                }
-                else {
-
-                    Intent ii = new Intent(Welcome_page.this, StudenAtten.class);
-                    startActivity(ii);
-                }
             }
         });
+
+
 
         sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         if (sharedpreferences.contains("Name")) {
@@ -161,9 +142,7 @@ public class Welcome_page extends AppCompatActivity implements NavigationView.On
         if (sharedpreferences.contains("userid")) {
             userid=sharedpreferences.getString("userid", "");
         }
-        if (sharedpreferences.contains("student_type")){
-            student_type=sharedpreferences.getString("student_type","");
-        }
+
 
 
         //logout Code
@@ -174,29 +153,34 @@ public class Welcome_page extends AppCompatActivity implements NavigationView.On
                 startActivity(in);
             }
         });
+
+
+
+
+
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
     }
-
-
-    public boolean isTablet(Context context) {
-        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
-        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
-        return (xlarge || large);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+         getMenuInflater().inflate(R.menu.main, menu);
+         return true;
     }
 
 
-
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mToogle.onOptionsItemSelected(item)) {
-            return true;
-        }
         switch (item.getItemId()) {
 
             case R.id.save_menu:
@@ -214,34 +198,38 @@ public class Welcome_page extends AppCompatActivity implements NavigationView.On
                 return true;
 
 
-
-
             case R.id.save_technical:
                 Intent j = new Intent(getApplicationContext(), Technical_Activity.class);
                 startActivity(j);
                 return true;
 
-            default:
-                return super.onOptionsItemSelected(item);
+        }
+
+
+            if(item.getItemId() == R.id.language_en)
+            {
+                Paper.book().write("language","en");
+                updateView((String)Paper.book().read("language"));
+            }
+
+
+            if(item.getItemId() == R.id.language_hi)
+            {
+                Paper.book().write("language","hi");
+                updateView((String)Paper.book().read("language"));
+            }
+
+            return super.onOptionsItemSelected(item);
 
         }
-    }
+
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        System.out.println("rerr"+student_type);
-        if (student_type.equals("Regular")){
-            alertmessage.setText("Mark Your Attendance on the next page and kindly follow the instructions to start the Assessment.");
-            enableButton.setVisibility(View.VISIBLE);
-            logoutt.setVisibility(View.GONE);
-        }
-        else {
-            Check_Profille();
-        }
+        Check_Profille();
     }
-
 
 
     private void blink() {
@@ -270,10 +258,9 @@ public class Welcome_page extends AppCompatActivity implements NavigationView.On
         }).start();
     }
 
-
     private void Check_Profille() {
         progressDialog.show();
-        String serverURL = CommonUtils.url+"check_student_profile.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/check_student_profile.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -290,12 +277,11 @@ public class Welcome_page extends AppCompatActivity implements NavigationView.On
                     imgview.setImageBitmap(decodedImage);
 
                     if (status.equals("1")) {
-
-                        alertmessage.setText("Mark Your Attendance on the next page and kindly follow the instructions to start the Assessment.");
+                        alertmessage.setText(msg1);
                         enableButton.setVisibility(View.VISIBLE);
                         logoutt.setVisibility(View.GONE);
                     }else if (status.equals("0")){
-                        alertmessage.setText("Your Profile is incomplete. Please update the profile to take Assessment");
+                        alertmessage.setText(msg2);
                         logoutt.setVisibility(View.VISIBLE);
                         enableButton.setVisibility(View.GONE);
                     }
@@ -315,7 +301,7 @@ public class Welcome_page extends AppCompatActivity implements NavigationView.On
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-                Toast.makeText(getApplicationContext(), "Error: Please try again Later", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),msg, Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -331,7 +317,6 @@ public class Welcome_page extends AppCompatActivity implements NavigationView.On
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("user_name", userid);
-                map.put("student_type",student_type);
                 return map;
             }
         };
@@ -343,36 +328,30 @@ public class Welcome_page extends AppCompatActivity implements NavigationView.On
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBackPressed() {
+
         super.onBackPressed();
         finishAffinity();
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        itemid = item.getItemId();
-        switch (itemid) {
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
 
-                case R.id.logout:
-                    //prefs.removeAll();
-                    Intent j = new Intent(Welcome_page.this, Certificate_details.class);
-                    startActivity(j);
-                    finish();
-                    break;
+        Context context = LocaleHelper.setLocale(this,lang);
+        Resources resources = context.getResources();
+        alertmessage.setText(resources.getString(R.string.Mark_Your_Atten_Welcome));
+        ttv.setText(resources.getString(R.string.welcome_back));
+        enableButton.setText(resources.getString(R.string.Swipetobegin));
+        msg = resources.getString(R.string.Global_ErrorResponse_Message);
+        msg1 = resources.getString(R.string.Mark_Your_Atten_Welcome);
+        msg2 = resources.getString(R.string.profile_incomp);
 
-
-
-
-            default:
-                break;
-
-        }
+        setTitle(resources.getString(R.string.home));
 
 
 
-        mDrawerLayout.closeDrawer(GravityCompat.START);
-        return true;
     }
+
 }
 
 

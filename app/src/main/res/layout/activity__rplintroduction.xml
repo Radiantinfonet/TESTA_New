@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    tools:context="com.radiant.rpl.testa.Initials.Activity_Rplintroduction">
+    tools:context="com.radiant.rpl.testa.Activity_Rplintroduction">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,6 +39,7 @@
         />
 
     <TextView
+        android:id="@+id/inro1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/rplintro"
@@ -48,6 +49,7 @@
         />
 
     <TextView
+        android:id="@+id/inro2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/rplintro2"
@@ -58,6 +60,7 @@
         />
 
     <TextView
+        android:id="@+id/inro3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
@@ -68,6 +71,7 @@
         />
 
     <TextView
+        android:id="@+id/inro4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
@@ -78,6 +82,7 @@
         />
 
     <TextView
+        android:id="@+id/inro5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
@@ -86,6 +91,7 @@
         />
 
     <TextView
+        android:id="@+id/inro6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
@@ -94,6 +100,7 @@
         />
 
     <TextView
+        android:id="@+id/inro7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
@@ -101,6 +108,7 @@
         android:layout_marginTop="5dp"
         />
     <TextView
+        android:id="@+id/inro8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
@@ -125,7 +133,7 @@
             android:layout_marginBottom="25dp"
             android:textColor="@color/white"
             android:drawableRight="@drawable/ic_right_arrow_button"
-            android:text="Start"
+            android:text="@string/start"
             />
 
 

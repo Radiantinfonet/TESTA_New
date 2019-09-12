@@ -1,14 +1,21 @@
 package com.radiant.rpl.testa.Registration;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,10 +41,7 @@ import com.basgeekball.awesomevalidation.utility.custom.CustomErrorReset;
 import com.basgeekball.awesomevalidation.utility.custom.CustomValidation;
 import com.basgeekball.awesomevalidation.utility.custom.CustomValidationCallback;
 import com.radiant.rpl.testa.Barcode_d.SimpleScannerActivity;
-import com.radiant.rpl.testa.Common.CommonUtils;
-import com.radiant.rpl.testa.Initials.MyNetwork;
-import com.radiant.rpl.testa.Initials.Registration_Done;
-import com.radiant.rpl.testa.Initials.SignInAct;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,28 +53,51 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 public class Ola_uber_registration extends BaseActivity {
-EditText mob_olauber,name_olauber,aadhar_olauber,lastname_olauber;
-Spinner gender_olauber,jobrole_olauber,language_olauber;
-String genderr,emp_statuss,jobroleid,jobrolevalue,preflangid,preflangvalue,getjobrole,gejobrolevalue,get_language,getlanguage_id;
+    EditText mob_olauber,name_olauber,aadhar_olauber,lastname_olauber;
+    Spinner gender_olauber,jobrole_olauber,language_olauber;
+
+
+    TextInputLayout mobile, first_name, last_name, Aadhar_no;
+    TextView Registration;
+
+
+    SharedPreferences language_prefs;
+    String selected_language, snackbar1,snackbar2,toast_msg1,toast_msg2,toast_msg3,toast_msg4;
+    String[] spinner_msg_gender;
+
+
+
+
+
+
+
+    String genderr,emp_statuss,jobroleid,jobrolevalue,preflangid,
+            preflangvalue,getjobrole,gejobrolevalue,get_language,getlanguage_id;
     List<String> jobrolelist,preflang;
     HashMap<String, String> Jobrolelist = new HashMap<>();
     HashMap<String,String> langdetail =new HashMap<>();
     String[] jobrole, preflangg;
     ArrayAdapter<String> jobroleadapter;
-  String cmp_id,cmp_name;
+    String cmp_id,cmp_name;
     AwesomeValidation awesomeValidation;
     CoordinatorLayout parentvv;
     Button register_olauber;
     private static final int ZBAR_CAMERA_PERMISSION = 1;
-String namefromaadhaar_ola;
+    String namefromaadhaar_ola;
     ArrayAdapter<String> myAdapter;
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
+
         mob_olauber=findViewById(R.id.input_mobile_no_olauber);
         name_olauber=findViewById(R.id.input_name_olauber);
         aadhar_olauber=findViewById(R.id.input_aadhaar_no_olauber);
@@ -84,20 +111,96 @@ String namefromaadhaar_ola;
 
         awesomeValidation.addValidation(Ola_uber_registration.this, R.id.input_name_olauber,"[a-zA-Z\\s]+", R.string.err_msg_for_first_name);
         awesomeValidation.addValidation(Ola_uber_registration.this, R.id.input_mobile_no_olauber,"^[0-9]{10}$", R.string.err_msg_formobile);
-        jobrole=new String[]{"Select the Jobrole"};
-        preflangg =new String[]{"Select the Preffered Language"};
+
+
+
+
+
+        Registration =findViewById(R.id.regis);
+        mobile = findViewById(R.id.input_layout_mobile_no_olauber);
+        Aadhar_no = findViewById(R.id.input_layout_aadhaar_no_olauber);
+        first_name = findViewById(R.id.input_layout_name_olauber);
+        last_name = findViewById(R.id.input_layout_last_name_olauber);
+
+        Resources res = getResources();
+
+        spinner_msg_gender = res.getStringArray(R.array.gender);
+        snackbar1 = res.getString(R.string.Aadhar_msg2);
+        snackbar2 = res.getString(R.string.Aadhar_msg);
+
+        toast_msg1 =  res.getString(R.string.form_job_role_ERR);
+        toast_msg2 =  res.getString(R.string.amway_Language_Err_Toast);
+        toast_msg3 =  res.getString(R.string.Aadhar_Already_user_Message);
+        toast_msg4  =  res.getString(R.string.Saving_Err);
+
+
+
+
+
+
+
+        language_prefs = getSharedPreferences("language_prefs", MODE_PRIVATE);
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
+
+
+        //changed
+        Paper.init(this);
+        String language = Paper.book().read("language");
+        if (language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+
+
+
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("hindi", ""));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("english", ""));
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+        jobrole=res.getStringArray(R.array.Amway_Select_the_Jobrole);
+        preflangg=res.getStringArray(R.array.Amway_Select_the_PrefferedLanguage);
+
         jobrolelist=new ArrayList<>(Arrays.asList(jobrole));
         preflang=new ArrayList<>(Arrays.asList(preflangg));
 
         cmp_id = getIntent().getStringExtra("cmp_id");
         cmp_name=getIntent().getStringExtra("cmp_name");
-        System.out.println("the id of company is"+cmp_id+"  "+cmp_name);
+
+
         //gender
-       myAdapter = new ArrayAdapter<String>(Ola_uber_registration.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.gender));
+        myAdapter = new ArrayAdapter<String>(Ola_uber_registration.this,
+                android.R.layout.simple_list_item_1,spinner_msg_gender);
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         gender_olauber.setAdapter(myAdapter);
+
+
+
 
         ImageView iv=findViewById(R.id.actionQrCode);
         iv.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +213,7 @@ String namefromaadhaar_ola;
         awesomeValidation.addValidation(Ola_uber_registration.this, R.id.input_layout_gender_olauber, new CustomValidation() {
             @Override
             public boolean compare(ValidationHolder validationHolder) {
-                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals("Select Gender")) {
+                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals(getResources().getString(R.string.amway_Gender))) {
                     return false;
                 } else {
                     return true;
@@ -206,18 +309,53 @@ String namefromaadhaar_ola;
             public void onClick(View v) {
 
                 if (!new VerhoeffAlgorithm().validateVerhoeff(aadhar_olauber.getText().toString())){
-                    Snackbar.make(parentvv,"This Aadhaar number is invalid.Please input correct aadhaar number.",Snackbar.LENGTH_SHORT).show();
+
+                    Snackbar.make(parentvv,snackbar1,Snackbar.LENGTH_SHORT).show();
+
                 } else if (aadhar_olauber.getText().toString().equals("")){
-                    Snackbar.make(parentvv,"Aadhaar number can't be left empty.",Snackbar.LENGTH_SHORT).show();
+
+                    Snackbar.make(parentvv,snackbar2,Snackbar.LENGTH_SHORT).show();
 
                 }
-                else if( awesomeValidation.validate() && !(genderr.equals("Select Gender"))&& !getjobrole.equals("Select the Jobrole")
-                        && ! get_language.equals("Select the Preffered Language")){
+                else if( awesomeValidation.validate() && !(genderr.equals(getResources().getString(R.string.amway_Gender)))&& !getjobrole.equals(getResources().getString(R.string.Select_jobrole_global))
+                        && ! get_language.equals(getResources().getString(R.string.Select_the_language_global))){
                     SaveDetail();
 
-                    }
+                }
             }
         });
+
+    }
+
+    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+
+        Context context = LocaleHelper.setLocale(this, lang);
+        final Resources resources = context.getResources();
+
+
+        //set hint text for Edittext in form
+
+
+        register_olauber.setText(resources.getString(R.string.register));
+
+
+        Registration.setText(resources.getString(R.string.registration_details));
+        mobile.setHint(resources.getString(R.string.hint_mobile));
+        first_name.setHint(resources.getString(R.string.hint_name));
+        last_name.setHint(resources.getString(R.string.hint_last_name));
+        Aadhar_no.setHint(resources.getString(R.string.hint_aadhar));
+
+        spinner_msg_gender = resources.getStringArray(R.array.gender);
+        snackbar1 = resources.getString(R.string.Aadhar_msg2);
+        snackbar2 = resources.getString(R.string.Aadhar_msg);
+
+        toast_msg1 =  resources.getString(R.string.form_job_role_ERR);
+        toast_msg2 =  resources.getString(R.string.amway_Language_Err_Toast);
+        toast_msg3 =  resources.getString(R.string.Aadhar_Already_user_Message);
+        toast_msg4  =  resources.getString(R.string.Saving_Err);
+
+
 
     }
 
@@ -266,19 +404,9 @@ String namefromaadhaar_ola;
                     name_olauber.setText(namee[0]);
                     lastname_olauber.setText(namee[1]);
                 }
-               /* if (map.get("gender")!=null){
-                    String genderr=map.get("gender").replace("\"","");
-                    if (genderr=="M"){
-                        gender_olauber.setSelection(myAdapter.getPosition("Male"));
-                    }
-                    else if (genderr=="F"){
-                        gender_olauber.setSelection(myAdapter.getPosition("Female"));
 
-                    }
-                }*/
             }else{
             }}catch (Exception e){
-            System.out.println("fffff"+e);
         }
     }
 
@@ -291,7 +419,7 @@ String namefromaadhaar_ola;
 
     //Jobrole Api Call
     private void getJobroleList(final String sscid) {
-        String serverURL = CommonUtils.url+"get_jobrole.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_jobrole.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -324,7 +452,7 @@ String namefromaadhaar_ola;
 
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Job Roles",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),toast_msg1,Toast.LENGTH_LONG).show();
                     }
 
 
@@ -339,7 +467,7 @@ String namefromaadhaar_ola;
             @Override
             public void onErrorResponse(VolleyError error) {
                 hide_progressbar();
-                Toast.makeText(getApplicationContext(), "Failed to fetch Job Roles", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),toast_msg1, Toast.LENGTH_LONG).show();
             }
         })
 
@@ -357,7 +485,6 @@ String namefromaadhaar_ola;
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("company_id",sscid);
-                System.out.println("aaaaaa"+map);
                 return map;
             }
         };
@@ -381,7 +508,7 @@ String namefromaadhaar_ola;
     private void languageSelect(final String cmp_id) {
 
         show_progressbar();
-        String serverURL = CommonUtils.url+"get_language.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_language.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -411,7 +538,7 @@ String namefromaadhaar_ola;
 
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Language Details",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),toast_msg2,Toast.LENGTH_LONG).show();
 
                     }
 
@@ -426,7 +553,7 @@ String namefromaadhaar_ola;
             @Override
             public void onErrorResponse(VolleyError error) {
                 hide_progressbar();
-                Toast.makeText(getApplicationContext(), "Failed to fetch Language Details", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),toast_msg2, Toast.LENGTH_LONG).show();
             }
         })
 
@@ -456,7 +583,7 @@ String namefromaadhaar_ola;
     //save_data
 
     private void SaveDetail() {
-        String serverURL = CommonUtils.url+"save_student_data.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_student_data.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -464,7 +591,6 @@ String namefromaadhaar_ola;
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    System.out.println("sss"+response);
                     String status= jobj.getString("status");
                     if (status.equals("1")){
                         Intent iii=new Intent(Ola_uber_registration.this, Registration_Done.class);
@@ -473,8 +599,8 @@ String namefromaadhaar_ola;
                     }
                     else if (status.equals("0")){
                         String msg= jobj.getString("msg");
-                        if (msg.equals("Given Aadhar number is already registered! Try using another Aadhar.")){
-                            Toast.makeText(getApplicationContext(),"You have already registered using this aadhar number with ",Toast.LENGTH_LONG).show();
+                        if (msg.equals(getResources().getString(R.string.Asdhar_msg3))){
+                            Toast.makeText(getApplicationContext(),toast_msg3,Toast.LENGTH_LONG).show();
 
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -503,8 +629,7 @@ String namefromaadhaar_ola;
             @Override
             public void onErrorResponse(VolleyError error) {
                 hide_progressbar();
-                Toast.makeText(getApplicationContext(), "Error Saving the details", Toast.LENGTH_LONG).show();
-                System.out.println("aa"+error);
+                Toast.makeText(getApplicationContext(),toast_msg4, Toast.LENGTH_LONG).show();
             }
         })
 
@@ -529,12 +654,11 @@ String namefromaadhaar_ola;
                 map.put("gender",genderr);
                 if (aadhar_olauber.getText().toString()!=null){
                     map.put("aadhar",aadhar_olauber.getText().toString());}
-                    if (jobrolevalue!=null){
-                map.put("jobrole_id",jobrolevalue);}
+                if (jobrolevalue!=null){
+                    map.put("jobrole_id",jobrolevalue);}
                 map.put("company_id",cmp_id);
                 if (getlanguage_id!=null){
-                map.put("language",getlanguage_id);}
-                System.out.print("ggggggg"+map);
+                    map.put("language",getlanguage_id);}
                 return map;
             }
         };

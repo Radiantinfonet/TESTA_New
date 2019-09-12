@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.radiant.rpl.testa.Initials.SignInAct">
+    tools:context="com.radiant.rpl.testa.SignInAct">
     <ImageView
         android:id="@+id/bookIconImageView"
         android:layout_width="180dp"
@@ -41,7 +41,7 @@
         android:layout_height="match_parent"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="130dp"
         android:orientation="vertical"
         android:visibility="gone">
         <TextView
@@ -74,6 +74,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/emailEditText1"
                 android:layout_width="match_parent"
+                android:hint="@string/email"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -81,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="Username" />
+                  />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -89,13 +90,13 @@
                 android:id="@+id/passwordEditText1"
                 android:layout_width="match_parent"
                 app:passwordToggleEnabled="true"
+                android:hint="@string/password"
                 android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/passwordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 

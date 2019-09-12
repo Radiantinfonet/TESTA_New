@@ -1,36 +1,34 @@
 package com.radiant.rpl.testa.Registration;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
-import android.provider.MediaStore;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
-import android.util.Base64OutputStream;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -59,142 +57,312 @@ import com.basgeekball.awesomevalidation.utility.custom.CustomValidationCallback
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
-import com.radiant.rpl.testa.Barcode_d.FullScannerActivity;
 import com.radiant.rpl.testa.Barcode_d.SimpleScannerActivity;
-import com.radiant.rpl.testa.Common.CommonUtils;
-import com.radiant.rpl.testa.Initials.MyNetwork;
-import com.radiant.rpl.testa.Initials.NetworkStateReceiver;
-import com.radiant.rpl.testa.Initials.Reverify;
-import com.radiant.rpl.testa.Initials.SignInAct;
-import com.radiant.rpl.testa.EyeBlink.Eye_blinkActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 
 public class MainActivity extends BaseActivity {
 
-    TextView course_detail;
+
     Paint myRectPaint;
-    Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,
-            disablity_type,type_of_disablity,
-            Employment_status,OtherIdproof,
-            input_layout_prefferedlanguage,category;
-    EditText input_name,input_last_name,input_mobile_no,input_address1,input_Id_no
-            ,input_address2,input_pincode,input_aadhar,input_pancard,input_bank_ac,input_ifsc_code,
-            input_bank_username,input_empid,input_loc,Email,alt_no,your_city,other_qualification;
-    String emp_statuss;
+
+    Spinner yearofbirth, monthofbirth, dateofbirth, education, employer, sector, bankname, state, district, input_jobrole,
+            disablity_type, type_of_disablity,
+            Employment_status, OtherIdproof,
+            input_layout_prefferedlanguage, category;
+
+    EditText input_name, input_last_name, input_mobile_no, input_address1, input_Id_no, input_address2, input_pincode, input_aadhar, input_pancard, input_bank_ac, input_ifsc_code,
+            input_bank_username, input_empid, input_loc, Email, alt_no, your_city, other_qualification;
+
+
+    String gender, eduction1, employer1, sector1, bankname1, state1, district1, encodedphoto, encodedphotoaadhar, jobrole1,
+            preflang1, categoryy, disablity_type1,
+            type_of_disablity1, Employment_status1, OtherIdproof1, bankiddd, stateiddd, districtiddd,
+            employeridname, sectoridd, jobroleeiddd, preflangiddd, cmp_id, language_hi, namefromaadhaar_main, emp_statuss,
+            Stateid, Statevalue, bankid, bankvalue, districtid, districtvalue, selectedstatetext, sectorid, sectorvalue,
+            employerid, employervalue, jobroleid, jobrolevalue, preflangid, preflangvalue, newString2, spinner_msg_Eduction_other, spinner_msg_any_disablity_yes, spinner_msg_other_id_proof,
+            error_msg1, toast_msg2,
+            toast_msg3, toast_msg4, toast_msg5, toast_msg6, toast_msg7, toast_msg8,toast_msg9,
+            toast_msg10, toast_msg11, toast_msg12, toast_msg13, toast_msg14, toast_msg15,toast_msg16,
+            snackbar_msg1,snackbar_msg2,snackbar_msg3,snackbar_msg4;
+
 
     CoordinatorLayout parentv;
 
-    String[] banks,states,districts,employers,jobrole;
-    List<String> bankslist,Statelist,districtlist,sectorlist,employerlist,jobrolelist,preflang;
+
+
+    SharedPreferences language_prefs;
+    String selected_language;
+
+
+    String[] banks, states, districts, employers, jobrole, sectors, preflangg;
+    List<String> bankslist, Statelist, districtlist, sectorlist, employerlist, jobrolelist, preflang;
     HashMap<String, String> bankdetail = new HashMap<>();
     HashMap<String, String> Jobrolelist = new HashMap<>();
-    HashMap<String,String> Statedetail=new HashMap<>();
-    HashMap<String,String> districtdetail=new HashMap<>();
-    HashMap<String,String> sectordetail=new HashMap<>();
-    HashMap<String,String> employerdetail =new HashMap<>();
-    HashMap<String,String> employdetail =new HashMap<>();
-    HashMap<String,String> langdetail =new HashMap<>();
+    HashMap<String, String> Statedetail = new HashMap<>();
+    HashMap<String, String> districtdetail = new HashMap<>();
+    HashMap<String, String> sectordetail = new HashMap<>();
+    HashMap<String, String> employdetail = new HashMap<>();
+    HashMap<String, String> langdetail = new HashMap<>();
 
     CheckBox checkBox;
-    String[] sectors=new String[]{"Select the Sector"};
-    String[] preflangg=new String[]{"Select the Preffered Language"};
-    CircleImageView input_photograph,input_aadharpic;
-    Button input_submit,input_photograph1,input_aadharpic1,alreadyregistered;
-    String Stateid,Statevalue,bankid,bankvalue,districtid,districtvalue,selectedstatetext,sectorid,sectorvalue,
-            employerid,employervalue,jobroleid,jobrolevalue,preflangid,preflangvalue,newString2;
+
+    CircleImageView input_photograph, input_aadharpic;
+
+    Button input_submit, input_photograph1, input_aadharpic1, alreadyregistered;
+
     private static final int CAMERA_REQUEST = 1888;
     private static final int CAMERA_AADHAR_REQUEST = 1889;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
-    private static final int MY_STORAGE_PERMISSION_CODE = 100;
-    String yearobirth,monthobirth,dateobirth;
+    String yearobirth, monthobirth, dateobirth;
     AwesomeValidation awesomeValidation;
-    String gender,eduction1,employer1,sector1,bankname1,state1,district1,encodedphoto,encodedphotoaadhar,jobrole1,
-            preflang1,categoryy,disablity_type1,
-            type_of_disablity1,Employment_status1,OtherIdproof1;
-    String bankiddd,stateiddd,districtiddd,employeridname,sectoridd,jobroleeiddd,preflangiddd;
+
     NetworkStateReceiver networkStateReceiver;
     SwipeRefreshLayout mySwipeRefreshLayout;
     ArrayAdapter<String> jobroleadapter;
     SparseArray<Face> faces;
-    String cmp_id;
-    private static final int ZBAR_CAMERA_PERMISSION = 1;
-    String namefromaadhaar_main;
-    private String capturedImageUri,imagebase644;
+    @IdRes
+    int resId;
 
+    private static final int ZBAR_CAMERA_PERMISSION = 1;
+
+
+    TextView course_detail, Registration_Details, personal_Details, candidate_Details, Address_Details, qualification_Details,
+            Employer_Details, Employment_status_Details, Identification_Details, Bank_Details, date_of_birth, decl;
+
+
+    TextInputLayout mobile, first_name, last_name, email_id1, alternet_mobile_no, enter_your_city, Address_line1, Address_line2, pincode, employee_id, store_location,
+            AAdhar_no, pancard_no, Bank_Ac_no, name_in_bank, ifsc_code, other_qualification1, input_layout_Id_no;
+
+    String[] spinner_msg_Eduction, spinner_msg_category, spinner_msg_any_disablity, spinner_msg_any_disablity_type, spinner_msg_gender, other_id_proof;
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
+
         final Spinner myspinner = findViewById(R.id.input_layout_gender);
         parentv = findViewById(R.id.register_yourself);
-        yearofbirth=findViewById(R.id.input_layout_year);
-        category=findViewById(R.id.input_layout_category);
-        monthofbirth=findViewById(R.id.input_layout_month);
-        dateofbirth=findViewById(R.id.input_layout_date);
-        education=findViewById(R.id.input_layout_Education);
+        yearofbirth = findViewById(R.id.input_layout_year);
+        category = findViewById(R.id.input_layout_category);
+        monthofbirth = findViewById(R.id.input_layout_month);
+        dateofbirth = findViewById(R.id.input_layout_date);
+        education = findViewById(R.id.input_layout_Education);
         disablity_type = findViewById(R.id.input_layout_Disablity_type);
         type_of_disablity = findViewById(R.id.input_layout_type_of_Disablity);
-        Employment_status= findViewById(R.id.employment_status);
+        Employment_status = findViewById(R.id.employment_status);
         OtherIdproof = findViewById(R.id.otherIdproof);
-        alreadyregistered=findViewById(R.id.btn_already_register);
+        alreadyregistered = findViewById(R.id.btn_already_register);
         input_Id_no = findViewById(R.id.input_Id_no);
-        course_detail= findViewById(R.id.course_detail);
         alt_no = findViewById(R.id.input_alt_mobile_no);
         your_city = findViewById(R.id.input_city);
         other_qualification = findViewById(R.id.input_Eduction_other);
-        employer=findViewById(R.id.input_layout_Employer);
-        sector=findViewById(R.id.input_layout_Sector);
-        bankname=findViewById(R.id.input_layout_bankname);
-        state=findViewById(R.id.input_layout_State);
-        district=findViewById(R.id.input_layout_District);
+        employer = findViewById(R.id.input_layout_Employer);
+        sector = findViewById(R.id.input_layout_Sector);
+        bankname = findViewById(R.id.input_layout_bankname);
+        state = findViewById(R.id.input_layout_State);
+        district = findViewById(R.id.input_layout_District);
         input_photograph1 = findViewById(R.id.input_photograph1);
-        input_aadharpic1=findViewById(R.id.input_photograph_aadhar1);
-        input_photograph=findViewById(R.id.input_photograph);
-        input_aadharpic=findViewById(R.id.input_photograph_aadhar);
-        input_submit=findViewById(R.id.btn_signup);
-        input_name=findViewById(R.id.input_name);
-        input_last_name=findViewById(R.id.input_last_name);
-        input_mobile_no=findViewById(R.id.input_mobile_no);
-        input_address1=findViewById(R.id.input_address1);
-        input_address2=findViewById(R.id.input_address2);
-        input_pincode=findViewById(R.id.input_pincode);
-        input_jobrole=findViewById(R.id.input_layout_jobrole);
-        input_empid=findViewById(R.id.input_empid);
-        input_loc=findViewById(R.id.input_loc);
-        input_aadhar=findViewById(R.id.input_aadhar);
+        input_aadharpic1 = findViewById(R.id.input_photograph_aadhar1);
+        input_photograph = findViewById(R.id.input_photograph);
+        input_aadharpic = findViewById(R.id.input_photograph_aadhar);
+        input_submit = findViewById(R.id.btn_signup);
+        input_name = findViewById(R.id.input_name);
+        input_last_name = findViewById(R.id.input_last_name);
+        input_mobile_no = findViewById(R.id.input_mobile_no);
+        input_address1 = findViewById(R.id.input_address1);
+        input_address2 = findViewById(R.id.input_address2);
+        input_pincode = findViewById(R.id.input_pincode);
+        input_jobrole = findViewById(R.id.input_layout_jobrole);
+        input_empid = findViewById(R.id.input_empid);
+        input_loc = findViewById(R.id.input_loc);
+        input_aadhar = findViewById(R.id.input_aadhar);
         input_pancard = findViewById(R.id.input_pancard);
-        input_bank_ac=findViewById(R.id.input_bank_ac);
-        input_ifsc_code=findViewById(R.id.input_ifsc_code);
+        input_bank_ac = findViewById(R.id.input_bank_ac);
+        input_ifsc_code = findViewById(R.id.input_ifsc_code);
         input_bank_username = findViewById(R.id.input_bank_username);
-        input_layout_prefferedlanguage=findViewById(R.id.input_layout_prefferedlanguage);
-        awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
+        input_layout_prefferedlanguage = findViewById(R.id.input_layout_prefferedlanguage);
+        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         checkBox = findViewById(R.id.checkBox);
         Email = findViewById(R.id.input_email);
 
-        ImageView iv=findViewById(R.id.actionQrCode);
+
+
+
+
+
+        language_prefs = getSharedPreferences("language_prefs", MODE_PRIVATE);
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
+
+
+
+
+
+        /*date:-16/8/2019
+         * changes in textview
+         * */
+
+        Registration_Details = findViewById(R.id.Registration_detail);
+        personal_Details = findViewById(R.id.personal_details);
+        candidate_Details = findViewById(R.id.candidate_details);
+        Address_Details = findViewById(R.id.address_details);
+        qualification_Details = findViewById(R.id.qualification);
+        Employer_Details = findViewById(R.id.Employer_details);
+        Bank_Details = findViewById(R.id.bank_details);
+        course_detail = findViewById(R.id.course_detail);
+        Employment_status_Details = findViewById(R.id.employment_status_detail);
+        Identification_Details = findViewById(R.id.identification_details);
+        date_of_birth = findViewById(R.id.date_of_birth);
+        decl = findViewById(R.id.decl);
+
+
+        /*date:-19/8/2019
+         * changes in method
+         * */
+
+
+        //TextInputLayout
+
+        mobile = findViewById(R.id.input_layout_mobile_no);
+        first_name = findViewById(R.id.input_layout_name);
+        last_name = findViewById(R.id.input_layout_last_name);
+        email_id1 = findViewById(R.id.input_layout_email);
+        alternet_mobile_no = findViewById(R.id.input_layout_alt_mobile_no);
+        enter_your_city = findViewById(R.id.input_layout_city);
+        Address_line1 = findViewById(R.id.input_layout_address1);
+        Address_line2 = findViewById(R.id.input_layout_address2);
+        pincode = findViewById(R.id.input_layout_pincode);
+        employee_id = findViewById(R.id.input_layout_empid);
+        store_location = findViewById(R.id.input_layout_storeloc);
+        AAdhar_no = findViewById(R.id.input_layout_aadhar);
+        pancard_no = findViewById(R.id.input_layout_pancard);
+        Bank_Ac_no = findViewById(R.id.input_layout_bank_ac);
+        name_in_bank = findViewById(R.id.input_layout_bank_username);
+        ifsc_code = findViewById(R.id.input_layout_ifsc_code);
+        other_qualification1 = findViewById(R.id.input_layout_Eduction_other);
+        input_layout_Id_no = findViewById(R.id.input_layout_Id_no);
+
+
+        //spinner msg
+
+        Resources resources = getResources();
+        spinner_msg_Eduction = resources.getStringArray(R.array.Education);
+        spinner_msg_category = resources.getStringArray(R.array.Category);
+        spinner_msg_any_disablity = resources.getStringArray(R.array.Disablity);
+        spinner_msg_any_disablity_type = resources.getStringArray(R.array.type_of_Disablity);
+        spinner_msg_gender = resources.getStringArray(R.array.gender);
+        other_id_proof = resources.getStringArray(R.array.other_id);
+        spinner_msg_Eduction_other = resources.getString(R.string.amway_other);
+        spinner_msg_any_disablity_yes = resources.getString(R.string.amway_Disablity_yes);
+        spinner_msg_other_id_proof = resources.getString(R.string.amway_otheridproof);
+
+        resId = getResources().getIdentifier("err_msg_for_first_name", "string", getPackageName());
+        System.out.println("ideededed" + resId);
+        @SuppressLint("ResourceType") String s = resources.getString(resId);
+        System.out.println(s + "ideededed");
+
+
+        /*date:-20/8/2019
+         * changes in error msg
+         * */
+
+
+        error_msg1 = getString(R.string.err_msg_for_first_name);
+        getResources().getString(R.string.Photo_Err_Message);
+
+
+
+
+        /*date:-21/8/2019
+         * changes in error msg
+         * */
+
+
+        toast_msg2 =  resources.getString(R.string.amway_Employer_4_Toast);
+        toast_msg3 =  resources.getString(R.string.amway_other_Employ_Toast);
+        toast_msg4 =  resources.getString(R.string.amway_Disablity_Toast);
+        toast_msg5 =  resources.getString(R.string.amway_pancard_Toast);
+        toast_msg6 =  resources.getString(R.string.amway_Aadhar_Toast);
+        toast_msg7 =  resources.getString(R.string.Bank_Err);
+        toast_msg8 =  resources.getString(R.string.amway_Language_Err_Toast);
+        toast_msg9 =  resources.getString(R.string.amway_States_Err__Toast);
+        toast_msg10 =  resources.getString(R.string.amway_District_Err);
+        toast_msg11 =  resources.getString(R.string.form_employee_Err);
+        toast_msg12 =  resources.getString(R.string.form_Sector_Err);
+        toast_msg13 =  resources.getString(R.string.form_job_role_ERR);
+        toast_msg14 =  resources.getString(R.string.Photo_Message);
+        toast_msg15 =  resources.getString(R.string.Camera_Message);
+        toast_msg16 =  resources.getString(R.string.Face_Message);
+
+        snackbar_msg1 =  resources.getString(R.string.Photo_Err_Message);
+        snackbar_msg2 =  resources.getString(R.string.amway_aadhar_snack);
+        snackbar_msg3 =  resources.getString(R.string.amway_formErr_Toast);
+        snackbar_msg4 =  resources.getString(R.string.amway_Internet_Toast);
+
+
+
+
+
+
+
+
+
+
+        //changed
+        Paper.init(this);
+        String language = Paper.book().read("language");
+        if (language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+
+
+
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("hindi", ""));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("english", ""));
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+        ImageView iv = findViewById(R.id.actionQrCode);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,42 +370,44 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-
-
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                newString2= null;
+            if (extras == null) {
+                newString2 = null;
             } else {
-                newString2= extras.getString("cmp_id");
-
-
-                System.out.println("newwww" +newString2);
-
-
-
+                newString2 = extras.getString("cmp_id");
 
             }
         } else {
-            newString2= (String) savedInstanceState.getSerializable("cmp_id");
+            newString2 = (String) savedInstanceState.getSerializable("cmp_id");
         }
 
-        awesomeValidation.addValidation(MainActivity.this, R.id.input_name,"[a-zA-Z\\s]+", R.string.err_msg_for_first_name);
-        awesomeValidation.addValidation(MainActivity.this, R.id.input_last_name,"[a-zA-Z\\s]+", R.string.err_msg_for_last_name);
-        awesomeValidation.addValidation(MainActivity.this, R.id.input_address1,"(.|\\s)*\\S(.|\\s)*", R.string.err_msg_for_address1);
-        awesomeValidation.addValidation(MainActivity.this, R.id.input_pincode,"^[0-9]{6}$", R.string.err_msg_pincode);
-        awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_ac,"^[0-9]{6,18}$", R.string.err_msg_for_acno);
-        awesomeValidation.addValidation(MainActivity.this, R.id.input_ifsc_code,"^[a-zA-Z0-9]{6,20}$", R.string.err_msg_for_ifsc);
-        awesomeValidation.addValidation(MainActivity.this, R.id.input_mobile_no,"^[0-9]{10}$", R.string.err_msg_formobile);
-        awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_username,"[a-zA-Z\\s]+", R.string.err_msg_for_namein_bank);
 
-           // awesomeValidation.addValidation(MainActivity.this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_name, "[a-zA-Z\\s]+", R.string.err_msg_for_first_name);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_last_name, "[a-zA-Z\\s]+", R.string.err_msg_for_last_name);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_address1, "(.|\\s)*\\S(.|\\s)*", R.string.err_msg_for_address1);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_pincode, "^[0-9]{6}$", R.string.err_msg_pincode);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_ac, "^[0-9]{6,18}$", R.string.err_msg_for_acno);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_ifsc_code, "^[a-zA-Z0-9]{6,20}$", R.string.err_msg_for_ifsc);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_mobile_no, "^[0-9]{10}$", R.string.err_msg_formobile);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_username, "[a-zA-Z\\s]+", R.string.err_msg_for_namein_bank);
+
+        // awesomeValidation.addValidation(MainActivity.this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
 
         employer.setEnabled(false);
-
         cmp_id = getIntent().getStringExtra("cmp_id");
-        System.out.println("the id of company is"+cmp_id);
 
+
+//        language_hi = getIntent().getStringExtra("language_id");
+//        System.out.println(cmp_id + "idddd" + language_hi);
+//
+//        if (language_hi != null && language_hi.equals("1")) {
+//            Paper.book().write("language", "hi");
+//            updateView((String) Paper.book().read("language"));
+//        } else if (language_hi != null && language_hi.equals("0")) {
+//            Paper.book().write("language", "en");
+//            updateView((String) Paper.book().read("language"));
+//        }
 
 
 
@@ -250,41 +420,42 @@ public class MainActivity extends BaseActivity {
         alreadyregistered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent iiregistered=new Intent(MainActivity.this, SignInAct.class);
+                Intent iiregistered = new Intent(MainActivity.this, SignInAct.class);
                 startActivity(iiregistered);
             }
         });
+
         //awesome validation for year
-            awesomeValidation.addValidation(MainActivity.this, R.id.input_layout_year, new CustomValidation() {
-                @Override
-                public boolean compare(ValidationHolder validationHolder) {
-                    if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals("Year")) {
-                        return false;
-                    } else {
-                        return true;
-                    }
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_layout_year, new CustomValidation() {
+            @Override
+            public boolean compare(ValidationHolder validationHolder) {
+                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals(getResources().getString(R.string.amway_year))) {
+                    return false;
+                } else {
+                    return true;
                 }
-            }, new CustomValidationCallback() {
-                @Override
-                public void execute(ValidationHolder validationHolder) {
-                    TextView textViewError = (TextView) ((Spinner) validationHolder.getView()).getSelectedView();
-                    textViewError.setError(validationHolder.getErrMsg());
-                    textViewError.setTextColor(Color.RED);
-                }
-            }, new CustomErrorReset() {
-                @Override
-                public void reset(ValidationHolder validationHolder) {
-                    TextView textViewError = (TextView) ((Spinner) validationHolder.getView()).getSelectedView();
-                    textViewError.setError(null);
-                    textViewError.setTextColor(Color.BLACK);
-                }
-            }, R.string.err_tech_stacks);
+            }
+        }, new CustomValidationCallback() {
+            @Override
+            public void execute(ValidationHolder validationHolder) {
+                TextView textViewError = (TextView) ((Spinner) validationHolder.getView()).getSelectedView();
+                textViewError.setError(validationHolder.getErrMsg());
+                textViewError.setTextColor(Color.RED);
+            }
+        }, new CustomErrorReset() {
+            @Override
+            public void reset(ValidationHolder validationHolder) {
+                TextView textViewError = (TextView) ((Spinner) validationHolder.getView()).getSelectedView();
+                textViewError.setError(null);
+                textViewError.setTextColor(Color.BLACK);
+            }
+        }, R.string.err_tech_stacks);
 
         //awesome validation for gender
         awesomeValidation.addValidation(MainActivity.this, R.id.input_layout_gender, new CustomValidation() {
             @Override
             public boolean compare(ValidationHolder validationHolder) {
-                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals("Select Gender")) {
+                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals(getResources().getString(R.string.amway_Gender))) {
                     return false;
                 } else {
                     return true;
@@ -311,7 +482,7 @@ public class MainActivity extends BaseActivity {
         awesomeValidation.addValidation(MainActivity.this, R.id.input_layout_category, new CustomValidation() {
             @Override
             public boolean compare(ValidationHolder validationHolder) {
-                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals("Select Category")) {
+                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals(getResources().getString(R.string.amway_categroy))) {
                     return false;
                 } else {
                     return true;
@@ -337,7 +508,7 @@ public class MainActivity extends BaseActivity {
         awesomeValidation.addValidation(MainActivity.this, R.id.input_layout_State, new CustomValidation() {
             @Override
             public boolean compare(ValidationHolder validationHolder) {
-                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals("Select the State")) {
+                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals(getResources().getString(R.string.amway_state))) {
                     return false;
                 } else {
                     return true;
@@ -364,7 +535,7 @@ public class MainActivity extends BaseActivity {
         awesomeValidation.addValidation(MainActivity.this, R.id.input_layout_Disablity_type, new CustomValidation() {
             @Override
             public boolean compare(ValidationHolder validationHolder) {
-                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals("Any Disablity ?")) {
+                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals(getResources().getString(R.string.amway_Disablity))) {
                     return false;
                 } else {
                     return true;
@@ -390,7 +561,7 @@ public class MainActivity extends BaseActivity {
         awesomeValidation.addValidation(MainActivity.this, R.id.input_layout_District, new CustomValidation() {
             @Override
             public boolean compare(ValidationHolder validationHolder) {
-                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals("Select the District")) {
+                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals(getResources().getString(R.string.amway_District))) {
                     return false;
                 } else {
                     return true;
@@ -417,7 +588,7 @@ public class MainActivity extends BaseActivity {
         awesomeValidation.addValidation(MainActivity.this, R.id.input_layout_Education, new CustomValidation() {
             @Override
             public boolean compare(ValidationHolder validationHolder) {
-                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals("Select Education")) {
+                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals(getResources().getString(R.string.amway_Eduction))) {
                     return false;
                 } else {
                     return true;
@@ -443,7 +614,7 @@ public class MainActivity extends BaseActivity {
         awesomeValidation.addValidation(MainActivity.this, R.id.input_layout_Employer, new CustomValidation() {
             @Override
             public boolean compare(ValidationHolder validationHolder) {
-                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals("Select the Employer")) {
+                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals(getResources().getString(R.string.amway_Employer))) {
                     return false;
                 } else {
                     return true;
@@ -466,10 +637,11 @@ public class MainActivity extends BaseActivity {
         }, R.string.err_tech_stacks);
 
         //awesome validation for bank
+
         awesomeValidation.addValidation(MainActivity.this, R.id.input_layout_bankname, new CustomValidation() {
             @Override
             public boolean compare(ValidationHolder validationHolder) {
-                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals("Select the Bank")) {
+                if (((Spinner) validationHolder.getView()).getSelectedItem().toString().equals(getResources().getString(R.string.Select_Bank))) {
                     return false;
                 } else {
                     return true;
@@ -492,9 +664,7 @@ public class MainActivity extends BaseActivity {
         }, R.string.err_tech_stacks);
 
 
-
         sector.setEnabled(false);
-
         myRectPaint = new Paint();
         myRectPaint.setStrokeWidth(1);
         myRectPaint.setColor(Color.WHITE);
@@ -503,21 +673,24 @@ public class MainActivity extends BaseActivity {
         Bankdetails();
         Statedetails();
         Employerlist();
-        banks = new String[]{"Select the Bank"};
-        states=new String[]{"Select the State"};
-        districts=new String[]{"Select the District"};
-        employers=new String[]{"Select the Employer"};
-        jobrole=new String[]{"Select the Jobrole"};
+
+        Resources res = getResources();
+        sectors = res.getStringArray(R.array.Amway_Select_the_Sector);
+        banks = new String[]{getString(R.string.Select_Bank)};
+        preflangg = res.getStringArray(R.array.Amway_Select_the_PrefferedLanguage);
+        states = res.getStringArray(R.array.Amway_Select_the_State);
+        districts = res.getStringArray(R.array.Amway_Select_the_District);
+        employers = res.getStringArray(R.array.Amway_Select_the_Employer);
+        jobrole = res.getStringArray(R.array.Amway_Select_the_Jobrole);
+
         Statelist = new ArrayList<>(Arrays.asList(states));
         bankslist = new ArrayList<>(Arrays.asList(banks));
-        districtlist=new ArrayList<>(Arrays.asList(districts));
-        sectorlist=new ArrayList<>(Arrays.asList(sectors));
-        employerlist=new ArrayList<>(Arrays.asList(employers));
-        jobrolelist=new ArrayList<>(Arrays.asList(jobrole));
-        preflang=new ArrayList<>(Arrays.asList(preflangg));
-        mySwipeRefreshLayout=new SwipeRefreshLayout(getApplicationContext());
-
-
+        districtlist = new ArrayList<>(Arrays.asList(districts));
+        sectorlist = new ArrayList<>(Arrays.asList(sectors));
+        employerlist = new ArrayList<>(Arrays.asList(employers));
+        jobrolelist = new ArrayList<>(Arrays.asList(jobrole));
+        preflang = new ArrayList<>(Arrays.asList(preflangg));
+        mySwipeRefreshLayout = new SwipeRefreshLayout(getApplicationContext());
 
 
         input_submit.setOnClickListener(new View.OnClickListener() {
@@ -525,140 +698,88 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                /*if(yearobirth.equals("Year")){
 
-                    Toast.makeText(getApplicationContext(),"Year must be selected",Toast.LENGTH_LONG).show();
-                }*/
-               // else
+                if (faces != null && faces.size() == 0) {
+                    Snackbar.make(parentv, snackbar_msg1, Snackbar.LENGTH_SHORT).show();
+                } else if (!new VerhoeffAlgorithm().validateVerhoeff(input_aadhar.getText().toString())) {
+                    Snackbar.make(parentv, snackbar_msg2, Snackbar.LENGTH_SHORT).show();
+                } else if (!employer1.equals(getResources().getString(R.string.amway_Employer)) && employeridname.equals("4") && (input_empid.getText().toString().matches(""))) {
 
-                new SavephotoComparison(getApplicationContext()).PhotoApi(encodedphoto,input_mobile_no.getText().toString(),
-                        input_name.getText().toString() + input_last_name.getText().toString());
+                    Toast.makeText(MainActivity.this, toast_msg2, Toast.LENGTH_SHORT).show();
 
-                if (faces!=null && faces.size()==0){
-                        Snackbar.make(parentv,"We can't detect your face in the photo Clicked.Click another photo.",Snackbar.LENGTH_SHORT).show();
-                }
-              /*  else if (gender.equals("Select Gender")){
-                    Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
-                }
-                else if (categoryy.equals("Select categroy")){
-                    Toast.makeText(getApplicationContext(),"categroy must be selected",Toast.LENGTH_LONG).show();
-                }
-                else if (state1.equals("Select the State")){
-                    Toast.makeText(getApplicationContext(),"State must be selected",Toast.LENGTH_LONG).show();
-                }
-
-                else if (district1.equals("Select the District")){
-                    Toast.makeText(getApplicationContext(),"District must be selected",Toast.LENGTH_LONG).show();
-                }
-
-                else if (eduction1.equals("Select Education")){
-                    Toast.makeText(getApplicationContext(),"Education must be selected",Toast.LENGTH_LONG).show();
-                }
-
-
-                else if (employer1.equals("Select the Employer")){
-                    Toast.makeText(getApplicationContext(),"Employer must be selected",Toast.LENGTH_LONG).show();
-                }
-                else if (bankname1.equals("Select the Bank")){
-                    Toast.makeText(getApplicationContext(),"Bank  name must be selected",Toast.LENGTH_LONG).show();
-
-                }*/
-              else if (!new VerhoeffAlgorithm().validateVerhoeff(input_aadhar.getText().toString())){
-                        Snackbar.make(parentv,"This Aadhaar number is invalid.Please input correct aadhaar number.",Snackbar.LENGTH_SHORT).show();
-                    }
-                else  if (!employer1.equals("Select the Employer")&& employeridname.equals("4") && (input_empid.getText().toString().matches(""))){
-
-                    Toast.makeText(MainActivity.this, "Employee ID/Seller ID Cannot be empty", Toast.LENGTH_SHORT).show();
-                }
-
-
-
-
-
-
-                else if ((!eduction1.equals("Select Education") && eduction1.equals("Other"))&& (other_qualification.getText().toString().matches(""))){
-                    Toast.makeText(getApplicationContext(),"Education must be filled",Toast.LENGTH_LONG).show();
+                } else if ((!eduction1.equals(getResources().getString(R.string.amway_Eduction)) && eduction1.equals(getResources().getString(R.string.amway_other))) && (other_qualification.getText().toString().matches(""))) {
+                    Toast.makeText(getApplicationContext(), toast_msg3, Toast.LENGTH_LONG).show();
                 }
                /* else if (disablity_type1.equals("Any Disability ?")){
                     Toast.makeText(getApplicationContext(),"Disability must be Selected",Toast.LENGTH_LONG).show();
                 }*/
 
-                else if ((!disablity_type1.equals("Any Disability ?")&&disablity_type1.equals("Yes"))&& (type_of_disablity1.equals("Select Type of Disability"))){
-                    Toast.makeText(getApplicationContext(),"Disablity type must be selected",Toast.LENGTH_LONG).show();
+                else if ((!disablity_type1.equals(getResources().getString(R.string.amway_Disablity)) && disablity_type1.equals(getResources().getString(R.string.amway_Disablity_yes))) && (type_of_disablity1.equals(getResources().getString(R.string.amway_type_of_disablity1)))) {
+                    Toast.makeText(getApplicationContext(), toast_msg4, Toast.LENGTH_LONG).show();
                 }
 
-//                else if ((!disablity_type1.equals("Any Disability ?")&&disablity_type1.equals("Yes"))&& (type_of_disablity.equals("Select Type of Disability"))){
-//                    Toast.makeText(getApplicationContext(),"Disablity type must be selected",Toast.LENGTH_LONG).show();
+
+//
+//                else if (!(OtherIdproof1.equals(getResources().getString(R.string.amway_otheridproof)))&& (input_Id_no.getText().toString().matches(""))){
+//                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.amway_otheridproof_Toast),Toast.LENGTH_LONG).show();
 //                }
 
-                else if (!(OtherIdproof1.equals("Other Id Proof"))&& (input_Id_no.getText().toString().matches(""))){
-                    Toast.makeText(getApplicationContext(),"Id  must be Filled",Toast.LENGTH_LONG).show();
-                }
 
+                else if (!state1.equals(getResources().getString(R.string.amway_state)) && (stateiddd.equals("2") && (input_pancard.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("3") && (input_pancard.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("16") && (input_pancard.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("17") && (input_pancard.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("18") && (input_pancard.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("23") && (input_pancard.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("19") && (input_pancard.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("26") && (input_pancard.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("10") && (input_pancard.getText().toString().matches("")))) {
 
+                    Toast.makeText(MainActivity.this, toast_msg5, Toast.LENGTH_SHORT).show();
 
+                } else if ((!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("1") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("4") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("5") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("6") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("7") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("8") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("9") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("11") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("12") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("13") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("14") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("15") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("19") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("20") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("21") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("22") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("24") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("25") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("27") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("28") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("30") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("31") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("32") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("33") && (input_aadhar.getText().toString().matches(""))) ||
+                        (!state1.equals(getResources().getString(R.string.amway_state)) && stateiddd.equals("34") && (input_aadhar.getText().toString().matches("")))) {
 
+                    Toast.makeText(MainActivity.this, toast_msg6, Toast.LENGTH_SHORT).show();
 
-                else if (!state1.equals("Select the State")&&(stateiddd.equals("2") && (input_pancard.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("3") && (input_pancard.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("16") && (input_pancard.getText().toString().matches("")))  ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("17") && (input_pancard.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("18") && (input_pancard.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("23") && (input_pancard.getText().toString().matches("")))||
-                        (!state1.equals("Select the State")&&stateiddd.equals("19") && (input_pancard.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("26") && (input_pancard.getText().toString().matches("")))||
-                        (!state1.equals("Select the State")&&stateiddd.equals("10") && (input_pancard.getText().toString().matches(""))) )
-
-                {
-
-                    Toast.makeText(MainActivity.this, "PAN Card cannot be empty according to your State", Toast.LENGTH_SHORT).show();
-                }
-
-                else if ((!state1.equals("Select the State")&&stateiddd.equals("1") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("4") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("5") && (input_aadhar.getText().toString().matches("")))  ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("6") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("7") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("8") && (input_aadhar.getText().toString().matches("")))||
-                        (!state1.equals("Select the State")&&stateiddd.equals("9") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("11") && (input_aadhar.getText().toString().matches("")))||
-                        (!state1.equals("Select the State")&&stateiddd.equals("12") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("13") && (input_aadhar.getText().toString().matches("")))  ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("14") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("15") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("19") && (input_aadhar.getText().toString().matches("")))||
-                        (!state1.equals("Select the State")&&stateiddd.equals("20") && (input_aadhar.getText().toString().matches("")))||
-                        (!state1.equals("Select the State")&&stateiddd.equals("21") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("22") && (input_aadhar.getText().toString().matches("")))  ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("24") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("25") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("27") && (input_aadhar.getText().toString().matches("")))||
-                        (!state1.equals("Select the State")&&stateiddd.equals("28") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("30") && (input_aadhar.getText().toString().matches("")))  ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("31") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("32") && (input_aadhar.getText().toString().matches(""))) ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("33") && (input_aadhar.getText().toString().matches("")))  ||
-                        (!state1.equals("Select the State")&&stateiddd.equals("34") && (input_aadhar.getText().toString().matches(""))))
-
-
-
-
-
-                {
-
-                    Toast.makeText(MainActivity.this, "Aadhar Card Can't be empty according to your state", Toast.LENGTH_SHORT).show();
-                }
-
-
-                else if(awesomeValidation.validate()
-                            && !(gender.equals("Select Gender"))&& !state1.equals("Select the State")
-                        && ! disablity_type1.equals("Any Disability ?")
-                        && ! ((disablity_type1.equals("Yes"))&& (type_of_disablity.equals("Select Type of Disability")))
-                        && !yearobirth.equals("Year") && !district1.equals("Select the District") && !eduction1.equals("Select Education")
-                        && !employer1.equals("Select the Employer") && !(bankname1.equals("Select the Bank"))
+                } else if (awesomeValidation.validate()
+                        && !(gender.equals((getResources().getString(R.string.amway_Gender))))
+                        && !state1.equals((getResources().getString(R.string.Select_state)))
+                        && !disablity_type1.equals((getResources().getString(R.string.amway_Disablity)))
+                        && !((disablity_type1.equals((getResources().getString(R.string.amway_Disablity_yes)))) && (type_of_disablity.equals((getResources().getString(R.string.amway_type_of_disablity1)))))
+                        && !yearobirth.equals((getResources().getString(R.string.amway_year)))
+                        && !district1.equals((getResources().getString(R.string.amway_District)))
+                        && !eduction1.equals((getResources().getString(R.string.amway_Eduction)))
+                        && !employer1.equals((getResources().getString(R.string.amway_Employer)))
+                        && !(bankname1.equals((getResources().getString(R.string.Select_Bank))))
                         && !(employeridname.equals("4") && (input_empid.getText().toString().matches("")))
-                            && !((eduction1.equals("Other"))&& (other_qualification.getText().toString().matches("")))
-                        && !(!(OtherIdproof1.equals("Other Id Proof"))&& (input_Id_no.getText().toString().matches("")))
+                        && !((eduction1.equals((getResources().getString(R.string.amway_other)))) && (other_qualification.getText().toString().matches("")))
+
+//                            && !(!(OtherIdproof1.equals((getResources().getString(R.string.amway_otheridproof))))&&
+//                            (input_Id_no.getText().toString().matches("")))
 
 
                         && !(stateiddd.equals("2") && (input_pancard.getText().toString().matches("")))
@@ -698,7 +819,7 @@ public class MainActivity extends BaseActivity {
                         && !(stateiddd.equals("33") && (input_aadhar.getText().toString().matches("")))
                         && !(stateiddd.equals("34") && (input_aadhar.getText().toString().matches("")))
 
-                        && checkBox.isChecked() && encodedphoto!=null) {
+                        && checkBox.isChecked() && encodedphoto != null) {
 
 
                     Intent ii = new Intent(MainActivity.this, Reverify.class);
@@ -709,8 +830,8 @@ public class MainActivity extends BaseActivity {
                     ii.putExtra("pancard", input_pancard.getText().toString());
                     ii.putExtra("bankaccount", input_bank_ac.getText().toString());
                     ii.putExtra("doy", yearobirth);
-                    ii.putExtra("dom",monthobirth);
-                    ii.putExtra("dod",dateobirth);
+                    ii.putExtra("dom", monthobirth);
+                    ii.putExtra("dod", dateobirth);
                     ii.putExtra("gender", gender);
                     ii.putExtra("bank", bankiddd);
                     ii.putExtra("state", stateiddd);
@@ -724,163 +845,130 @@ public class MainActivity extends BaseActivity {
                     ii.putExtra("pincode", input_pincode.getText().toString());
                     ii.putExtra("nameasinbank", input_bank_username.getText().toString());
                     ii.putExtra("ifsccode", input_ifsc_code.getText().toString());
-                    ii.putExtra("jobrole",jobroleeiddd);
-                    ii.putExtra("empid",input_empid.getText().toString());
-                    ii.putExtra("location",input_loc.getText().toString());
-                    ii.putExtra("preflang",preflangiddd);
-                    ii.putExtra("pic",encodedphoto);
-                    ii.putExtra("picaadhar",encodedphotoaadhar);
-                    ii.putExtra("Email",Email.getText().toString());
+                    ii.putExtra("jobrole", jobroleeiddd);
+                    ii.putExtra("empid", input_empid.getText().toString());
+                    ii.putExtra("location", input_loc.getText().toString());
+                    ii.putExtra("preflang", preflangiddd);
+                    ii.putExtra("pic", encodedphoto);
+                    ii.putExtra("picaadhar", encodedphotoaadhar);
+                    ii.putExtra("Email", Email.getText().toString());
                     ii.putExtra("categroy", categoryy);
-                    ii.putExtra("alt_no",alt_no.getText().toString());
-                    ii.putExtra("your_city",your_city.getText().toString());
-                    ii.putExtra("other_qualification",other_qualification.getText().toString());
-                    ii.putExtra("input_id_no",input_Id_no.getText().toString());
-                 //  ii.putExtra("Any_disability",disablity_type1);
-                    ii.putExtra("type_of_disblity",type_of_disablity1);
-                    ii.putExtra("Any_disability",disablity_type1);
-                    ii.putExtra("other_Id_proof_type",OtherIdproof1);
-                    ii.putExtra("Employment_status",Employment_status1);
-
-
+                    ii.putExtra("alt_no", alt_no.getText().toString());
+                    ii.putExtra("your_city", your_city.getText().toString());
+                    ii.putExtra("other_qualification", other_qualification.getText().toString());
+                    ii.putExtra("input_id_no", input_Id_no.getText().toString());
+                    //  ii.putExtra("Any_disability",disablity_type1);
+                    ii.putExtra("type_of_disblity", type_of_disablity1);
+                    ii.putExtra("Any_disability", disablity_type1);
+                    ii.putExtra("other_Id_proof_type", OtherIdproof1);
+                    ii.putExtra("Employment_status", Employment_status1);
 
 
                     startActivity(ii);
 
-                }else
-                {
+                } else {
 
                     //Toast.makeText(getApplicationContext(), "The form is not filled correctly.Please verify it and submit.", Toast.LENGTH_LONG).show();
 
-                    Snackbar.make(parentv,"The form is not filled correctly.Please verify it and submit.",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(parentv, snackbar_msg3, Snackbar.LENGTH_SHORT).show();
                 }
 
             }
         });
 
-        try{
+        try {
 
 
             input_photograph.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-
-                    if (android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (checkSelfPermission(Manifest.permission.CAMERA)
                                 != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(new String[]{Manifest.permission.CAMERA},
                                     MY_CAMERA_PERMISSION_CODE);
+                        } else {
                         }
-
-                        else {
-
-                            Intent ii=new Intent(MainActivity.this, Eye_blinkActivity.class);
-                            startActivityForResult(ii,1);
-
-                        }
+                    } else {
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     }
-                    else {
-                        Intent ii=new Intent(MainActivity.this, Eye_blinkActivity.class);
-                        startActivityForResult(ii,1);
-
-                       /* Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
-                    }
-
 
 
                 }
-            });}
-
-        catch (Exception e){
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-        try{
+        try {
 
 
             input_photograph1.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (checkSelfPermission(Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                    MY_CAMERA_PERMISSION_CODE);
+                        } else {
 
-                    if (android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.CAMERA)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA},
-                                MY_CAMERA_PERMISSION_CODE);
+                            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+                        }
                     } else {
-                        Intent ii=new Intent(MainActivity.this, Eye_blinkActivity.class);
-                        startActivityForResult(ii,1);
-                        /*Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
-
-                    }
-                    }else {
-                        Intent ii=new Intent(MainActivity.this, Eye_blinkActivity.class);
-                        startActivityForResult(ii,1);
-
-                       /* Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     }
 
                 }
             });
-        }
-
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
 
 
         input_aadharpic1.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-
-
-                if (android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-                if (checkSelfPermission(Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA},
-                            MY_CAMERA_PERMISSION_CODE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                MY_CAMERA_PERMISSION_CODE);
+                    } else {
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_AADHAR_REQUEST);
+                    }
                 } else {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri);
-                    startActivityForResult(cameraIntent, CAMERA_AADHAR_REQUEST);
-                }
-                }else {
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri);
                     startActivityForResult(cameraIntent, CAMERA_AADHAR_REQUEST);
                 }
 
             }
         });
-
-
-
-
 
 
         input_aadharpic.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                if (android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-                if (checkSelfPermission(Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA},
-                            MY_CAMERA_PERMISSION_CODE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                MY_CAMERA_PERMISSION_CODE);
+                    } else {
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_AADHAR_REQUEST);
+                    }
                 } else {
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_AADHAR_REQUEST);
-                }
-                }else {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, CAMERA_AADHAR_REQUEST);
                 }
@@ -889,22 +977,19 @@ public class MainActivity extends BaseActivity {
         });
 
 
-
-
         //Gender
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.gender));
+                android.R.layout.simple_list_item_1, spinner_msg_gender);
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         myspinner.setAdapter(myAdapter);
 
-        myspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        myspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                gender=myspinner.getSelectedItem().toString();
+                                       int position, long id) {
+                gender = myspinner.getSelectedItem().toString();
 
             }
 
@@ -918,25 +1003,21 @@ public class MainActivity extends BaseActivity {
         });
 
 
-
         //disablity_type
         ArrayAdapter<String> myAdapterdisablity_type = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Disablity));
+                android.R.layout.simple_list_item_1, spinner_msg_any_disablity);
         myAdapterdisablity_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         disablity_type.setAdapter(myAdapterdisablity_type);
-
-        disablity_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        disablity_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                disablity_type1=disablity_type.getSelectedItem().toString();
-                if (disablity_type1.equals("Yes")){
+                                       int position, long id) {
+                disablity_type1 = disablity_type.getSelectedItem().toString();
+                if (disablity_type1.equals(spinner_msg_any_disablity_yes)) {
                     type_of_disablity.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     type_of_disablity.setVisibility(View.GONE);
                 }
             }
@@ -954,22 +1035,18 @@ public class MainActivity extends BaseActivity {
         //type_of_disablity
 
 
-
-
-
         ArrayAdapter<String> myAdapter_type_of_disablity = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.type_of_Disablity));
+                android.R.layout.simple_list_item_1, spinner_msg_any_disablity_type);
         myAdapter_type_of_disablity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         type_of_disablity.setAdapter(myAdapter_type_of_disablity);
 
-        type_of_disablity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        type_of_disablity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                type_of_disablity1=type_of_disablity.getSelectedItem().toString();
+                                       int position, long id) {
+                type_of_disablity1 = type_of_disablity.getSelectedItem().toString();
 
             }
 
@@ -981,7 +1058,6 @@ public class MainActivity extends BaseActivity {
 
 
         });
-
 
 
         //Employment _status
@@ -989,25 +1065,21 @@ public class MainActivity extends BaseActivity {
 
         ArrayAdapter<String> myAdapterEmployment_status = new ArrayAdapter<String>(MainActivity.this,
 
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Employment_status_string));
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Employment_status_string));
         myAdapterEmployment_status.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         Employment_status.setEnabled(false);
         Employment_status.setClickable(false);
 
 
-
-
-
         Employment_status.setAdapter(myAdapterEmployment_status);
 
-        Employment_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        Employment_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                Employment_status1=Employment_status.getSelectedItem().toString();
+                                       int position, long id) {
+                Employment_status1 = Employment_status.getSelectedItem().toString();
 
 
             }
@@ -1022,31 +1094,28 @@ public class MainActivity extends BaseActivity {
         });
 
 
-
-
         // Other_id_Details
 
 
         ArrayAdapter<String> myAdapterOtherIdproof = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.other_id));
+                android.R.layout.simple_list_item_1, other_id_proof);
         myAdapterOtherIdproof.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         OtherIdproof.setAdapter(myAdapterOtherIdproof);
 
-        OtherIdproof.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        OtherIdproof.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                OtherIdproof1=OtherIdproof.getSelectedItem().toString();
+                                       int position, long id) {
+                OtherIdproof1 = OtherIdproof.getSelectedItem().toString();
 
-                if (OtherIdproof1.equals("Other Id Proof")){
+                if (position == 0) {
                     input_Id_no.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     input_Id_no.setVisibility(View.VISIBLE);
                 }
+
 
             }
 
@@ -1062,18 +1131,17 @@ public class MainActivity extends BaseActivity {
         //Year of birth
 
         ArrayAdapter<String> myAdapter1 = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Year));
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Year));
         myAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         yearofbirth.setAdapter(myAdapter1);
 
-        yearofbirth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        yearofbirth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                yearobirth=yearofbirth.getSelectedItem().toString();
+                                       int position, long id) {
+                yearobirth = yearofbirth.getSelectedItem().toString();
 
             }
 
@@ -1089,18 +1157,17 @@ public class MainActivity extends BaseActivity {
         //Month of birth
 
         ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Month));
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Month));
         myAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         monthofbirth.setAdapter(myAdapter2);
 
-        monthofbirth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        monthofbirth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                monthobirth=monthofbirth.getSelectedItem().toString();
+                                       int position, long id) {
+                monthobirth = monthofbirth.getSelectedItem().toString();
             }
 
             @Override
@@ -1115,18 +1182,17 @@ public class MainActivity extends BaseActivity {
         //Date of birth
 
         ArrayAdapter<String> myAdapter3 = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Date));
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Date));
         myAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         dateofbirth.setAdapter(myAdapter3);
 
-        dateofbirth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        dateofbirth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                dateobirth=dateofbirth.getSelectedItem().toString();
+                                       int position, long id) {
+                dateobirth = dateofbirth.getSelectedItem().toString();
             }
 
             @Override
@@ -1138,34 +1204,27 @@ public class MainActivity extends BaseActivity {
 
         //Education
         ArrayAdapter<String> myAdapter4 = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Education));
+                android.R.layout.simple_list_item_1, spinner_msg_Eduction);
         myAdapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         education.setAdapter(myAdapter4);
 
-        education.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        education.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                eduction1=education.getSelectedItem().toString();
+                                       int position, long id) {
+                eduction1 = education.getSelectedItem().toString();
 
-                if (eduction1.equals("Other")){
+                if (eduction1.equals(spinner_msg_Eduction_other)) {
                     other_qualification.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     other_qualification.setVisibility(View.GONE);
                 }
-
-
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
-
             }
 
 
@@ -1174,18 +1233,17 @@ public class MainActivity extends BaseActivity {
 
         //Employer
         ArrayAdapter<String> myAdapterEmployer = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,employerlist);
+                android.R.layout.simple_list_item_1, employerlist);
         myAdapterEmployer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         employer.setAdapter(myAdapterEmployer);
 
-        employer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        employer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
+                                       int position, long id) {
 
-                if(position > 0) {
+                if (position > 0) {
                     employer1 = employer.getSelectedItem().toString();
                     employeridname = employdetail.get(employer1);
 
@@ -1199,17 +1257,12 @@ public class MainActivity extends BaseActivity {
                     course_detail.setVisibility(View.VISIBLE);
 
 
-
-                }
-                else
-                {
-                    employer1=employer.getSelectedItem().toString();
+                } else {
+                    employer1 = employer.getSelectedItem().toString();
                     sector.setVisibility(View.GONE);
                     input_layout_prefferedlanguage.setVisibility(View.GONE);
                     input_jobrole.setVisibility(View.GONE);
                     course_detail.setVisibility(View.GONE);
-
-
 
 
                 }
@@ -1228,21 +1281,20 @@ public class MainActivity extends BaseActivity {
         //Sector
 
         ArrayAdapter<String> myAdaptersector = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,sectorlist);
+                android.R.layout.simple_list_item_1, sectorlist);
         myAdaptersector.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sector.setAdapter(myAdaptersector);
 
-        sector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        sector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                sector1=sector.getSelectedItem().toString();
-                String selectedsectortext  = (String) parent.getItemAtPosition(position);
+                                       int position, long id) {
+                sector1 = sector.getSelectedItem().toString();
+                String selectedsectortext = (String) parent.getItemAtPosition(position);
 
-                if(position > 0){
-                    sectoridd=sectordetail.get(selectedsectortext);
+                if (position > 0) {
+                    sectoridd = sectordetail.get(selectedsectortext);
 
                 }
             }
@@ -1256,15 +1308,14 @@ public class MainActivity extends BaseActivity {
         //jobrole
 
 
-        input_jobrole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        input_jobrole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
+                                       int position, long id) {
                 // if(position > 0) {
                 jobrole1 = input_jobrole.getSelectedItem().toString();
-                jobroleeiddd=Jobrolelist.get(jobrole1);
+                jobroleeiddd = Jobrolelist.get(jobrole1);
                 // }
             }
 
@@ -1279,17 +1330,16 @@ public class MainActivity extends BaseActivity {
 
         //Choose category
         ArrayAdapter<String> categoryadapt = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Category));
+                android.R.layout.simple_list_item_1, spinner_msg_category);
         categoryadapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         category.setAdapter(categoryadapt);
 
-        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
+                                       int position, long id) {
                 // if(position > 0) {
                 categoryy = category.getSelectedItem().toString();
                 //jobroleeiddd=Jobrolelist.get(jobrole1);
@@ -1309,14 +1359,13 @@ public class MainActivity extends BaseActivity {
         //Preffered Exam Language
 
 
-        input_layout_prefferedlanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        input_layout_prefferedlanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
+                                       int position, long id) {
                 preflang1 = input_layout_prefferedlanguage.getSelectedItem().toString();
-                preflangiddd=langdetail.get(preflang1);
+                preflangiddd = langdetail.get(preflang1);
 
             }
 
@@ -1330,24 +1379,22 @@ public class MainActivity extends BaseActivity {
         });
 
 
-
         //Bankname
 
         ArrayAdapter<String> myAdapterBankname = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,bankslist);
+                android.R.layout.simple_list_item_1, bankslist);
         myAdapterBankname.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         bankname.setAdapter(myAdapterBankname);
 
-        bankname.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        bankname.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                bankname1=bankname.getSelectedItem().toString();
-                if(position > 0){
-                    bankiddd= bankdetail.get(bankname1);
+                                       int position, long id) {
+                bankname1 = bankname.getSelectedItem().toString();
+                if (position > 0) {
+                    bankiddd = bankdetail.get(bankname1);
 
 
                 }
@@ -1366,32 +1413,29 @@ public class MainActivity extends BaseActivity {
         //state
 
         ArrayAdapter<String> myAdapterState = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,Statelist);
+                android.R.layout.simple_list_item_1, Statelist);
         myAdapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         state.setAdapter(myAdapterState);
 
-        state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                state1=state.getSelectedItem().toString();
-                selectedstatetext =(String) parent.getItemAtPosition(position);
+                                       int position, long id) {
+                state1 = state.getSelectedItem().toString();
+                selectedstatetext = (String) parent.getItemAtPosition(position);
 
-                if(position > 0){
-                    String value= Statedetail.get(selectedstatetext);
-                    stateiddd=value;
+                if (position > 0) {
+                    String value = Statedetail.get(selectedstatetext);
+                    stateiddd = value;
                     DistrictDetails(value);
                     district.setVisibility(View.VISIBLE);
 
 
-                }
-                else {
+                } else {
                     district.setVisibility(View.GONE);
                 }
-
 
 
             }
@@ -1412,14 +1456,13 @@ public class MainActivity extends BaseActivity {
             districtlist.clear();
         }
         districtlist.add("Select the District");*/
-        district.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        district.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id)
-            {
-                district1=district.getSelectedItem().toString();
-                districtiddd=districtdetail.get(district1);
+                                       int position, long id) {
+                district1 = district.getSelectedItem().toString();
+                districtiddd = districtdetail.get(district1);
             }
 
             @Override
@@ -1433,17 +1476,121 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+
+        Context context = LocaleHelper.setLocale(this, lang);
+        final Resources resources = context.getResources();
+
+        //set Text for Textview heading
+        Registration_Details.setText(resources.getString(R.string.registration_details));
+        personal_Details.setText(resources.getString(R.string.personal_details));
+        candidate_Details.setText(resources.getString(R.string.candidate_details));
+        Address_Details.setText(resources.getString(R.string.address_details));
+        qualification_Details.setText(resources.getString(R.string.qualification));
+        Employer_Details.setText(resources.getString(R.string.employer_details));
+        Employment_status_Details.setText(resources.getString(R.string.employment_status));
+        Identification_Details.setText(resources.getString(R.string.identification_details));
+        Bank_Details.setText(resources.getString(R.string.bank_details));
+        course_detail.setText(resources.getString(R.string.course_details));
+        date_of_birth.setText(resources.getString(R.string.date_of_birth));
+        decl.setText(resources.getString(R.string.i_am_willing_to_declare_my_aadhar_details_for_pmkvy_rpl4_project));
+
+
+        //textview text in form
+        input_photograph1.setText(resources.getString(R.string.upload_your_photo));
+        input_aadharpic1.setText(resources.getString(R.string.upload_your_aadhar));
+        input_submit.setText(resources.getString(R.string.register));
+        alreadyregistered.setText(resources.getString(R.string.already_registered));
+
+
+        //set hint text for Edittext in form
+
+        mobile.setHint(resources.getString(R.string.hint_mobile));
+        first_name.setHint(resources.getString(R.string.hint_name));
+        last_name.setHint(resources.getString(R.string.hint_last_name));
+        email_id1.setHint(resources.getString(R.string.hint_email));
+        alternet_mobile_no.setHint(resources.getString(R.string.alt_hint_mobile));
+        enter_your_city.setHint(resources.getString(R.string.hint_city));
+        Address_line1.setHint(resources.getString(R.string.hint_address_line1));
+        Address_line2.setHint(resources.getString(R.string.hint_address_line2));
+        pincode.setHint(resources.getString(R.string.hint_pincode));
+        other_qualification1.setHint(resources.getString(R.string.hint_other));
+        employee_id.setHint(resources.getString(R.string.hint_empid));
+        store_location.setHint(resources.getString(R.string.hint_location));
+        AAdhar_no.setHint(resources.getString(R.string.hint_aadhar));
+        pancard_no.setHint(resources.getString(R.string.hint_pancard));
+        input_layout_Id_no.setHint(resources.getString(R.string.hint_other_id));
+        Bank_Ac_no.setHint(resources.getString(R.string.hint_bank_ac));
+        name_in_bank.setHint(resources.getString(R.string.name_as_in_bank));
+        ifsc_code.setHint(resources.getString(R.string.hint_ifsc_code));
+
+
+        // static spinner
+        spinner_msg_Eduction = resources.getStringArray(R.array.Education);
+        spinner_msg_category = resources.getStringArray(R.array.Category);
+        spinner_msg_any_disablity = resources.getStringArray(R.array.Disablity);
+        spinner_msg_any_disablity_type = resources.getStringArray(R.array.type_of_Disablity);
+        spinner_msg_gender = resources.getStringArray(R.array.gender);
+        other_id_proof = resources.getStringArray(R.array.other_id);
+        spinner_msg_Eduction_other = resources.getString(R.string.amway_other);
+        spinner_msg_any_disablity_yes = resources.getString(R.string.amway_Disablity_yes);
+        spinner_msg_other_id_proof = resources.getString(R.string.amway_otheridproof);
+
+
+        //error msg
+
+        //   error_msg1 = resources.getString(R.string.err_msg_for_first_name);
+        resId = resources.getIdentifier("err_msg_for_first_name", "string", getPackageName());
+
+        System.out.println("ideedededupdate" + resId);
+        @SuppressLint("ResourceType") String k = resources.getString(resId);
+        System.out.println(k + "ideedededupdate");
+
+
+   /*21/8/2019 */
+
+
+        toast_msg2 =  resources.getString(R.string.amway_Employer_4_Toast);
+        toast_msg3 =  resources.getString(R.string.amway_other_Employ_Toast);
+        toast_msg4 =  resources.getString(R.string.amway_Disablity_Toast);
+        toast_msg5 =  resources.getString(R.string.amway_pancard_Toast);
+        toast_msg6 =  resources.getString(R.string.amway_Aadhar_Toast);
+        toast_msg7 =  resources.getString(R.string.Bank_Err);
+        toast_msg8 =  resources.getString(R.string.amway_Language_Err_Toast);
+        toast_msg9 =  resources.getString(R.string.amway_States_Err__Toast);
+        toast_msg10 =  resources.getString(R.string.amway_District_Err);
+        toast_msg11 =  resources.getString(R.string.form_employee_Err);
+        toast_msg12 =  resources.getString(R.string.form_Sector_Err);
+        toast_msg13 =  resources.getString(R.string.form_job_role_ERR);
+        toast_msg14 =  resources.getString(R.string.Photo_Message);
+        toast_msg15 =  resources.getString(R.string.Camera_Message);
+        toast_msg16 =  resources.getString(R.string.Face_Message);
+
+
+        snackbar_msg1 =  resources.getString(R.string.Photo_Err_Message);
+        snackbar_msg2 =  resources.getString(R.string.amway_aadhar_snack);
+        snackbar_msg3 =  resources.getString(R.string.amway_formErr_Toast);
+        snackbar_msg4 =  resources.getString(R.string.amway_Internet_Toast);
+
+
+
+
+
+
+    }
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
-        networkStateReceiver= new NetworkStateReceiver(new NetworkStateReceiver.NetworkListener() {
+        networkStateReceiver = new NetworkStateReceiver(new NetworkStateReceiver.NetworkListener() {
             @Override
             public void onNetworkAvailable() {
                 input_submit.setEnabled(true);
@@ -1452,7 +1599,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onNetworkUnavailable() {
                 input_submit.setEnabled(false);
-                Snackbar.make(parentv,"Internet Not available",Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(parentv, snackbar_msg4, Snackbar.LENGTH_SHORT).show();
             }
         });
         registerReceiver(networkStateReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -1462,7 +1609,7 @@ public class MainActivity extends BaseActivity {
     private void Bankdetails() {
 
 
-        String serverURL = CommonUtils.url+"get_bank.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_bank.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1471,9 +1618,9 @@ public class MainActivity extends BaseActivity {
                 try {
                     JSONObject jobj = new JSONObject(response);
 
-                    String status= jobj.getString("status");
-                    if (status.equals("1")){
-                        JSONArray jsonArray=jobj.getJSONArray("bank");
+                    String status = jobj.getString("status");
+                    if (status.equals("1")) {
+                        JSONArray jsonArray = jobj.getJSONArray("bank");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             bankid = c.getString("id");
@@ -1484,9 +1631,8 @@ public class MainActivity extends BaseActivity {
                         }
                         // Toast.makeText(getApplicationContext(),"Success"+bankslist,Toast.LENGTH_LONG).show();
 
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Bank Details",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),toast_msg7, Toast.LENGTH_LONG).show();
 
                     }
 
@@ -1499,11 +1645,9 @@ public class MainActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Failed to fetch Bank Details", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), toast_msg7, Toast.LENGTH_LONG).show();
             }
-        })
-
-        {
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 super.getHeaders();
@@ -1528,37 +1672,35 @@ public class MainActivity extends BaseActivity {
     private void languageSelect(final String cmp_id) {
 
         show_progressbar();
-        String serverURL = CommonUtils.url+"get_language.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_language.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 try {
-                    System.out.println("languages in reg page are"+response);
                     JSONObject jobj = new JSONObject(response);
 
-                    String status= jobj.getString("status");
+                    String status = jobj.getString("status");
 
-                    if (status.equals("1")){
-                        JSONArray jsonArray=jobj.getJSONArray("language");
+                    if (status.equals("1")) {
+                        JSONArray jsonArray = jobj.getJSONArray("language");
                         preflang.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             preflangid = c.getString("language_code");
                             preflangvalue = c.getString("name");
-                            langdetail.put(preflangvalue,preflangid );
+                            langdetail.put(preflangvalue, preflangid);
                             preflang.add(preflangvalue);
                         }
                         ArrayAdapter<String> preflanguage = new ArrayAdapter<String>(MainActivity.this,
-                                android.R.layout.simple_list_item_1,preflang);
+                                android.R.layout.simple_list_item_1, preflang);
                         preflanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                         input_layout_prefferedlanguage.setAdapter(preflanguage);
 
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Language Details",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), toast_msg8, Toast.LENGTH_LONG).show();
 
                     }
 
@@ -1573,11 +1715,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hide_progressbar();
-                Toast.makeText(getApplicationContext(), "Failed to fetch Language Details", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), toast_msg8, Toast.LENGTH_LONG).show();
             }
-        })
-
-        {
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 super.getHeaders();
@@ -1590,7 +1730,7 @@ public class MainActivity extends BaseActivity {
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
-                map.put("company_id",cmp_id);
+                map.put("company_id", cmp_id);
                 return map;
             }
         };
@@ -1603,7 +1743,7 @@ public class MainActivity extends BaseActivity {
     private void Statedetails() {
 
 
-        String serverURL = CommonUtils.url+"get_state.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_state.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1613,9 +1753,9 @@ public class MainActivity extends BaseActivity {
                 try {
                     JSONObject jobj = new JSONObject(response);
 
-                    String status= jobj.getString("status");
-                    if (status.equals("1")){
-                        JSONArray jsonArray=jobj.getJSONArray("state");
+                    String status = jobj.getString("status");
+                    if (status.equals("1")) {
+                        JSONArray jsonArray = jobj.getJSONArray("state");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             Stateid = c.getString("id");
@@ -1625,9 +1765,8 @@ public class MainActivity extends BaseActivity {
                         }
                         //Toast.makeText(getApplicationContext(),"Success"+bankslist,Toast.LENGTH_LONG).show();
 
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch States",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), toast_msg9, Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1643,11 +1782,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //   pd.dismiss();
-                Toast.makeText(getApplicationContext(), "Failed to fetch State list", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),toast_msg9 , Toast.LENGTH_LONG).show();
             }
-        })
-
-        {
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 super.getHeaders();
@@ -1672,7 +1809,7 @@ public class MainActivity extends BaseActivity {
     private void DistrictDetails(final String districtidd) {
 
 
-        String serverURL = CommonUtils.url+"get_district.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_district.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1681,11 +1818,11 @@ public class MainActivity extends BaseActivity {
                 //Toast.makeText(getApplicationContext(),"Success"+districtlist,Toast.LENGTH_LONG).show();
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    String status= jobj.getString("status");
+                    String status = jobj.getString("status");
 
-                    if (status.equals("1")){
+                    if (status.equals("1")) {
                         districtlist.clear();
-                        JSONArray jsonArray=jobj.getJSONArray("district");
+                        JSONArray jsonArray = jobj.getJSONArray("district");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             districtid = c.getString("id");
@@ -1696,15 +1833,14 @@ public class MainActivity extends BaseActivity {
 
                         }
                         ArrayAdapter<String> myAdapterDistrict = new ArrayAdapter<String>(MainActivity.this,
-                                android.R.layout.simple_list_item_1,districtlist);
+                                android.R.layout.simple_list_item_1, districtlist);
                         myAdapterDistrict.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                         district.setAdapter(myAdapterDistrict);
                         //Toast.makeText(getApplicationContext(),"Success"+districtlist,Toast.LENGTH_LONG).show();
 
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Districts",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),toast_msg10, Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1718,11 +1854,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hide_progressbar();
-                Toast.makeText(getApplicationContext(), "Failed to fetch Districts", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), toast_msg10, Toast.LENGTH_LONG).show();
             }
-        })
-
-        {
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 super.getHeaders();
@@ -1735,7 +1869,7 @@ public class MainActivity extends BaseActivity {
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
-                map.put("state_id",districtidd);
+                map.put("state_id", districtidd);
                 return map;
             }
         };
@@ -1751,7 +1885,7 @@ public class MainActivity extends BaseActivity {
         pd.setCanceledOnTouchOutside(false);
         pd.show();
 */
-        String serverURL = CommonUtils.url+"get_employer.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_employer.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1759,9 +1893,9 @@ public class MainActivity extends BaseActivity {
                 try {
                     JSONObject jobj = new JSONObject(response);
 
-                    String status= jobj.getString("status");
-                    if (status.equals("1")){
-                        JSONArray jsonArray=jobj.getJSONArray("employer");
+                    String status = jobj.getString("status");
+                    if (status.equals("1")) {
+                        JSONArray jsonArray = jobj.getJSONArray("employer");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             employerid = c.getString("id");
@@ -1770,20 +1904,16 @@ public class MainActivity extends BaseActivity {
                             employerlist.add(employervalue);
                         }
 
-                        for (int i=0;i<=employerlist.size()-1;i++){
-                            System.out.println("employere"+employerid);
-                            System.out.println("employereeee"+employerlist.get(i));
+                        for (int i = 0; i <= employerlist.size() - 1; i++) {
 
-                            if (employerlist.get(i).equals(newString2)){
+                            if (employerlist.get(i).equals(newString2)) {
                                 employer.setSelection(i);
                             }
                         }
 
 
-
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Employers",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),toast_msg11, Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1799,9 +1929,7 @@ public class MainActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error) {
                 //pd.dismiss();
             }
-        })
-
-        {
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 super.getHeaders();
@@ -1824,7 +1952,7 @@ public class MainActivity extends BaseActivity {
 
     //Sector_list
     private void Sectorlist(final String Sectorvalue) {
-        String serverURL = CommonUtils.url+"get_sector.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_sector.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1833,26 +1961,25 @@ public class MainActivity extends BaseActivity {
                 try {
 
                     JSONObject jobj = new JSONObject(response);
-                    String status= jobj.getString("status");
-                    if (sectorlist.size()>2){
+                    String status = jobj.getString("status");
+                    if (sectorlist.size() > 2) {
                         sectorlist.clear();
                     }
                     sectorlist.add("Choose the Sector");
-                    if (status.equals("1")){
-                        JSONArray jsonArray=jobj.getJSONArray("sector");
+                    if (status.equals("1")) {
+                        JSONArray jsonArray = jobj.getJSONArray("sector");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             sectorid = c.getString("id");
                             sectorvalue = c.getString("name");
                             sectordetail.put(sectorvalue, sectorid);
                             sectorlist.add(sectorvalue);
-                            sector.setSelection(sectorlist.size()-1);
+                            sector.setSelection(sectorlist.size() - 1);
 
                         }
 
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Sector Details",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),toast_msg12, Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
@@ -1865,11 +1992,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(), "Failed to fetch Sectors List", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), toast_msg12, Toast.LENGTH_LONG).show();
             }
-        })
-
-        {
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 super.getHeaders();
@@ -1882,7 +2007,7 @@ public class MainActivity extends BaseActivity {
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
-                map.put("company_id",Sectorvalue);
+                map.put("company_id", Sectorvalue);
                 return map;
             }
         };
@@ -1892,7 +2017,7 @@ public class MainActivity extends BaseActivity {
 
     //Jobrole Api Call
     private void getJobroleList(final String sscid) {
-        String serverURL = CommonUtils.url+"get_jobrole.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_jobrole.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1901,8 +2026,8 @@ public class MainActivity extends BaseActivity {
                 try {
 
                     JSONObject jobj = new JSONObject(response);
-                    String status= jobj.getString("status");
-                    emp_statuss=jobj.getString("emp_status");
+                    String status = jobj.getString("status");
+                    emp_statuss = jobj.getString("emp_status");
 
                     ArrayAdapter myAdap = (ArrayAdapter) Employment_status.getAdapter(); //cast to an ArrayAdapter
                     int spinnerPosition = myAdap.getPosition(emp_statuss);
@@ -1913,8 +2038,8 @@ public class MainActivity extends BaseActivity {
                     /*if (jobrolelist.size()<=1){
                         jobrolelist.clear();
                     }*/
-                    if (status.equals("1")){
-                        JSONArray jsonArray=jobj.getJSONArray("jobrole");
+                    if (status.equals("1")) {
+                        JSONArray jsonArray = jobj.getJSONArray("jobrole");
                         jobrolelist.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
@@ -1924,19 +2049,16 @@ public class MainActivity extends BaseActivity {
                             jobrolelist.add(jobrolevalue);
                         }
 
-                        jobroleadapter= new ArrayAdapter<String>(MainActivity.this,
-                                android.R.layout.simple_list_item_1,jobrolelist);
+                        jobroleadapter = new ArrayAdapter<String>(MainActivity.this,
+                                android.R.layout.simple_list_item_1, jobrolelist);
                         jobroleadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                         input_jobrole.setAdapter(jobroleadapter);
 
 
-
+                    } else {
+                        Toast.makeText(getApplicationContext(), toast_msg13, Toast.LENGTH_LONG).show();
                     }
-                    else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Job Roles",Toast.LENGTH_LONG).show();
-                    }
-
 
 
                 } catch (JSONException e) {
@@ -1947,11 +2069,9 @@ public class MainActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Failed to fetch Job Roles", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), toast_msg13, Toast.LENGTH_LONG).show();
             }
-        })
-
-        {
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 super.getHeaders();
@@ -1964,8 +2084,7 @@ public class MainActivity extends BaseActivity {
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
-                map.put("company_id",sscid);
-                System.out.println("aaaaaa"+map);
+                map.put("company_id", sscid);
                 return map;
             }
         };
@@ -1988,7 +2107,7 @@ public class MainActivity extends BaseActivity {
                     // startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 } else {
-                    Toast.makeText(getApplicationContext(),"Click photos using default Camera Of the Device",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),toast_msg14, Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -2002,7 +2121,7 @@ public class MainActivity extends BaseActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA}, ZBAR_CAMERA_PERMISSION);
         } else {
-            Intent ii=new Intent(MainActivity.this, FullScannerActivity.class);
+            Intent ii = new Intent(MainActivity.this, SimpleScannerActivity.class);
             startActivityForResult(ii, 1);
         }
     }
@@ -2011,41 +2130,12 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         try {
-
-            if (resultCode == 3 && requestCode == 1 ){
-                Bundle extras1 = data.getExtras();
-                String byteArray = extras1.getString("ss");
-                System.out.println("the path is"+byteArray);
-                File file = new File(byteArray);
-                if(file.exists()){
-                    Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                  /*  Matrix matrix = new Matrix();
-
-                    matrix.postRotate(-90);
-
-                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(myBitmap, 500, 500, true);
-
-                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
-                  */
-                  input_photograph.setImageBitmap(myBitmap);
-                }
-                imagebase644=getStringFile(file);
-
-            }
-
-
             if (resultCode == 2 && requestCode == 1) {
                 //do something
                 HashMap<String, String> map = new HashMap<>();
                 Bundle extras = data.getExtras();
                 String ss[] = extras.getStringArray("ss");
-
-
-                 for (int i=0;i<=ss.length;i++){
-                     System.out.println("data from aadhaar is"+ss[i]);
-                 }
-
-                String uid_data=ss[1].replace("encoding=\"UTF-8\"?>\n<PrintLetterBarcodeData ","");
+                String uid_data = ss[1].replace("encoding=\"UTF-8\"?>\n<PrintLetterBarcodeData ", "");
                 ss[1] = uid_data;
                 for (String s : ss) {
                     String[] sd = s.split("=");
@@ -2055,63 +2145,52 @@ public class MainActivity extends BaseActivity {
                     //map.put("value", sd[1]);
                     //Toast.makeText(this,"result"+ss[0]+" "+ss[1],Toast.LENGTH_LONG).show();
                 }
-                System.out.println("dataa is" + map);
-                System.out.println("name is" + map.get("name"));
-                System.out.println("co is" + map.get("co"));
-                System.out.println("gender is" + map.get("gender"));
-                System.out.println("street is" + map.get("street"));
-                System.out.println("dist is" + map.get("dist"));
-                System.out.println("lm is" + map.get("lm"));
-                System.out.println("subdist is" + map.get("subdist"));
-                System.out.println("yob is" + map.get("yob"));
 
-                if (map.get("name")!=null){
-                    namefromaadhaar_main=map.get("name").replace("\"","");
-                    String namee[]=namefromaadhaar_main.split(" ");
+                if (map.get("name") != null) {
+                    namefromaadhaar_main = map.get("name").replace("\"", "");
+                    String namee[] = namefromaadhaar_main.split(" ");
                     input_name.setEnabled(false);
-
-                    //if last name is blank set condition for blank'
-
                     input_last_name.setEnabled(false);
                     input_name.setText(namee[0]);
                     input_last_name.setText(namee[1]);
                 }
 
-                if (map.get("uid")!=null){
+                if (map.get("uid") != null) {
                     input_aadhar.setEnabled(false);
-                    input_aadhar.setText(map.get("uid").replace("\"",""));
+                    input_aadhar.setText(map.get("uid").replace("\"", ""));
 
                 }
 
-                if(map.get("pc")!=null){
-                    input_pincode.setText(map.get("pc").replace("/>","").replace("\"",""));
+                if (map.get("pc") != null) {
+                    input_pincode.setText(map.get("pc").replace("/>", "").replace("\"", ""));
                     input_pincode.setEnabled(false);
                 }
-                if(map.get("house")!=null){
-                    input_address1.setText(map.get("house").replace("\"",""));
+                if (map.get("house") != null) {
+                    input_address1.setText(map.get("house").replace("\"", ""));
                     input_address1.setEnabled(false);
                 }
-                if(map.get("lm")!=null){
-                    input_address2.setText(map.get("lm").replace("\"",""));
+                if (map.get("lm") != null) {
+                    input_address2.setText(map.get("lm").replace("\"", ""));
                     input_address2.setEnabled(false);
                 }
-                if(map.get("subdist")!=null){
-                    your_city.setText(map.get("subdist").replace("\"",""));
+                if (map.get("subdist") != null) {
+                    your_city.setText(map.get("subdist").replace("\"", ""));
                     your_city.setEnabled(false);
                 }
-            }else{
+            } else {
                 // Toast.makeText(this,"aaaaa",Toast.LENGTH_LONG).show();
                 //do something else
-            }}catch (Exception e){
-            System.out.println("fffff"+e);
+            }
+        } catch (Exception e) {
+
         }
 
 
         try {
             if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-                if(data.getExtras()==null || (data.getExtras().get("data")==null ||  !(data.getExtras().get("data") instanceof Bitmap))){
+                if (data.getExtras() == null || (data.getExtras().get("data") == null || !(data.getExtras().get("data") instanceof Bitmap))) {
                     //todo - show error
-                    Toast.makeText(getApplicationContext(),"The file picked is invalid.Please use default camera to click Photos",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), toast_msg15, Toast.LENGTH_LONG).show();
                     return;
                 }
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
@@ -2131,25 +2210,20 @@ public class MainActivity extends BaseActivity {
                 tempCanvas.drawBitmap(photo, 0, 0, null);
 
                 FaceDetector faceDetector = new
-                        FaceDetector.Builder(getApplicationContext())
-                        .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
-                        .setTrackingEnabled(true)
+                        FaceDetector.Builder(getApplicationContext()).setTrackingEnabled(true)
                         .build();
-
-                if(!faceDetector.isOperational()){
-                    new AlertDialog.Builder(getApplicationContext()).setMessage("Could not set up the face detector!").show();
+                if (!faceDetector.isOperational()) {
+                    new AlertDialog.Builder(getApplicationContext()).setMessage(toast_msg16).show();
                     return;
                 }
 
                 Frame frame = new Frame.Builder().setBitmap(photo).build();
-                 faces = faceDetector.detect(frame);
-                System.out.println("iiii"+faces.get(1));
+                faces = faceDetector.detect(frame);
 
 
-
-                for(int i=0; i<faces.size(); i++) {
+                for (int i = 0; i < faces.size(); i++) {
                     Face thisFace = faces.valueAt(i);
-                    Float x1=new Float(0);
+                    Float x1 = new Float(0);
                     x1 = thisFace.getPosition().x;
                     float y1 = thisFace.getPosition().y;
                     float x2 = x1 + thisFace.getWidth();
@@ -2160,65 +2234,29 @@ public class MainActivity extends BaseActivity {
                 }
 
 
-                input_photograph.setImageDrawable(new BitmapDrawable(getResources(),tempBitmap));
+                input_photograph.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
             }
 
 
+            if (requestCode == CAMERA_AADHAR_REQUEST && resultCode == Activity.RESULT_OK) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                int currentBitmapWidth = photo.getWidth();
+                int currentBitmapHeight = photo.getHeight();
+                mySwipeRefreshLayout.setRefreshing(false);
+                input_aadharpic.setImageBitmap(photo);
+                int newHeight = (int) Math.floor((double) currentBitmapHeight * ((double) currentBitmapWidth / (double) currentBitmapWidth));
+                Bitmap newbitMap = Bitmap.createScaledBitmap(photo, currentBitmapWidth, newHeight, true);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                newbitMap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                encodedphotoaadhar = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-       try {
-           if (requestCode == CAMERA_AADHAR_REQUEST && resultCode == Activity.RESULT_OK) {
-               Bitmap photo = (Bitmap) data.getExtras().get("data");
-               int currentBitmapWidth = photo.getWidth();
-               int currentBitmapHeight = photo.getHeight();
-               mySwipeRefreshLayout.setRefreshing(false);
-               input_aadharpic.setImageBitmap(photo);
-               int newHeight = (int) Math.floor((double) currentBitmapHeight * ((double) currentBitmapWidth / (double) currentBitmapWidth));
-               Bitmap newbitMap = Bitmap.createScaledBitmap(photo, currentBitmapWidth, newHeight, true);
-               ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-               newbitMap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-               saveImage(photo, "aadhar");
-               byte[] byteArray = byteArrayOutputStream.toByteArray();
-               encodedphotoaadhar = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-
-           }
-       }
-
-
-        catch (Exception e){
-          e.printStackTrace();
-          System.out.println("Exception"+e);
-        }
-
-    }
-
-    private void saveImage(Bitmap finalBitmap, String image_name) {
-
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root);
-        myDir.mkdirs();
-        String fname = "Image-" + image_name+ ".jpg";
-        File file = new File(myDir, fname);
-        if (file.exists()) file.delete();
-        Log.i("LOAD", root + fname);
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            //Bitmap newbitMap = Bitmap.createScaledBitmap(finalBitmap, currentBitmapWidth, currentBitmapHeight, true);
-            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.flush();
-            out.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-
-
 
     @Override
     protected void onDestroy() {
@@ -2234,32 +2272,12 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    public String getStringFile(File f) {
-        InputStream inputStream = null;
-        String encodedFile= "", lastVal;
-        try {
-            inputStream = new FileInputStream(f.getAbsolutePath());
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
 
-            byte[] buffer = new byte[10240];//specify the size to allow
-            int bytesRead;
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            Base64OutputStream output64 = new Base64OutputStream(output, Base64.DEFAULT);
-
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                output64.write(buffer, 0, bytesRead);
-            }
-            output64.close();
-            encodedphoto =  output.toString();
-
-        }
-        catch (FileNotFoundException e1 ) {
-            e1.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        lastVal = encodedphoto;
-        return lastVal;
     }
+
 
 }

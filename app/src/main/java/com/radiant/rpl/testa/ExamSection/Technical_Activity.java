@@ -6,13 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Base64;
 import android.view.MenuItem;
@@ -28,8 +29,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.radiant.rpl.testa.Common.CommonUtils;
-import com.radiant.rpl.testa.Initials.MyNetwork;
+import com.radiant.rpl.testa.LocaleHelper;
+import com.radiant.rpl.testa.MyNetwork;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 public class Technical_Activity extends AppCompatActivity {
@@ -60,14 +62,36 @@ public class Technical_Activity extends AppCompatActivity {
     String screenshot1,screenshot2,screenshot3,getproblem;
     ProgressDialog pd;
     EditText problemexp;
+    SharedPreferences language_prefs;
+    String selected_language,toast_message;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_technical_);
 
 
+        language_prefs = getSharedPreferences("language_prefs", MODE_PRIVATE);
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
+
+
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+
+
+        }
 
         cardView1 = findViewById(R.id.card1);
         cardView2 = findViewById(R.id.card2);
@@ -83,9 +107,6 @@ public class Technical_Activity extends AppCompatActivity {
         if (sharedpreferences.contains("userid")) {
             sharedpreferences.getString("userid", "");
         }
-
-
-
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -114,8 +135,6 @@ public class Technical_Activity extends AppCompatActivity {
         });
 
 
-
-
         imageView2.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
 
@@ -142,9 +161,6 @@ public class Technical_Activity extends AppCompatActivity {
             }
         });
 
-
-
-
         imageView3.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -155,11 +171,6 @@ public class Technical_Activity extends AppCompatActivity {
                     requestPermissions(new String[]{Manifest.permission.CAMERA},
                             MY_CAMERA_PERMISSION_CODE);
                 }
-
-
-
-
-
 
 
                 else{
@@ -177,7 +188,6 @@ public class Technical_Activity extends AppCompatActivity {
         });
 
 
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,15 +198,22 @@ public class Technical_Activity extends AppCompatActivity {
         });
 
 
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+
+        Context context = LocaleHelper.setLocale(this,lang);
+        Resources resources = context.getResources();
+        setTitle(resources.getString(R.string.Feedback));
+        toast_message =  resources.getString(R.string.Technical_Activity_Message);
 
 
     }
 
-
     private void SaveDetail() {
 
-        String serverURL = CommonUtils.url+"save_help_data.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_help_data.php";
         pd = new ProgressDialog(Technical_Activity.this);
         pd.setMessage("Loading...");
         pd.setCancelable(false);
@@ -211,19 +228,10 @@ public class Technical_Activity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    System.out.println("sss"+response);
+
                     String status= jobj.getString("status");
-                    Toast.makeText(getApplicationContext(),"We have Received your query will update soon",Toast.LENGTH_LONG).show();
-                    /*if (status.equals("1")){
-                        Intent iii=new Intent(Technical_Activity.this,Technical_Activity .class);
+                    Toast.makeText(getApplicationContext(),toast_message,Toast.LENGTH_LONG).show();
 
-                        startActivity(iii);
-                    }
-
-                    else if (status.equals("0")){
-                        Toast.makeText(getApplicationContext(),jobj.getString("msg"),Toast.LENGTH_LONG).show();
-                        Log.d("Response",response);
-                    }*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -237,7 +245,7 @@ public class Technical_Activity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 pd.dismiss();
-                Toast.makeText(getApplicationContext(), "We Encounterd an Error. Please try again later"+error, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.Global_ErrorResponse_Message) +error, Toast.LENGTH_LONG).show();
                 System.out.println("aa"+error);
             }
         })
@@ -274,18 +282,7 @@ public class Technical_Activity extends AppCompatActivity {
         MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
-
-
-
-
-
-
-
-
-
-
     @Override
-
     protected  void onActivityResult(int requestcode,int resultcode,Intent data)
     {
         super.onActivityResult(requestcode,resultcode,data);
@@ -348,8 +345,6 @@ public class Technical_Activity extends AppCompatActivity {
             imageView3.setImageURI(imageUri3);
         }
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

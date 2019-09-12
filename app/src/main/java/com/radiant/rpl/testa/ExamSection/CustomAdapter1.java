@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
 
@@ -61,7 +60,7 @@ public class CustomAdapter1 extends BaseAdapter {
         rowview = LayoutInflater.from(con).inflate(R.layout.gdmainfortestviva, null);
         TextView tv1 = rowview.findViewById(R.id.txt2_viva);
         tv1.setText(qqqq.get(position).toString());
-        System.out.println("the size"+statussss);
+
         int ii=statussss.size();
         if (position < ii ) {
 

@@ -6,7 +6,7 @@
     android:weightSum="4"
     android:background="@drawable/splashscreen22"
     android:orientation="vertical"
-    tools:context="com.radiant.rpl.testa.Initials.Start_Registration">
+    tools:context="com.radiant.rpl.testa.Start_Registration">
 
 
     <ImageView
@@ -50,7 +50,7 @@
             android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:background="@drawable/mybuttons"
-            android:text="Take Exam"
+            android:text="@string/take_exam"
             android:textColor="@drawable/button_text_color"
             android:textSize="18sp" />
 
@@ -67,7 +67,7 @@
             android:layout_weight="1"
             android:textColor="@drawable/button_text_color"
             android:background="@drawable/mybuttons"
-            android:text="Register For Rpl4"
+            android:text="@string/register_for_rpl4"
             android:textSize="18sp" />
 
 

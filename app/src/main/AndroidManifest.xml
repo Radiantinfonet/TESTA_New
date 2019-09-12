@@ -89,11 +89,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
         <activity
-            android:name="com.radiant.rpl.testa.Initials.StudenAtten"
-            android:label="Attendance"
-            android:screenOrientation="portrait"
-            android:theme="@style/Apptheme2" />
-        <activity
             android:name="com.radiant.rpl.testa.ExamSection.ContactUsActivity"
             android:label="Contact Us"
             android:theme="@style/Apptheme2" />
@@ -108,20 +103,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
         <activity
-            android:name="com.radiant.rpl.testa.Initials.Welcome_page"
-            android:label="Home"
-            android:screenOrientation="portrait"
-            android:theme="@style/Apptheme2" />
-        <activity
-            android:name="com.radiant.rpl.testa.Initials.SignInAct"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme1" />
-        <activity
-            android:name="com.radiant.rpl.testa.Initials.Reverify"
-            android:label="Reverify"
-            android:screenOrientation="portrait"
-            android:theme="@style/Apptheme2" />
-        <activity
             android:name="com.radiant.rpl.testa.ExamSection.Testviva"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1" />
@@ -130,23 +111,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1" />
         <activity
-            android:name="com.radiant.rpl.testa.Initials.Registration_Done"
-            android:screenOrientation="portrait"
-            android:theme="@style/Apptheme2" />
-        <activity
             android:name="com.radiant.rpl.testa.ExamSection.Thankspage"
             android:label="Thanks"
             android:theme="@style/AppTheme1" />
-        <activity
-            android:name="com.radiant.rpl.testa.Initials.Start_Registration"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme1">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

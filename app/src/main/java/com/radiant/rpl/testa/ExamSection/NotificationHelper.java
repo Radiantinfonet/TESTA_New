@@ -1,4 +1,5 @@
 package com.radiant.rpl.testa.ExamSection;
+
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -62,7 +63,7 @@ public class NotificationHelper extends ContextWrapper {
 
         return new NotificationCompat.Builder(getApplicationContext(), SendInNotificationID)
                 .setContentTitle(title)
-                .setContentText("the timer has " +timerNotify +" minutes" +timerinSec +" second left")
+                .setContentText(getString(R.string.Notification_message) + timerNotify + getString(R.string.Notification_Message2) + timerinSec +  "" + getString(R.string.Notification_Message3) )
                 .setSmallIcon(R.drawable.aadharphoto)
                 .setAutoCancel(true);
               //  .setContentIntent(resultPendingIntent);

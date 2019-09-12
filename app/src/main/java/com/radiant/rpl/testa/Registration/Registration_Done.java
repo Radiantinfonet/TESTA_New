@@ -1,4 +1,4 @@
-package com.radiant.rpl.testa.Initials;
+package com.radiant.rpl.testa.Registration;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +25,7 @@ TextView tvv,tvv1;
         }
         String mobbbbb=iiii.getStringExtra("mobileeno");
 
-        String styledText = "<u><font color='red'>Click Here</font></u> to proceed further for assessment.";
+        String styledText = getResources().getString(R.string.Reverify_Click);
        // if (sectorrr!="" && sectorrr=="40") {
             tvv.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
        // }
@@ -42,22 +42,17 @@ TextView tvv,tvv1;
             }
         });
 
-        String styledText1 = "परीक्षा शुरू करने के लिए यहां "+"<u><font color='red'>क्लिक करें।</font></u>";
-       // if (sectorrr!="" && sectorrr=="40") {
+        String styledText1 = getResources().getString(R.string.Start_Exam)+getResources().getString(R.string.Start_Exam_msg);
+
             tvv1.setText(Html.fromHtml(styledText1), TextView.BufferType.SPANNABLE);
-        //}
-      /*  else {
-            tvv1.setVisibility(View.GONE);
-        }*/
+
         tvv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String url = "https://www.skillassessment.org/retail/";
                 Intent ii=new Intent(Registration_Done.this, Start_Registration.class);
                 startActivity(ii);
-               /* Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);*/
+
             }
         });
 

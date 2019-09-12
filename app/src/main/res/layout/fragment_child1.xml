@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    tools:background="#ffffff"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -42,16 +40,6 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_question1"
-            android:layout_width="fill_parent"
-            android:layout_height="150dp"
-            android:visibility="gone"
-            android:layout_below="@id/questioncaption1"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="5dp"
-            />
 
         <LinearLayout
             android:id="@+id/option11"
@@ -62,7 +50,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="5dp"
-            android:layout_below="@+id/iv_question1"
+            android:layout_below="@+id/questioncaption1"
             >
 
             <TextView
@@ -89,18 +77,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/iv_option11"
-            android:layout_width="fill_parent"
-            android:layout_height="150dp"
-            android:layout_below="@id/option11"
-            android:layout_marginLeft="5dp"
-            android:visibility="gone"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="5dp"
-            />
-
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
@@ -109,8 +85,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="1dp"
             android:background="#A9A9A9"
-            android:layout_below="@id/iv_option11"/>
-
+            android:layout_below="@id/option11"/>
         <LinearLayout
             android:id="@+id/option21"
             android:layout_width="match_parent"
@@ -120,7 +95,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="4dp"
-            android:layout_below="@+id/vv11"
+            android:layout_below="@+id/option11"
             >
             <TextView
                 android:id="@+id/optionnob1"
@@ -146,19 +121,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/iv_option21"
-            android:layout_width="fill_parent"
-            android:layout_height="150dp"
-            android:visibility="gone"
-            android:layout_below="@id/option21"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="5dp"
-            />
-
-
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
@@ -167,7 +129,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_below="@id/iv_option21"/>
+            android:layout_below="@id/option21"/>
 
         <LinearLayout
             android:id="@+id/option31"
@@ -178,7 +140,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:layout_below="@+id/vv22"
+            android:layout_below="@+id/option21"
             >
             <TextView
                 android:id="@+id/optionnoc1"
@@ -204,18 +166,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/iv_option31"
-            android:layout_width="fill_parent"
-            android:layout_height="150dp"
-            android:visibility="gone"
-            android:layout_below="@id/option31"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="5dp"
-            />
-
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
@@ -224,7 +174,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_below="@id/iv_option31"/>
+            android:layout_below="@id/option31"/>
 
         <LinearLayout
             android:id="@+id/option41"
@@ -235,7 +185,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:layout_below="@+id/vv33"
+            android:layout_below="@+id/option31"
             >
             <TextView
                 android:id="@+id/optionnod1"
@@ -262,16 +212,7 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_option41"
-            android:layout_width="fill_parent"
-            android:layout_height="150dp"
-            android:visibility="gone"
-            android:layout_below="@id/option41"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="5dp"
-            />
+
 
         <!--<LinearLayout
             android:layout_width="match_parent"
@@ -319,7 +260,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:textColor="@color/white"
-            android:text="Mark for Review"
+            android:text="@string/MarkforReview"
             android:background="#F0AD4E"
             android:gravity="center"
             android:textSize="18sp"

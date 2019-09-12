@@ -56,8 +56,6 @@ import com.radiant.rpl.testa.Barcode_d.SimpleScannerActivity;
 import com.radiant.rpl.testa.Common.CommonUtils;
 import com.radiant.rpl.testa.Initials.MyNetwork;
 import com.radiant.rpl.testa.Initials.NetworkStateReceiver;
-import com.radiant.rpl.testa.Initials.Registration_Done;
-import com.radiant.rpl.testa.Initials.SignInAct;
 
 import org.json.JSONArray;
 import org.json.JSONException;

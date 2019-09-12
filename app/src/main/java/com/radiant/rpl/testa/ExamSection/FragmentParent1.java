@@ -1,9 +1,13 @@
 package com.radiant.rpl.testa.ExamSection;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -12,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
+import com.radiant.rpl.testa.LocaleHelper;
 
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -25,10 +31,10 @@ public class FragmentParent1 extends Fragment {
     String queidd,queiddd;
     int pageno,pagenoo;
     TextView prev,skip,next;
-    SharedPreferences spp1;
+    SharedPreferences spp1,language_prefs;
     String pgnoo1;
     String statussdata11,stuidd1;
-    String dd1,EE1;
+    String dd1,EE1,selected_language;
     int gg1,pp1;
 
     private static ShowButton showbuttonn;
@@ -42,6 +48,12 @@ public class FragmentParent1 extends Fragment {
         statussdata11=dbAutoSave.getDataOfSingleClientstatus(pgnoo1);
 
         spp1=getActivity().getSharedPreferences("mypref", MODE_PRIVATE);
+        language_prefs = getActivity().getSharedPreferences("language_prefs", MODE_PRIVATE);
+
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
         stuidd1=spp1.getString("userid","");
 
         CustomAdapter1.aa(new GotoQuestion() {
@@ -51,26 +63,12 @@ public class FragmentParent1 extends Fragment {
                 showbuttonn.dd(true);
                 if (dbAutoSave.getDataOfSingleClientstatus1(""+a)!=null && dbAutoSave.getStatusDataOfSingleClientstatus1(""+a).equals("3")){
                     dbAutoSave.updateDataunanswered1(stuidd1,""+a,"0",""+a);
-                    System.out.println("Case with 3 status ");
                 }
             }
         });
 
 
-       /* markforreview11.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gg1=viewPager.getCurrentItem()+1;
-                dd1=Integer.toString(gg1);
-                System.out.println("markforreview"+stuidd1+" "+dd1);
-                if (dbAutoSave.getDataOfSingleClientstatus1(dd1)!=null){
-                    dbAutoSave.updateDataunanswered1(stuidd1,dd1,"2",dd1);
-                }else {
-                    dbAutoSave.insertDataunanswered1(stuidd1,dd1,"2");
-                }
-            }
-        });
-*/
+
 
         return view;
     }
@@ -121,18 +119,16 @@ public class FragmentParent1 extends Fragment {
                 if (pageno == adapter.getCount()-1){
                     //ttv.setVisibility(View.VISIBLE);
                     showbuttonn.getData(1);
-                    System.out.println("fragment on last page");
 
                 }else{
                     showbuttonn.getData(0);
-                    System.out.println("not true");
 
                 }
             }
 
+
             @Override
             public void onPageScrollStateChanged(int i) {
-                System.out.println("page scrolled");
 
                 FragmentChild.aaa(new GetStatusQue() {
                     @Override
@@ -141,7 +137,6 @@ public class FragmentParent1 extends Fragment {
                             for (int i=1;i<=1;i++){
                                 pp1=viewPager.getCurrentItem()+1;
                                 EE1=Integer.toString(pp1);
-                                System.out.println("On page change"+stuidd1+" "+EE1);
                                 /*if (dbAutoSave.getDataOfSingleClientstatus1(EE1)!=null){
                                     dbAutoSave.updateDataunanswered1(stuidd1,EE1,"0",EE1);
                                 }else {
@@ -165,16 +160,43 @@ public class FragmentParent1 extends Fragment {
         return viewPager.getCurrentItem() + i;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //changed
+        Paper.init(getContext());
+        String language = Paper.book().read("language");
+        if(language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+
+
+
+
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("hindi", ""));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("english", ""));
+
+        }
+
     }
 
-    public void addPage(String pagename, String que, int pgn,String op1, String op2, String op3, String op4
-                        ,String que_img,String optionimg1,
-                        String optionimg2,String optionimg3,String optionimg4
-    ) {
+    public void addPage(String pagename, String que, int pgn,String op1, String op2, String op3, String op4) {
         Bundle bundle = new Bundle();
         bundle.putString("data", pagename);
         bundle.putInt("pgno",pgn);
@@ -183,13 +205,6 @@ public class FragmentParent1 extends Fragment {
         bundle.putString("op2",op2);
         bundle.putString("op3",op3);
         bundle.putString("op4",op4);
-
-        bundle.putString("que_img_viva",que_img);
-        bundle.putString("img_op1_viva",optionimg1);
-        bundle.putString("img_op2_viva",optionimg2);
-        bundle.putString("img_op3_viva",optionimg3);
-        bundle.putString("img_op4_viva",optionimg4);
-
         FragmentChild1 fragmentChild = new FragmentChild1();
         fragmentChild.setArguments(bundle);
         adapter.addFrag(fragmentChild, pagename,que);
@@ -197,4 +212,25 @@ public class FragmentParent1 extends Fragment {
         if (adapter.getCount() > 0)
             viewPager.setCurrentItem(0);
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+
+        Context context = LocaleHelper.setLocale(getContext(),lang);
+        Resources resources = context.getResources();
+        prev.setText(resources.getString(R.string.Previous));
+        skip.setText(resources.getString(R.string.skip));
+        next.setText(resources.getString(R.string.Next));
+
+
+
+
+
+    }
+
+
+
+
+
 }

@@ -117,7 +117,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/mybuttons"
-            android:text="Rate Us On Play Store"
+            android:text="@string/rate_us_on_play_store"
             android:textAlignment="center"
             android:textColor="@drawable/button_text_color"
             android:textSize="18sp"

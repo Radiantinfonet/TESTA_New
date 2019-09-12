@@ -2,22 +2,25 @@ package com.radiant.rpl.testa.ExamSection;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
+import com.radiant.rpl.testa.LocaleHelper;
 
 import java.util.HashMap;
 
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -34,15 +37,16 @@ public class FragmentParent extends Fragment {
     String stuidd;
     TextView prev,skip,next;
     private static ShowButton showbuttonn;
-    SharedPreferences spp;
+    SharedPreferences spp,language_prefs;
     String pgnoo;
     String quename1,childname1,idddd;
     HashMap<String,String> hm1=new HashMap<>();
-    String statussdata1;
+    String statussdata1,selected_language;
     String dd,EE;
     int gg,pp;
 
     @Nullable
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_parent, container, false);
@@ -51,6 +55,7 @@ public class FragmentParent extends Fragment {
         statussdata1=dbAutoSave.getDataOfSingleClientstatus(pgnoo);
 
         spp=getActivity().getSharedPreferences("mypref", MODE_PRIVATE);
+        language_prefs = getActivity().getSharedPreferences("language_prefs", MODE_PRIVATE);
         stuidd=spp.getString("userid","");
 
         CustomAdapter.aa(new GotoQuestion() {
@@ -64,6 +69,20 @@ public class FragmentParent extends Fragment {
                 }
             }
         });
+
+
+
+
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
+
+
+
+
+
+
 
 
         /*markforreview.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +103,8 @@ public class FragmentParent extends Fragment {
         return view;
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void getIDs(View view) {
         viewPager = (ViewPager) view.findViewById(R.id.my_viewpager);
         View vv=view.findViewById(R.id.count_down_strip_footer);
@@ -95,7 +116,6 @@ public class FragmentParent extends Fragment {
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(0);
         pagenoo=viewPager.getCurrentItem();
-
 
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,14 +208,43 @@ public class FragmentParent extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //changed
+        Paper.init(getContext());
+        String language = Paper.book().read("language");
+        if(language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+
+
+
+
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("hindi", ""));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("english", ""));
+
+        }
+
     }
 
-    public void addPage(String pagename, String que, int pgn,String op1, String op2, String op3, String op4,String que_img,String optionimg1,
-                        String optionimg2,String optionimg3,String optionimg4) {
+    public void addPage(String pagename, String que, int pgn,String op1, String op2, String op3, String op4) {
         Bundle bundle = new Bundle();
         bundle.putString("data", pagename);
         bundle.putInt("pgno",pgn);
@@ -204,12 +253,6 @@ public class FragmentParent extends Fragment {
         bundle.putString("op2",op2);
         bundle.putString("op3",op3);
         bundle.putString("op4",op4);
-
-        bundle.putString("que_img",que_img);
-        bundle.putString("img_op1",optionimg1);
-        bundle.putString("img_op2",optionimg2);
-        bundle.putString("img_op3",optionimg3);
-        bundle.putString("img_op4",optionimg4);
 
         pgnoo=pagename;
         quename1=que;
@@ -223,4 +266,27 @@ public class FragmentParent extends Fragment {
         if (adapter.getCount() > 0)
             viewPager.setCurrentItem(0);
     }
+
+
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+
+        Context context = LocaleHelper.setLocale(getContext(),lang);
+        Resources resources = context.getResources();
+        prev.setText(resources.getString(R.string.Previous));
+        skip.setText(resources.getString(R.string.skip));
+        next.setText(resources.getString(R.string.Next));
+
+
+
+
+
+    }
+
+
+
+
 }

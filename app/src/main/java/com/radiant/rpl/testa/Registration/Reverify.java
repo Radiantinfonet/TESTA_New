@@ -1,9 +1,15 @@
-package com.radiant.rpl.testa.Initials;
+package com.radiant.rpl.testa.Registration;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +23,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.radiant.rpl.testa.Common.CommonUtils;
-import com.radiant.rpl.testa.Registration.BaseActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +30,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 public class Reverify extends BaseActivity {
@@ -40,6 +45,14 @@ public class Reverify extends BaseActivity {
     String geturl,gettestingurl;
     String regno;
 
+    TextInputLayout mobile, first_name, last_name, aadhar_no,Pancard ,Name_in_bank,Bank_Ac_no,Ifsc_no;
+
+    SharedPreferences language_prefs;
+    String selected_language, toast_msg1,toast_msg2;
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +99,71 @@ public class Reverify extends BaseActivity {
         category1 = ii.getStringExtra("categroy");
         Email1= ii.getStringExtra("Email");
 
+
+
+
+        language_prefs = getSharedPreferences("language_prefs", MODE_PRIVATE);
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
+
+
+
+
+
+        btn_Register=findViewById(R.id.btn_Register);
+        mobile = findViewById(R.id.input_layout_mobile_no);
+        first_name = findViewById(R.id.input_layout_name);
+        last_name = findViewById(R.id.input_layout_last_name);
+        aadhar_no = findViewById(R.id.input_layout_aadhar);
+        Pancard = findViewById(R.id.input_layout_pancard_no);
+        Name_in_bank = findViewById(R.id.input_layout_bank_username1);
+        Bank_Ac_no = findViewById(R.id.input_layout_bank_ac);
+        Ifsc_no = findViewById(R.id.input_layout_ifsc_code1);
+
+        Resources resources = getResources();
+
+        toast_msg1 =  resources.getString(R.string.Aadhar_Already_user_Message);
+        toast_msg2 =  resources.getString(R.string.Global_ErrorResponse_Message);
+
+
+
+
+        //changed
+        Paper.init(this);
+        String language = Paper.book().read("language");
+        if(language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+
+
+
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("hindi", ""));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("english", ""));
+
+
+        }
+
+
+
+
+
+
         fname_txt.setText(fname);
         lname_txt.setText(lname);
         mob_txt.setText(mob);
-        System.out.println("pan is "+pancardd +"and "+"aaadhar is "+aadharno);
         bankacc_txt.setText(bankacc);
         inputbankusername_txt.setText(nameasinbank1);
         ifsccode1.setText(iffccode1);
@@ -104,7 +178,7 @@ public class Reverify extends BaseActivity {
         }else {
             aadharno_txt.setVisibility(View.GONE);
         }
-        btn_Register=findViewById(R.id.btn_Register);
+
 
         btn_Register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,14 +188,7 @@ public class Reverify extends BaseActivity {
                 getMob=mob_txt.getText().toString();
                 getAadharno=aadharno_txt.getText().toString();
                 getBankacc=bankacc_txt.getText().toString();
-                if(awesomeValidation.validate()){
-                    SaveDetail(getFname,getLname,getMob,getAadharno,getBankacc);
-                }
-                else {
-                    //Toast.makeText(getApplicationContext(),"Please reverify the form",Toast.LENGTH_LONG).show();
-                }
-
-
+                SaveDetail(getFname,getLname,getMob,getAadharno,getBankacc);
 
 
             }
@@ -134,6 +201,33 @@ public class Reverify extends BaseActivity {
         awesomeValidation.addValidation(Reverify.this, R.id.input_bank_acdetails,"^[0-9]{6,18}$", R.string.err_msg_for_acno);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+
+        Context context = LocaleHelper.setLocale(this,lang);
+        final Resources resources = context.getResources();
+
+
+        mobile.setHint(resources.getString(R.string.hint_mobile));
+        first_name.setHint(resources.getString(R.string.hint_name));
+        last_name.setHint(resources.getString(R.string.hint_last_name));
+        aadhar_no.setHint(resources.getString(R.string.hint_aadhar));
+        Pancard.setHint(resources.getString(R.string.hint_pancard));
+        Name_in_bank.setHint(resources.getString(R.string.name_as_in_bank));
+        Bank_Ac_no.setHint(resources.getString(R.string.hint_bank_ac));
+        Ifsc_no.setHint(resources.getString(R.string.hint_ifsc_code));
+        btn_Register.setText(resources.getString(R.string.register));
+
+
+        toast_msg1 =  resources.getString(R.string.Aadhar_Already_user_Message);
+        toast_msg2 =  resources.getString(R.string.Global_ErrorResponse_Message);
+
+
+
+
+
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_reverify;
@@ -141,7 +235,7 @@ public class Reverify extends BaseActivity {
 
 
     private void SaveDetail(final String fnamee, final String lnamee, final String mobbb, final String aadhaar, final String bankacccc) {
-        String serverURL = CommonUtils.url+"save_student_data.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_student_data.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -149,7 +243,6 @@ public class Reverify extends BaseActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    System.out.println("sss"+response);
                     String status= jobj.getString("status");
                     if (status.equals("1")){
                           Intent iii=new Intent(Reverify.this, Registration_Done.class);
@@ -159,9 +252,9 @@ public class Reverify extends BaseActivity {
                     }
                    else if (status.equals("0")){
                         String msg= jobj.getString("msg");
-                        if (msg.equals("Given Aadhar number is already registered! Try using another Aadhar.")){
+                        if (msg.equals(getResources().getString(R.string.Asdhar_msg3))){
                             regno=jobj.getString("registered_number");
-                            Toast.makeText(getApplicationContext(),"You have already registered using this aadhar number with "+regno,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),toast_msg1+regno,Toast.LENGTH_LONG).show();
 
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -191,8 +284,7 @@ public class Reverify extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hide_progressbar();
-                Toast.makeText(getApplicationContext(), "Error Saving the details", Toast.LENGTH_LONG).show();
-                System.out.println("aa"+error);
+                Toast.makeText(getApplicationContext(),toast_msg2, Toast.LENGTH_LONG).show();
             }
         })
 
@@ -258,7 +350,6 @@ public class Reverify extends BaseActivity {
                 map.put("aadhar_image",aadharpic);}
                 map.put("student_image",photouri);
                 map.put("data_source","Mobile");
-                System.out.print("ggggggg"+map);
                 return map;
             }
         };

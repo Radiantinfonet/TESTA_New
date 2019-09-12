@@ -1,7 +1,6 @@
 package com.radiant.rpl.testa.ExamSection;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +61,7 @@ public class CustomAdapter extends BaseAdapter{
             rowview = inflater.inflate(R.layout.gdmainfortestquestion, null);
             hld.tv = rowview.findViewById(R.id.txt2);
              hld.tv.setText(qqqq.get(position).toString());
-               System.out.println("the size"+statussss);
+
             int ii=statussss.size();
                 if (position < ii ) {
                     if (statussss.get(position).equals("1")) {
@@ -83,7 +82,7 @@ public class CustomAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 gotoQuestion.getposition(qqqq.get(position));
-                System.out.println("the clicked button is"+qqqq.get(position));
+
             }
         });
 

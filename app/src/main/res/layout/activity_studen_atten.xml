@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/linearlayout"
     android:weightSum="5"
-    tools:context="com.radiant.rpl.testa.Initials.StudenAtten">
+    tools:context="com.radiant.rpl.testa.StudenAtten">
 
 
 
@@ -78,7 +78,7 @@
             android:layout_marginTop="10dp"
             android:background="@color/BBlue"
             android:drawableLeft="@drawable/ic_photo_camera"
-            android:text="UPLOAD YOUR PHOTO"
+            android:text="@string/upload_your_photo"
             android:drawablePadding="5dp"
             android:paddingLeft="15dp"
             android:paddingRight="10dp"
@@ -109,12 +109,13 @@
             android:weightSum="1">
 
             <TextView
+                android:id="@+id/student_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
-                android:text="Student Name :-"
+                android:text="@string/student_name"
                 android:textStyle="bold"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -139,12 +140,13 @@
             android:gravity="left|top"
             android:weightSum="1">
             <TextView
+                android:id="@+id/jobrole_id"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
-                android:text="Jobrole :-"
+                android:text="@string/jobrole"
                 android:textStyle="bold"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -168,11 +170,12 @@
             android:weightSum="1">
 
             <TextView
+                android:id="@+id/address_iddd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
-                android:text="Address :-"
+                android:text="@string/address"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -213,7 +216,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:text="Proceed"
+            android:text="@string/proceed"
             android:textColor="@drawable/button_text_color"
             android:layout_gravity="center"
             android:textAlignment="center"

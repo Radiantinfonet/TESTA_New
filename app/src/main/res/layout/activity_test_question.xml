@@ -7,7 +7,11 @@
     tools:context="com.radiant.rpl.testa.ExamSection.TestQuestion">
 
 
-
+    <TextureView
+        android:id="@+id/texture"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"/>
 
 
     <android.support.v4.widget.DrawerLayout
@@ -139,6 +143,8 @@
                 android:textAlignment="center"
                 android:textColor="@color/darkblack"
                 android:drawableLeft="@drawable/notvisited"
+
+
                 />
 
             </LinearLayout>
@@ -223,6 +229,7 @@
             android:layout_width="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
             />
+
 
 
 

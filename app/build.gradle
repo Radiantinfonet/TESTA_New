@@ -49,6 +49,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:16.3.0'
     implementation 'me.dm7.barcodescanner:zbar:1.9.13'
     testImplementation 'junit:junit:4.12'
+    implementation 'io.paperdb:paperdb:2.6'
+
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

@@ -15,7 +15,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginLeft="2dp"
         android:layout_width="0.0dip" android:layout_height="fill_parent"
-        android:text="Previous" android:layout_weight="1.0"
+        android:text="@string/Previous" android:layout_weight="1.0"
         android:background="#2e78b5"
         style="@style/text_h4" />
 
@@ -32,7 +32,7 @@
         android:layout_width="0.0dip"
         android:visibility="visible"
         android:background="#E6E6E6"
-        android:layout_height="fill_parent" android:text="skip" android:layout_weight="1.0"
+        android:layout_height="fill_parent" android:text="@string/skip" android:layout_weight="1.0"
         style="@style/text_h4" />
 
     <View android:background="#fff" android:layout_width="1.0dip" android:layout_height="fill_parent" />
@@ -44,6 +44,6 @@
         android:background="#5CB85C"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="2dp"
-        android:layout_height="fill_parent" android:text="Next" android:layout_weight="1.0" style="@style/text_h4" />
+        android:layout_height="fill_parent" android:text="@string/Next" android:layout_weight="1.0" style="@style/text_h4" />
 
 </LinearLayout>

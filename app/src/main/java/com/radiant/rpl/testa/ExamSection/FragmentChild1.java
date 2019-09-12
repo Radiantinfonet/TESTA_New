@@ -1,8 +1,9 @@
 package com.radiant.rpl.testa.ExamSection;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,32 +16,29 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.radiant.rpl.testa.Common.FiletoBase64;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
+import com.radiant.rpl.testa.LocaleHelper;
 
 import java.util.HashMap;
 
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentChild1 extends Fragment implements View.OnClickListener {
-    String childname,quename,option1,option2,option3,option4,que_img_viva,img_option1_viva,img_option2_viva,img_option3_viva,img_option4_viva;
+    String childname,quename,option1,option2,option3,option4;
     int pgnn;
     String dummystuid;
-    SharedPreferences sp;
-
-    Bitmap que_imgConverted_viva,img_option1converted_viva, img_option2converted_viva, getImg_option3converted_viva,getImg_option4converted_viva;
-    ImageView que_iv_viva,que_opt1_viva,que_opt2_viva,que_opt3_viva,que_opt4_viva;
+    SharedPreferences sp,language_prefs;
 
     TextView textViewChildName,t1,optiona,optionb,optionc,optiond,titlea,titleb,titlec,titled,mfr11;
     LinearLayout l1,l2,l3,l4;
     DbAutoSave dbAutoSave;
-    String idd;
+    String idd,selected_language;
     String query;
     boolean statusvalue;
     HashMap<String,String> hm=new HashMap<>();
@@ -59,86 +57,27 @@ public class FragmentChild1 extends Fragment implements View.OnClickListener {
         option2=bundle.getString("op2");
         option3=bundle.getString("op3");
         option4=bundle.getString("op4");
-
-        que_img_viva=bundle.getString("que_img_viva");
-        img_option1_viva=bundle.getString("img_op1_viva");
-        img_option2_viva=bundle.getString("img_op2_viva");
-        img_option3_viva=bundle.getString("img_op3_viva");
-        img_option4_viva=bundle.getString("img_op4_viva");
-
         hm.put(quename,childname);
         sp=getActivity().getSharedPreferences("mypref", MODE_PRIVATE);
+
+        language_prefs = getActivity().getSharedPreferences("language_prefs", MODE_PRIVATE);
+
+
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
+
+
+
         dbAutoSave = new DbAutoSave(getContext());
         getIDs(view);
         setEvents();
         idd=dbAutoSave.getDataOfSingleClient(query);
         dummystuid=sp.getString("userid","");
-
-        getPhotoFromStringviva();
         return view;
     }
 
-
-    public void getPhotoFromStringviva(){
-        if (que_img_viva!=null){
-            que_imgConverted_viva= FiletoBase64.getFilefromString(que_img_viva);
-            if (que_imgConverted_viva!=null){
-                que_iv_viva.setVisibility(View.VISIBLE);
-                que_iv_viva.setImageBitmap(que_imgConverted_viva);
-
-            }
-            else {
-                System.out.println("Bitmap is empty");
-            }
-        }
-
-        if (img_option1_viva!=null){
-            img_option1converted_viva=FiletoBase64.getFilefromString(img_option1_viva);
-            if (img_option1converted_viva!=null){
-                que_opt1_viva.setVisibility(View.VISIBLE);
-                que_opt1_viva.setImageBitmap(img_option1converted_viva);
-
-            }
-            else {
-                System.out.println("Bitmap is empty");
-            }
-
-        }
-        if (img_option2_viva!=null){
-            img_option2converted_viva=FiletoBase64.getFilefromString(img_option2_viva);
-            if (img_option2converted_viva!=null){
-                que_opt2_viva.setVisibility(View.VISIBLE);
-                que_opt2_viva.setImageBitmap(img_option2converted_viva);
-            }
-            else {
-                System.out.println("Bitmap is empty");
-            }
-
-        }
-        if (img_option3_viva!=null){
-            getImg_option3converted_viva=FiletoBase64.getFilefromString(img_option3_viva);
-            if (getImg_option3converted_viva!=null){
-                que_opt3_viva.setVisibility(View.VISIBLE);
-                que_opt3_viva.setImageBitmap(getImg_option3converted_viva);
-            }
-            else {
-                System.out.println("Bitmap is empty");
-            }
-
-        }
-        if (img_option4_viva!=null){
-            getImg_option4converted_viva=FiletoBase64.getFilefromString(img_option4_viva);
-            if (getImg_option4converted_viva!=null){
-                que_opt4_viva.setVisibility(View.VISIBLE);
-                que_opt4_viva.setImageBitmap(getImg_option4converted_viva);
-            }
-            else {
-                System.out.println("Bitmap is empty");
-            }
-
-        }
-
-    }
 
 
     private void getIDs(View view) {
@@ -159,14 +98,6 @@ public class FragmentChild1 extends Fragment implements View.OnClickListener {
         View vv1=view.findViewById(R.id.vv11);
         View vv2=view.findViewById(R.id.vv22);
         View vv3=view.findViewById(R.id.vv33);
-
-        que_iv_viva=view.findViewById(R.id.iv_question1);
-        que_opt1_viva=view.findViewById(R.id.iv_option11);
-        que_opt2_viva=view.findViewById(R.id.iv_option21);
-        que_opt3_viva=view.findViewById(R.id.iv_option31);
-        que_opt4_viva=view.findViewById(R.id.iv_option41);
-
-
         mfr11=view.findViewById(R.id.markforreviewww1);
         l1.setOnClickListener(this);
         l2.setOnClickListener(this);
@@ -206,9 +137,49 @@ public class FragmentChild1 extends Fragment implements View.OnClickListener {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+
+        //changed
+        Paper.init(getContext());
+        String language = Paper.book().read("language");
+        if(language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+
+
+
+
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("hindi", ""));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("english", ""));
+
+        }
+
+
+
+
+
+
+
+
     }
 
     public static void aaa(GetStatusQue gettt){
@@ -221,10 +192,8 @@ public class FragmentChild1 extends Fragment implements View.OnClickListener {
         super.setUserVisibleHint(visible);
         if (visible && isResumed())
         {
-            System.out.println("Visible Resume");
             if (dbAutoSave.getDataOfSingleClientstatus1(""+pgnn)!=null && dbAutoSave.getStatusDataOfSingleClientstatus1(""+pgnn).equals("3")){
                 dbAutoSave.updateDataunanswered1(dummystuid,""+pgnn,"0",""+pgnn);
-                System.out.println("Case with 3 status ");
             }
             onResume();
         }
@@ -235,7 +204,6 @@ public class FragmentChild1 extends Fragment implements View.OnClickListener {
         super.onPause();
         if(getStatusQue!=null){
             getStatusQue.gets(anyButtonClicked1);
-            System.out.println("ttttt on pause running");
         }
     }
 
@@ -321,7 +289,6 @@ public class FragmentChild1 extends Fragment implements View.OnClickListener {
         changeColorBack(titled);
 
         if (anyButtonClicked1) {
-            System.out.println("ttttt button clicked captured");
         } else {
             anyButtonClicked1 = true;
         }
@@ -413,4 +380,23 @@ public class FragmentChild1 extends Fragment implements View.OnClickListener {
 
         }
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+
+        Context context = LocaleHelper.setLocale(getContext(),lang);
+        Resources resources = context.getResources();
+        mfr11.setText(resources.getString(R.string.MarkforReview));
+
+
+
+
+
+    }
+
+
+
+
+
 }

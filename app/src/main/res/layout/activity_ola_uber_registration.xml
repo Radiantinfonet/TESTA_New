@@ -53,12 +53,13 @@
 
 
                 <TextView
+                    android:id="@+id/regis"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="left"
                     android:paddingLeft="15dp"
-                    android:text="Registration Details"
+                    android:text="@string/registration_details"
                     android:textColor="@color/white"
                     android:textSize="22sp"
 
@@ -72,13 +73,13 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_mobile_no_olauber"
                 android:layout_width="match_parent"
+                android:hint="@string/hint_mobile"
                 android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/input_mobile_no_olauber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_mobile"
                     android:inputType="number"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -120,13 +121,13 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_aadhaar_no_olauber"
                 android:layout_width="match_parent"
+                android:hint="@string/hint_aadhar"
                 android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/input_aadhaar_no_olauber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_aadhar"
                     android:inputType="number"
                     android:textColor="#000000"
                     android:singleLine="true" />
@@ -135,13 +136,13 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_name_olauber"
                 android:layout_width="match_parent"
+                android:hint="@string/hint_name"
                 android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/input_name_olauber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_name"
                     android:textColor="#000000"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -149,13 +150,14 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_last_name_olauber"
                 android:layout_width="match_parent"
+                android:hint="@string/hint_last_name"
                 android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/input_last_name_olauber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_last_name"
+
                     android:textColor="#000000"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -194,7 +196,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/mybuttons"
-                android:text="Register"
+                android:text="@string/register"
                 android:textColor="@drawable/button_text_color"
                 android:textSize="18sp" />
 

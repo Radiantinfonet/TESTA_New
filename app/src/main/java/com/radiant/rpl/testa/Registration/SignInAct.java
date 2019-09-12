@@ -1,4 +1,4 @@
-package com.radiant.rpl.testa.Initials;
+package com.radiant.rpl.testa.Registration;
 
 
 import android.Manifest;
@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -38,9 +40,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.radiant.rpl.testa.Common.CommonUtils;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
-import com.radiant.rpl.testa.Registration.GPSTracker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,35 +49,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class SignInAct extends AppCompatActivity{
+public class SignInAct extends AppCompatActivity {
     private ImageView bookIconImageView;
-    private TextView bookITextView,skiptextview;
+    private TextView bookITextView,skiptextview,welcome;
     private ProgressBar loadingProgressBar;
     private RelativeLayout rootView, afterAnimationView;
     Button loginsubmit;
     EditText username,passowrd;
-    String uname,pass;
+    String uname,pass,name,rascibatchid,mobile,exam_status,address,
+            userid,batchid,jobrole,status,selected_language,value,stringLatitude,stringLongitude
+            ,geturl,gettestingurl,toast_msg1,toast_msg2,toast_msg3,snack_msg1,snack_msg2,toast_msg4;
     private Location location;
-    String geturl,gettestingurl;
     SessionManager sessionManager;
-    SharedPreferences sharedpreferences;
+    SharedPreferences sharedpreferences,language_prefs;
     final String mypreference = "mypref";
-    String name,rascibatchid,mobile,exam_status,address,userid,batchid,jobrole,student_type;
+
     private android.app.AlertDialog progressDialog;
-    String status;
-    String value;
+
+
     GPSTracker gps;
     double lati,longi;
-    String stringLatitude,stringLongitude;
+
     DbAutoSave dbAutoSave;
     private boolean TimerRunning;
-    private String proctoring_status;
+    TextInputLayout username1, password1;
 
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +100,37 @@ public class SignInAct extends AppCompatActivity{
         initViews();
 
         Bundle extras = getIntent().getExtras();
+
+
+        language_prefs = getSharedPreferences("language_prefs", MODE_PRIVATE);
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
+
+
+        //changed
+        Paper.init(this);
+        String language = Paper.book().read("language");
+        if(language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+        Resources resources = getResources();
+        toast_msg1 =  resources.getString(R.string.Wrong_credentials);
+        toast_msg2 =  resources.getString(R.string.Unable_login);
+        toast_msg3 =  resources.getString(R.string.Saving_Err);
+        snack_msg1 =  resources.getString(R.string.Wrong_login);
+        snack_msg2 =  resources.getString(R.string.Check_Internrt);
+
+        toast_msg4 =  resources.getString(R.string.SignIn_Message);
+
+
+
+
+
+
 
         if (extras != null) {
             value = extras.getString("key");
@@ -123,7 +160,7 @@ public class SignInAct extends AppCompatActivity{
             public void onClick(View v) {
 
                 if (username.getText().toString().equals("") | passowrd.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "The required fields Username and password can't be empty", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),toast_msg4, Toast.LENGTH_LONG).show();
                 } else {
                     sendDataServer();
                 }
@@ -136,6 +173,35 @@ public class SignInAct extends AppCompatActivity{
                 startActivity(ii);
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("hindi", ""));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("english", ""));
+
+        }
+
+
+
+
+
 
     }
 
@@ -153,16 +219,10 @@ public class SignInAct extends AppCompatActivity{
 
                 lati = gps.getLatitude();
                 longi = gps.getLongitude();
-                System.out.println("locdata "+lati+longi);
-                // \n is for new line
-                //  Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + lati + "\nLong: " + longi, Toast.LENGTH_LONG).show();
+
             }
             else {
-                System.out.println("locdata "+"can't get location");
-                // Can't get location.
-                // GPS or network is not enabled.
-                // Ask user to enable GPS/network in settings.
-                //   gps.showSettingsAlert();
+
             }
         }
     }
@@ -185,6 +245,12 @@ public class SignInAct extends AppCompatActivity{
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
         rootView = findViewById(R.id.rootView);
         afterAnimationView = findViewById(R.id.afterAnimationView);
+
+
+
+        username1 =findViewById(R.id.emailEditText1);
+        password1 =findViewById(R.id.passwordEditText1);
+        welcome = findViewById(R.id.WelcomeTextView);
         username=findViewById(R.id.emailEditText);
         passowrd=findViewById(R.id.passwordEditText);
         loginsubmit=findViewById(R.id.loginButton);
@@ -224,9 +290,7 @@ public class SignInAct extends AppCompatActivity{
     private void sendDataServer() {
 
         progressDialog.show();
-        String serverURL= CommonUtils.url+"login.php";
-        //String serverURL = CommonUtils.url+"login.php";
-        System.out.println("geturll"+" "+serverURL);
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/login.php";
         uname=username.getText().toString();
         pass= passowrd.getText().toString();
 
@@ -234,13 +298,9 @@ public class SignInAct extends AppCompatActivity{
             @Override
             public void onResponse(String response) {
                 try {
-                    System.out.println("response is"+response);
                     JSONObject jobj = new JSONObject(response);
                     status= jobj.getString("status");
                     exam_status=jobj.getString("exam_status");
-                    student_type=jobj.getString("student_type");
-                    proctoring_status = jobj.getString("proctoring_comparison");
-
                     if (status.equals("1")) {
                         if (exam_status.equals("Not Attempted")) {
                             JSONObject jsonObject = jobj.getJSONObject("student_details");
@@ -260,9 +320,6 @@ public class SignInAct extends AppCompatActivity{
                                 editor.putString("assessorid", mobile);
                                 editor.putString("userid", userid);
                                 editor.putString("jobrole",jobrole);
-                                editor.putString("proctor_status",proctoring_status);
-                                editor.putString("student_type",student_type);
-                                editor.putString("exam_status",exam_status);
                                 editor.apply();
 
                                 if(userid.equals("aman")){
@@ -292,10 +349,12 @@ public class SignInAct extends AppCompatActivity{
                                         dbAutoSave.onDelete();
                                 }
                             }
+                            stringLatitude= Double.toString(lati);
+                            stringLongitude= Double.toString(longi);
+                            saveLog(userid,"","User Login",stringLatitude,stringLongitude,"");
                             Intent ii = new Intent(SignInAct.this, Welcome_page.class);
                             startActivity(ii);
                         }
-
                         else if (exam_status.equals("Attempted")) {
                             JSONObject jsonObject = jobj.getJSONObject("student_details");
                             for (int i = 0; i < jsonObject.length(); i++) {
@@ -312,11 +371,8 @@ public class SignInAct extends AppCompatActivity{
                                 editor.putString("address", address);
                                 editor.putString("batchid", batchid);
                                 editor.putString("assessorid", mobile);
-                                editor.putString("proctor_status",proctoring_status);
                                 editor.putString("userid", userid);
                                 editor.putString("jobrole",jobrole);
-                                editor.putString("student_type",student_type);
-                                editor.putString("exam_status",exam_status);
                                 editor.apply();
 
                                 stringLatitude= Double.toString(lati);
@@ -328,17 +384,15 @@ public class SignInAct extends AppCompatActivity{
                                     startActivity(in);
                                 }
                                 else{
-                                    Intent ii = new Intent(SignInAct.this, Welcome_page.class);
-                                    startActivity(ii);
-                                   /* AlertDialog alertDialog = new AlertDialog.Builder(SignInAct.this)
-                                            .setMessage("You have already attempted the exam.")
+                                    AlertDialog alertDialog = new AlertDialog.Builder(SignInAct.this)
+                                            .setMessage(getResources().getString(R.string.AlredyAttempt_Exam))
                                             .setCancelable(false)
-                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            .setPositiveButton(getResources().getString(R.string.ok_button), new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     finish();
                                                 }
-                                            }).show();*/
+                                            }).show();
                                     //alertDialog.show();
                                 }
                             }
@@ -371,10 +425,10 @@ public class SignInAct extends AppCompatActivity{
                     }
 
                     else if (status.equals("0")){
-                        Toast.makeText(getApplicationContext(),"Wrong Credentials.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),toast_msg1,Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Unable to Login",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),toast_msg2,Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -382,7 +436,7 @@ public class SignInAct extends AppCompatActivity{
                     e.printStackTrace();
 
                     Snackbar snackbar = Snackbar
-                            .make(rootView,"Wrong login id or password.",Snackbar.LENGTH_LONG);
+                            .make(rootView, snack_msg1, Snackbar.LENGTH_LONG);
                     snackbar.show();                }
 
                 if (progressDialog.isShowing()) {
@@ -396,9 +450,8 @@ public class SignInAct extends AppCompatActivity{
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-                System.out.println("error"+error);
                 Snackbar snackbar = Snackbar
-                        .make(rootView,"Please check the Internet Connectivity.",Snackbar.LENGTH_LONG);
+                        .make(rootView, snack_msg2, Snackbar.LENGTH_LONG);
                 snackbar.show();            }
         }) {
             @Override
@@ -412,18 +465,9 @@ public class SignInAct extends AppCompatActivity{
             protected Map<String, String> getParams() throws AuthFailureError {
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
-                stringLatitude= Double.toString(lati);
-                stringLongitude= Double.toString(longi);
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("user_name", uname);
                 map.put("password", pass);
-                map.put("username",uname);
-                map.put("ip","");
-                map.put("mobile_imei","");
-                map.put("company_id","");
-                map.put("activity","User Login");
-                map.put("lat",stringLatitude);
-                map.put("longi",stringLongitude);
                 map.put("key_salt", "UmFkaWFudEluZm9uZXRTYWx0S2V5");
                 map.put("app_version", "1.0");
                 return map;
@@ -435,7 +479,7 @@ public class SignInAct extends AppCompatActivity{
 
 
     private void saveLog(final String fnamee, final String ip, final String activity, final String   lat, final String longi,final String cmpid) {
-        String serverURL = CommonUtils.url+"save_logs.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_logs.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -443,7 +487,6 @@ public class SignInAct extends AppCompatActivity{
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    System.out.println("sss"+response);
 
 
                 } catch (JSONException e) {
@@ -455,8 +498,7 @@ public class SignInAct extends AppCompatActivity{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error Saving the details", Toast.LENGTH_LONG).show();
-                System.out.println("aa"+error);
+                Toast.makeText(getApplicationContext(),toast_msg3, Toast.LENGTH_LONG).show();
             }
         })
 
@@ -480,7 +522,6 @@ public class SignInAct extends AppCompatActivity{
                 map.put("activity",activity);
                 map.put("lat",lat);
                 map.put("longi",longi);
-                System.out.println("map"+map);
                 return map;
             }
         };
@@ -495,5 +536,29 @@ public class SignInAct extends AppCompatActivity{
         super.onBackPressed();
         finishAffinity();
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+        Context context = LocaleHelper.setLocale(this,lang);
+        final Resources resources = context.getResources();
+
+        username1.setHint(resources.getString(R.string.email));
+        password1.setHint(resources.getString(R.string.password));
+        welcome.setText(resources.getString(R.string.welcome_back));
+        loginsubmit.setText(resources.getString(R.string.login));
+        skiptextview.setText(resources.getString(R.string.sign_up1));
+        toast_msg1 =  resources.getString(R.string.Wrong_credentials);
+        toast_msg2 =  resources.getString(R.string.Unable_login);
+        toast_msg3 =  resources.getString(R.string.Saving_Err);
+
+        snack_msg1 =  resources.getString(R.string.Wrong_login);
+        snack_msg2 =  resources.getString(R.string.Check_Internrt);
+        toast_msg4 =  resources.getString(R.string.SignIn_Message);
+
+
+    }
+
+
 
 }

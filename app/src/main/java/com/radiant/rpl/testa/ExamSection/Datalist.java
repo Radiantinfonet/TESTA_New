@@ -9,7 +9,6 @@ class Datalist
     // size of input 4
     ArrayList<SetterGetter> dataList = new ArrayList<SetterGetter>();
     String batch_id=new String();
-    String student_type=new String();
    /* long theory_time;
     long practical_time;*/
    /* int n=4;
@@ -38,12 +37,12 @@ class Datalist
     public static void main(String args[])
     {
         // suppose the custom input data
-        int roll[] = {1, 2, 3, 4};
-        String name[] = {"Shubham", "Atul", "Ayush", "Rupesh"};
-        int marks[] = {100, 99, 93, 94};
-        long phone[] = {8762357381L, 8762357382L, 8762357383L,
-                8762357384L
-        };
+//        int roll[] = {1, 2, 3, 4};
+//        String name[] = {"Shubham", "Atul", "Ayush", "Rupesh"};
+//        int marks[] = {100, 99, 93, 94};
+//        long phone[] = {8762357381L, 8762357382L, 8762357383L,
+//                8762357384L
+//        };
 
         // Create an object of the class
        // Datalist dataList = new Datalist();

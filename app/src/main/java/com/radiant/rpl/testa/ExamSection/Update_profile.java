@@ -1,12 +1,17 @@
 package com.radiant.rpl.testa.ExamSection;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -25,11 +31,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.radiant.rpl.testa.Common.CommonUtils;
-import com.radiant.rpl.testa.Initials.MyNetwork;
-import com.radiant.rpl.testa.Initials.NetworkStateReceiver;
+import com.radiant.rpl.testa.LocaleHelper;
+import com.radiant.rpl.testa.MyNetwork;
+import com.radiant.rpl.testa.NetworkStateReceiver;
 import com.radiant.rpl.testa.Registration.BaseActivity;
-import com.radiant.rpl.testa.Initials.Welcome_page;
+import com.radiant.rpl.testa.Welcome_page;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,25 +48,53 @@ import java.util.List;
 import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
+import io.paperdb.Paper;
 import radiant.rpl.radiantrpl.R;
 
 public class Update_profile extends BaseActivity {
 
     Spinner category,myspinner,yearofbirth,bankname,state,district,education,employer,sector,disablity_type,type_of_disablity,input_jobrole,
             Employment_status;
+
     EditText input_name,input_last_name,input_mobile_no,input_aadhar,input_bank_ac,input_ifsc_code,
             input_bank_username,input_pann,other_qualification,input_address,Email_update,input_pincode_update;
 
-    SharedPreferences sharedpreferences;
+
+    SharedPreferences sharedpreferences,language_prefs;
+
     String yearobirth,eduction1,bankname1,state1,district1,bankiddd,stateiddd,districtiddd,Stateid,Statevalue,
             bankid,bankvalue,districtid,districtvalue,selectedstatetext,gotbankid,gotstateid,gotdistrictid,employer1,sector1,
             employeridname,sectoridd,jobroleeiddd,jobrole1,sectorid,sectorvalue, employerid,employervalue,jobroleid,jobrolevalue,Employment_status1,
-            disablity_type1, type_of_disablity1,gotEmailid,gotpincode,gotjobroleid,gotsectorid,gotcompanyid,gotcompanyid1;
+            disablity_type1, type_of_disablity1,gotEmailid,gotpincode,gotjobroleid,gotsectorid,gotcompanyid,gotcompanyid1,selected_language;
 
-    String emp_statuss;
+
+
+
+    TextInputLayout mobile, first_name_input, last_name_input, email_id1, Address_line1,pincode,
+            AAdhar_no, pancard_no, Bank_Ac_no, name_in_bank_input, ifsc_code,other_qualification1;
+
+    TextView update_profile_textview,yob,decl2;
+
+
+    String[] spinner_msg_Eduction, spinner_msg_category, spinner_msg_any_disablity, spinner_msg_any_disablity_type,
+            spinner_msg_gender, other_id_proof,spinner_msg_Year,banks,states,districts,employers,jobrole,sectors;
+
+
+
+
+    String  toast_msg2,
+            toast_msg3, toast_msg4, toast_msg5, toast_msg6, toast_msg7, toast_msg8,toast_msg9,
+            toast_msg10, toast_msg11, toast_msg12, toast_msg13, toast_msg14, toast_msg15,toast_msg16,
+            toast_msg17, toast_msg18, toast_msg19, toast_msg20, toast_msg21, toast_msg22,toast_msg23,toast_msg24,toast_msg25,
+            spinner_msg_Eduction_other, spinner_msg_any_disablity_yes,emp_statuss;
+
+
+
+
+
     ArrayAdapter<String> jobroleadapter;
 
-    String[] banks,states,districts,employers,jobrole;
+
     List<String> bankslist,Statelist,districtlist,gotbankname,gotstataename,
             gotdistrictname,sectorlist,employerlist,jobrolelist,gotjobrolename,gotcompanyname,gotsectorname;
 
@@ -86,10 +120,12 @@ public class Update_profile extends BaseActivity {
     NetworkStateReceiver networkStateReceiver;
     SwipeRefreshLayout mySwipeRefreshLayout;
     private android.app.AlertDialog progressDialog;
+
     String first_name,last_name,gender1,categoryselected,bankaccount,aadharselected,name_in_bank,
             ifsc_selected,mobile_no_selected,User_namee,stateiddd1,districtid1,address1,Category1,year1,
             education2,disablity1,typediablity1,otheredu,pancard1;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,19 +170,32 @@ public class Update_profile extends BaseActivity {
         //Statedetails();
 
         Employerlist();
-        banks = new String[]{"Select the Bank"};
-        states=new String[]{"Select the State"};
-        districts=new String[]{"Select the District"};
-        employers=new String[]{"Select the Employer"};
-        jobrole=new String[]{"Select the Jobrole"};
-        String[] sectors=new String[]{"Select the Sector"};
+        banks = new String[]{getString(R.string.Select_Bank)};
+
+
+
+
+
+
+
+
+
+
+        Resources res = getResources();
+
+        sectors=res.getStringArray(R.array.Amway_Select_the_Sector);
+       // preflangg=res.getStringArray(R.array.Amway_Select_the_PrefferedLanguage);
+        states=res.getStringArray(R.array.Amway_Select_the_State);
+        districts=res.getStringArray(R.array.Amway_Select_the_District);
+        employers=res.getStringArray(R.array.Amway_Select_the_Employer);
+        jobrole=res.getStringArray(R.array.Amway_Select_the_Jobrole);
+
 
 
 
         Statelist = new ArrayList<>(Arrays.asList(states));
         districtlist=new ArrayList<>(Arrays.asList(districts));
         gotdistrictname=new ArrayList<>(Arrays.asList(districts));
-
         bankslist = new ArrayList<>(Arrays.asList(banks));
         gotbankname=new ArrayList<>(Arrays.asList(banks));
         gotstataename=new ArrayList<>(Arrays.asList(states));
@@ -168,7 +217,6 @@ public class Update_profile extends BaseActivity {
 
         if (sharedpreferences.contains("userid")) {
             User_namee=sharedpreferences.getString("userid", "");
-            System.out.println("");
         }
 
         awesomeValidation.addValidation(Update_profile.this, R.id.input_address1_update,"(.|\\s)*\\S(.|\\s)*", R.string.err_msg_for_address1);
@@ -186,6 +234,132 @@ public class Update_profile extends BaseActivity {
 
 
 
+        language_prefs = getSharedPreferences("language_prefs", MODE_PRIVATE);
+        if (language_prefs.contains("languagee")) {
+            selected_language = language_prefs.getString("languagee", "");
+        }
+
+
+
+
+
+
+
+        //TextInputLayout
+
+        mobile = findViewById(R.id.input_layout_mobile_no_update);
+        first_name_input = findViewById(R.id.input_layout_name_update);
+        last_name_input = findViewById(R.id.input_layout_last_name_update);
+        email_id1 = findViewById(R.id.input_layout_email_update);
+        Address_line1 = findViewById(R.id.input_layout_address1_update);
+        pincode = findViewById(R.id.input_layout_pincode_update);
+        AAdhar_no = findViewById(R.id.input_layout_aadhar_update);
+        pancard_no = findViewById(R.id.input_layout_pan_update);
+        Bank_Ac_no = findViewById(R.id.input_layout_bank_ac_update);
+        name_in_bank_input = findViewById(R.id.input_layout_bank_username_update);
+        ifsc_code = findViewById(R.id.input_layout_ifsc_code_update);
+        other_qualification1 = findViewById(R.id.input_layout_Eduction_other_update);
+
+
+        update_profile_textview = findViewById(R.id.update_profile_textview);
+        yob  = findViewById(R.id.yob);
+        decl2 =   findViewById(R.id.decl2);
+
+
+
+
+        //spinner msg
+
+
+        spinner_msg_Eduction = res.getStringArray(R.array.Education);
+        spinner_msg_category = res.getStringArray(R.array.Category);
+        spinner_msg_any_disablity = res.getStringArray(R.array.Disablity);
+        spinner_msg_any_disablity_type = res.getStringArray(R.array.type_of_Disablity);
+        spinner_msg_gender = res.getStringArray(R.array.gender);
+        other_id_proof = res.getStringArray(R.array.other_id);
+        spinner_msg_Year = res.getStringArray(R.array.Year);
+        spinner_msg_any_disablity_yes = res.getString(R.string.amway_Disablity_yes);
+        spinner_msg_Eduction_other = res.getString(R.string.amway_other);
+
+
+
+
+        toast_msg2 =  res.getString(R.string.amway_Gender_Toast);
+        toast_msg3 =  res.getString(R.string.amway_categroy_Toast);
+        toast_msg4 =  res.getString(R.string.amway_Year_Toast);
+        toast_msg5 =  res.getString(R.string.amway_Gender_Toast);
+        toast_msg6 =  res.getString(R.string.amway_State_Toast);
+        toast_msg7 =  res.getString(R.string.amway_District_Toast);
+        toast_msg8 =  res.getString(R.string.amway_Eduction_Toast);
+        toast_msg9 =  res.getString(R.string.Select_Bank_Toast);
+        toast_msg10 =  res.getString(R.string.amway_other_Employ_Toast);
+        toast_msg11 =  res.getString(R.string.amway_Disablity_Toast);
+        toast_msg12 =  res.getString(R.string.amway_Disablit_type_Toast);
+        toast_msg13 =  res.getString(R.string.amway_pancard_Toast);
+        toast_msg14 =  res.getString(R.string.amway_Aadhar_Toast);
+        toast_msg15 =  res.getString(R.string.Decleration_Message);
+        toast_msg16 =  res.getString(R.string.amway_Internet_Toast);
+
+
+        toast_msg17 =  res.getString(R.string.Student_Err);
+        toast_msg18 =  res.getString(R.string.form_job_role_ERR);
+        toast_msg19 =  res.getString(R.string.amway_States_Err__Toast);
+        toast_msg20 =  res.getString(R.string.amway_District_Err);
+        toast_msg21 =  res.getString(R.string.Bank_Err);
+        toast_msg22 =  res.getString(R.string.form_employee_Err);
+        toast_msg23 =  res.getString(R.string.form_Sector_Err);
+        toast_msg24 =  res.getString(R.string.form_job_role_ERR);
+        toast_msg25 =  res.getString(R.string.Form_failed);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //changed
+        Paper.init(this);
+        String language = Paper.book().read("language");
+        if (language == null) {
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+        }
+
+
+
+
+        if (  selected_language!=null && selected_language.equals("1")) {
+
+            Paper.book().write("language", "hi");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("hindi", ""));
+        }
+        else if(selected_language!=null && selected_language.equals("0")) {
+
+            Paper.book().write("language", "en");
+            updateView((String) Paper.book().read("language"));
+            System.out.println("ideide" + language_prefs.getString("english", ""));
+
+
+        }
+
+
+
+
+
+
+
 
 
 
@@ -193,54 +367,50 @@ public class Update_profile extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                if (gender.equals("Select Gender")){
-                    Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
+                if (gender.equals((getResources().getString(R.string.amway_Gender)))){
+
+                    Toast.makeText(getApplicationContext(), toast_msg2,Toast.LENGTH_LONG).show();
                 }
-                else if (categoryy.equals("Select Category")){
-                    Toast.makeText(getApplicationContext(),"category must be selected",Toast.LENGTH_LONG).show();
+                else if (categoryy.equals(getResources().getString(R.string.amway_categroy))){
+                    Toast.makeText(getApplicationContext(),toast_msg3,Toast.LENGTH_LONG).show();
                 }
-                if(yearobirth.equals("Year")){
-                    Toast.makeText(getApplicationContext(),"Year must be selected",Toast.LENGTH_LONG).show();
+                if(yearobirth.equals(getResources().getString(R.string.amway_year))){
+                    Toast.makeText(getApplicationContext(),toast_msg4,Toast.LENGTH_LONG).show();
                 }
 
-                else if (gender.equals("Select Gender")){
-                    Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
-                }
-                else if (categoryy.equals("Select categroy")){
-                    Toast.makeText(getApplicationContext(),"categroy must be selected",Toast.LENGTH_LONG).show();
-                }
-                else if (state1.equals("Select the State")){
-                    Toast.makeText(getApplicationContext(),"State must be selected",Toast.LENGTH_LONG).show();
+                else if (gender.equals(getResources().getString(R.string.amway_Gender))){
+                    Toast.makeText(getApplicationContext(),toast_msg5,Toast.LENGTH_LONG).show();
                 }
 
-                else if (district1.equals("Select the District")){
-                    Toast.makeText(getApplicationContext(),"District must be selected",Toast.LENGTH_LONG).show();
+                else if (state1.equals(getResources().getString(R.string.amway_state))){
+                    Toast.makeText(getApplicationContext(),toast_msg6,Toast.LENGTH_LONG).show();
                 }
 
-                else if (eduction1.equals("Select Education")){
-                    Toast.makeText(getApplicationContext(),"Education must be selected",Toast.LENGTH_LONG).show();
+                else if (district1.equals(getResources().getString(R.string.amway_District))){
+                    Toast.makeText(getApplicationContext(),toast_msg7 ,Toast.LENGTH_LONG).show();
                 }
 
-
-                else if (bankname1.equals("Select the Bank")){
-                    Toast.makeText(getApplicationContext(),"Bank  name must be selected",Toast.LENGTH_LONG).show();
-
-                }
-
-                else if ((eduction1.equals("Other"))&& (other_qualification.getText().toString().matches(""))){
-                    Toast.makeText(getApplicationContext(),"Education must be filled",Toast.LENGTH_LONG).show();
-                }
-                else if (disablity_type1.equals("Any Disability ?")){
-                    Toast.makeText(getApplicationContext(),"Disability must be Selected",Toast.LENGTH_LONG).show();
-                }
-
-                else if ((disablity_type1.equals("Yes"))&& (type_of_disablity1.equals("Select Type of Disability"))){
-                    Toast.makeText(getApplicationContext(),"Disablity type must be selected",Toast.LENGTH_LONG).show();
+                else if (eduction1.equals(getResources().getString(R.string.amway_Eduction))){
+                    Toast.makeText(getApplicationContext(), toast_msg8,Toast.LENGTH_LONG).show();
                 }
 
 
+                else if (bankname1.equals(getResources().getString(R.string.Select_Bank))){
+                    Toast.makeText(getApplicationContext(),toast_msg9,Toast.LENGTH_LONG).show();
 
+                }
 
+                else if ((eduction1.equals(getResources().getString(R.string.amway_other)))&& (other_qualification.getText().toString().matches(""))){
+                    Toast.makeText(getApplicationContext(),toast_msg10,Toast.LENGTH_LONG).show();
+                }
+                else if (disablity_type1.equals(getResources().getString(R.string.amway_Disablity))){
+                    Toast.makeText(getApplicationContext(),toast_msg11,Toast.LENGTH_LONG).show();
+                }
+
+                else if ((disablity_type1.equals(getResources().getString(R.string.amway_Disablity_yes))&& (type_of_disablity1.equals(getResources().getString(R.string.amway_type_of_disablity1)))))
+                {
+                    Toast.makeText(getApplicationContext(),toast_msg12,Toast.LENGTH_LONG).show();
+                }
 
 
 
@@ -256,7 +426,7 @@ public class Update_profile extends BaseActivity {
 
                 {
 
-                    Toast.makeText(Update_profile.this, "PAN Card cannot be empty ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Update_profile.this, toast_msg13, Toast.LENGTH_SHORT).show();
                 }
 
                 else if ((stateiddd1.equals("1") && (input_aadhar.getText().toString().matches(""))) ||
@@ -291,18 +461,19 @@ public class Update_profile extends BaseActivity {
 
                 {
 
-                    Toast.makeText(Update_profile.this, "PAN Card  be empty  but not aadhar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Update_profile.this,toast_msg14, Toast.LENGTH_SHORT).show();
                 }
+
                 else if (awesomeValidation.validate()
-                        && !(gender.equals("Select Gender"))
-                        && !category.equals("Select Category")
-                        && !state1.equals("Select the State")
-                        && ! disablity_type1.equals("Any Disability ?")
-                        && ! ((disablity_type1.equals("Yes"))&& (type_of_disablity.equals("Select Type of Disability")))
-                        && !yearobirth.equals("Year")
-                        && !district1.equals("Select the District")
-                        && !eduction1.equals("Select Education")
-                        && !((eduction1.equals("Other"))&& (other_qualification.getText().toString().matches("")))
+                        && !(gender.equals((getResources().getString(R.string.amway_Gender))))
+                        && !category.equals((getResources().getString(R.string.amway_Category)))
+                        && !state1.equals((getResources().getString(R.string.Select_state)))
+                        && ! disablity_type1.equals(getResources().getString(R.string.amway_Disablity))
+                        && ! ((disablity_type1.equals(getResources().getString(R.string.amway_Disablity_yes))&& (type_of_disablity.equals(getResources().getString(R.string.amway_type_of_disablity1)))))
+                        && !yearobirth.equals(getResources().getString(R.string.amway_year))
+                        && !district1.equals(getResources().getString(R.string.amway_District))
+                        && !eduction1.equals(getResources().getString(R.string.amway_Eduction))
+                        && !((eduction1.equals(getResources().getString(R.string.amway_other)))&& (other_qualification.getText().toString().matches("")))
                         && checkBox.isChecked())
                 {
                     Update_Student_detail();
@@ -310,7 +481,7 @@ public class Update_profile extends BaseActivity {
                 else
                 {
 
-                    Toast.makeText(getApplicationContext(), "Please check the declaration form.Please verify the form again and submit.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), toast_msg15, Toast.LENGTH_LONG).show();
                 }
 
 
@@ -320,16 +491,11 @@ public class Update_profile extends BaseActivity {
 
 
 
-
-
-
         //Gender
 
     ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(Update_profile.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.gender));
+                android.R.layout.simple_list_item_1,spinner_msg_gender);
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
 
 
         myspinner.setAdapter(myAdapter);
@@ -352,13 +518,6 @@ public class Update_profile extends BaseActivity {
 
             }
 
-
-
-
-
-
-
-
         });
 
 
@@ -367,7 +526,7 @@ public class Update_profile extends BaseActivity {
 
         //Choose category
         ArrayAdapter<String> categoryadapt = new ArrayAdapter<String>(Update_profile.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Category));
+                android.R.layout.simple_list_item_1,spinner_msg_category);
         categoryadapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         category.setAdapter(categoryadapt);
@@ -390,7 +549,7 @@ public class Update_profile extends BaseActivity {
         //year_of_birth
 
         ArrayAdapter<String> myAdapter1 = new ArrayAdapter<String>(Update_profile.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Year));
+                android.R.layout.simple_list_item_1,spinner_msg_Year);
         myAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         yearofbirth.setAdapter(myAdapter1);
@@ -443,7 +602,7 @@ public class Update_profile extends BaseActivity {
 
         //Education
         ArrayAdapter<String> myAdapter4 = new ArrayAdapter<String>(Update_profile.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Education));
+                android.R.layout.simple_list_item_1,spinner_msg_Eduction);
         myAdapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         education.setAdapter(myAdapter4);
@@ -456,7 +615,7 @@ public class Update_profile extends BaseActivity {
             {
                 eduction1=education.getSelectedItem().toString();
 
-                if (eduction1.equals("Other")){
+                if (eduction1.equals(getResources().getString(R.string.amway_other))){
                     other_qualification.setVisibility(View.VISIBLE);
                 }
                 else {
@@ -495,7 +654,6 @@ public class Update_profile extends BaseActivity {
                 if(position > 0){
                     String value= Statedetail.get(selectedstatetext);
                     stateiddd=value;
-                    System.out.println("vvv"+value);
                     DistrictDetails(value);
                     district.setVisibility(View.VISIBLE);
                 }
@@ -612,7 +770,7 @@ public class Update_profile extends BaseActivity {
 
         //disablity_type
         ArrayAdapter<String> myAdapterdisablity_type = new ArrayAdapter<String>(Update_profile.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Disablity));
+                android.R.layout.simple_list_item_1,spinner_msg_any_disablity);
         myAdapterdisablity_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         disablity_type.setAdapter(myAdapterdisablity_type);
@@ -624,7 +782,7 @@ public class Update_profile extends BaseActivity {
                                        int position, long id)
             {
                 disablity_type1=disablity_type.getSelectedItem().toString();
-                if (disablity_type1.equals("Yes")){
+                if (disablity_type1.equals(spinner_msg_any_disablity_yes)){
                     type_of_disablity.setVisibility(View.VISIBLE);
                 }
                 else {
@@ -649,7 +807,7 @@ public class Update_profile extends BaseActivity {
 
 
         ArrayAdapter<String> myAdapter_type_of_disablity = new ArrayAdapter<String>(Update_profile.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.type_of_Disablity));
+                android.R.layout.simple_list_item_1,spinner_msg_any_disablity_type);
         myAdapter_type_of_disablity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         type_of_disablity.setAdapter(myAdapter_type_of_disablity);
@@ -774,6 +932,91 @@ public class Update_profile extends BaseActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updateView(String lang) {
+
+        Context context = LocaleHelper.setLocale(this, lang);
+        final Resources resources = context.getResources();
+
+        //set Text for Textview heading
+
+
+        //set hint text for Edittext in form
+
+
+
+        mobile.setHint(resources.getString(R.string.hint_mobile));
+        first_name_input.setHint(resources.getString(R.string.hint_name));
+        last_name_input.setHint(resources.getString(R.string.hint_last_name));
+        email_id1.setHint(resources.getString(R.string.hint_email));
+        Address_line1.setHint(resources.getString(R.string.hint_address_line1));
+        pincode.setHint(resources.getString(R.string.hint_pincode));
+        other_qualification1.setHint(resources.getString(R.string.hint_other));
+        AAdhar_no.setHint(resources.getString(R.string.hint_aadhar));
+        pancard_no.setHint(resources.getString(R.string.hint_pancard));
+        Bank_Ac_no.setHint(resources.getString(R.string.hint_bank_ac));
+        name_in_bank_input.setHint(resources.getString(R.string.name_as_in_bank));
+        ifsc_code.setHint(resources.getString(R.string.hint_ifsc_code));
+
+
+        update_profile_textview.setText(resources.getString(R.string.update_profile_for_assessment));
+        yob.setText(resources.getString(R.string.year_of_birth));
+        decl2.setText(resources.getString(R.string.i_am_willing_to_declare_my_aadhar_details_for_pmkvy_rpl4_project));
+
+
+
+        input_submit.setText(resources.getString(R.string.update));
+
+
+
+
+
+        spinner_msg_Eduction = resources.getStringArray(R.array.Education);
+        spinner_msg_category = resources.getStringArray(R.array.Category);
+        spinner_msg_any_disablity = resources.getStringArray(R.array.Disablity);
+        spinner_msg_any_disablity_type = resources.getStringArray(R.array.type_of_Disablity);
+        spinner_msg_gender = resources.getStringArray(R.array.gender);
+        other_id_proof = resources.getStringArray(R.array.other_id);
+        spinner_msg_Year = resources.getStringArray(R.array.Year);
+        spinner_msg_any_disablity_yes = resources.getString(R.string.amway_Disablity_yes);
+        spinner_msg_Eduction_other = resources.getString(R.string.amway_other);
+
+
+
+
+        toast_msg2 =  resources.getString(R.string.amway_Gender_Toast);
+        toast_msg3 =  resources.getString(R.string.amway_categroy_Toast);
+        toast_msg4 =  resources.getString(R.string.amway_Year_Toast);
+        toast_msg5 =  resources.getString(R.string.amway_Gender_Toast);
+        toast_msg6 =  resources.getString(R.string.amway_State_Toast);
+        toast_msg7 =  resources.getString(R.string.amway_District_Toast);
+        toast_msg8 =  resources.getString(R.string.amway_Eduction_Toast);
+        toast_msg9 =  resources.getString(R.string.Select_Bank_Toast);
+        toast_msg10 =  resources.getString(R.string.amway_other_Employ_Toast);
+        toast_msg11 =  resources.getString(R.string.amway_Disablity_Toast);
+        toast_msg12 =  resources.getString(R.string.amway_Disablit_type_Toast);
+        toast_msg13 =  resources.getString(R.string.amway_pancard_Toast);
+        toast_msg14 =  resources.getString(R.string.amway_Aadhar_Toast);
+        toast_msg15 =  resources.getString(R.string.Decleration_Message);
+        toast_msg16 =  resources.getString(R.string.amway_Internet_Toast);
+        toast_msg17 =  resources.getString(R.string.Student_Err);
+        toast_msg18 =  resources.getString(R.string.form_job_role_ERR);
+        toast_msg19 =  resources.getString(R.string.amway_States_Err__Toast);
+        toast_msg20 =  resources.getString(R.string.amway_District_Err);
+        toast_msg21 =  resources.getString(R.string.Bank_Err);
+        toast_msg22 =  resources.getString(R.string.form_employee_Err);
+        toast_msg23 =  resources.getString(R.string.form_Sector_Err);
+        toast_msg24 =  resources.getString(R.string.form_job_role_ERR);
+        toast_msg25 =  resources.getString(R.string.Form_failed);
+
+
+
+
+
+
+
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_update_profile;
@@ -798,7 +1041,7 @@ public class Update_profile extends BaseActivity {
             @Override
             public void onNetworkUnavailable() {
                 input_submit.setEnabled(false);
-                Toast.makeText(getApplicationContext(),"Internet Not available",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),toast_msg16,Toast.LENGTH_LONG).show();
             }
         });
         registerReceiver(networkStateReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -806,7 +1049,7 @@ public class Update_profile extends BaseActivity {
 
     //Update_profile
     private void getStudentProfile() {
-        String serverURL = CommonUtils.url+"test.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/test.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -816,7 +1059,6 @@ public class Update_profile extends BaseActivity {
 
                     JSONObject jobj = new JSONObject(response);
                     String status= jobj.getString("status");
-                      System.out.println("sdf"+response);
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("student_detail");
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -865,27 +1107,21 @@ public class Update_profile extends BaseActivity {
                             Log.d("fff",gotcompanyid1);
 
 
-                            for (int k=0;k<=getResources().getStringArray(R.array.gender).length-1;k++){
-                                System.out.println("gender1"+gender1);
-                                System.out.println(""+getResources().getStringArray(R.array.gender));
+                            for (int k = 0; k<=getResources().getStringArray(R.array.gender).length-1; k++){
                                 if (getResources().getStringArray(R.array.gender)[k].equals(gender1)){
                                     myspinner.setSelection(k);
                                 }}
 
 
 
-                            for (int k=0;k<=getResources().getStringArray(R.array.Category).length-1;k++){
-                                System.out.println("category1"+Category1);
-                                System.out.println(""+getResources().getStringArray(R.array.Category));
+                            for (int k = 0; k<=getResources().getStringArray(R.array.Category).length-1; k++){
                                 if (getResources().getStringArray(R.array.Category)[k].equals(Category1)){
                                     category.setSelection(k);
                                 }}
 
 
 
-                            for (int k=0;k<=getResources().getStringArray(R.array.Year).length-1;k++){
-                                System.out.println("Year1"+year1);
-                                System.out.println(""+getResources().getStringArray(R.array.Year));
+                            for (int k = 0; k<=getResources().getStringArray(R.array.Year).length-1; k++){
                                 if (getResources().getStringArray(R.array.Year)[k].equals(year1)){
                                     yearofbirth.setSelection(k);
                                 }}
@@ -893,24 +1129,20 @@ public class Update_profile extends BaseActivity {
 
 
 
-                            for (int k=0;k<=getResources().getStringArray(R.array.Education).length-1;k++){
+                            for (int k = 0; k<=getResources().getStringArray(R.array.Education).length-1; k++){
                                 if (getResources().getStringArray(R.array.Education)[k].equals(education2)){
                                     education.setSelection(k);
                                 }}
 
 
 
-                            for (int k=0;k<=getResources().getStringArray(R.array.Disablity).length-1;k++){
-                                System.out.println("Disablity1"+gender1);
-                                System.out.println(""+getResources().getStringArray(R.array.Disablity));
+                            for (int k = 0; k<=getResources().getStringArray(R.array.Disablity).length-1; k++){
                                 if (getResources().getStringArray(R.array.Disablity)[k].equals(disablity1)){
                                     disablity_type.setSelection(k);
                                 }}
 
 
-                            for (int k=0;k<=getResources().getStringArray(R.array.type_of_Disablity).length-1;k++){
-                                System.out.println("Disablity1"+gender1);
-                                System.out.println(""+getResources().getStringArray(R.array.type_of_Disablity));
+                            for (int k = 0; k<=getResources().getStringArray(R.array.type_of_Disablity).length-1; k++){
                                 if (getResources().getStringArray(R.array.type_of_Disablity)[k].equals(typediablity1)){
                                     type_of_disablity.setSelection(k);
                                 }}
@@ -932,7 +1164,7 @@ public class Update_profile extends BaseActivity {
                     }
 
                     else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Student Details",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),toast_msg17,Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
@@ -949,7 +1181,7 @@ public class Update_profile extends BaseActivity {
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-                Toast.makeText(getApplicationContext(), "Failed to fetch Job Roles", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),toast_msg18, Toast.LENGTH_LONG).show();
             }
         })
 
@@ -967,7 +1199,6 @@ public class Update_profile extends BaseActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("user_name",User_namee);
-                System.out.println("aaaaaa"+map);
                 return map;
             }
         };
@@ -976,14 +1207,10 @@ public class Update_profile extends BaseActivity {
     }
 
 
-
-
-
-
     private void Statedetails() {
 
 
-        String serverURL = CommonUtils.url+"get_state.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_state.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1015,7 +1242,7 @@ public class Update_profile extends BaseActivity {
                     }
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch States",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),toast_msg19,Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1031,7 +1258,7 @@ public class Update_profile extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //   pd.dismiss();
-                Toast.makeText(getApplicationContext(), "Failed to fetch State list", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), toast_msg19, Toast.LENGTH_LONG).show();
             }
         })
 
@@ -1056,16 +1283,11 @@ public class Update_profile extends BaseActivity {
         MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
-
-
-
-
-
     //District_List
-    private void DistrictDetails(final String districtidd) {
+     private void DistrictDetails(final String districtidd) {
 
 
-        String serverURL = CommonUtils.url+"get_district.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_district.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1096,8 +1318,6 @@ public class Update_profile extends BaseActivity {
                         district.setAdapter(myAdapterDistrict);
 
                             for (int i = 0; i <= districtlist.size()-1; i++) {
-                                System.out.println("districtee" + gotdistrictid);
-                                System.out.println("districteeee" + districtlist.get(i));
                                 if (districtlist.get(i).equals(gotdistrictid) ) {
                                     district.setSelection(i);
                                 }
@@ -1109,7 +1329,7 @@ public class Update_profile extends BaseActivity {
 
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Districts",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), toast_msg20,Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1123,7 +1343,7 @@ public class Update_profile extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hide_progressbar();
-                Toast.makeText(getApplicationContext(), "Failed to fetch Districts", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),toast_msg20, Toast.LENGTH_LONG).show();
             }
         })
 
@@ -1154,7 +1374,7 @@ public class Update_profile extends BaseActivity {
     private void Bankdetails() {
 
 
-        String serverURL = CommonUtils.url+"get_bank.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_bank.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1176,8 +1396,6 @@ public class Update_profile extends BaseActivity {
 
                         }
                         for (int i=0;i<=bankslist.size()-1;i++){
-                            System.out.println("dfg"+gotbankid);
-                            System.out.println("dfgg"+bankslist.get(i));
                         if (bankslist.get(i).equals(gotbankid)){
                             bankname.setSelection(i);
                         }}
@@ -1185,7 +1403,7 @@ public class Update_profile extends BaseActivity {
 
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Bank Details",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),toast_msg21,Toast.LENGTH_LONG).show();
 
                     }
 
@@ -1200,7 +1418,7 @@ public class Update_profile extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hide_progressbar();
-                Toast.makeText(getApplicationContext(), "Failed to fetch Bank Details", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), toast_msg21 , Toast.LENGTH_LONG).show();
             }
         })
 
@@ -1237,7 +1455,7 @@ public class Update_profile extends BaseActivity {
         pd.setCanceledOnTouchOutside(false);
         pd.show();
 */
-        String serverURL = CommonUtils.url+"get_employer.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_employer.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1258,8 +1476,7 @@ public class Update_profile extends BaseActivity {
 
 
                         for (int i=0;i<=employerlist.size()-1;i++){
-                            System.out.println("employere"+employerid );
-                            System.out.println("employereeee"+employerlist.get(i));
+
                             if (employerlist.get(i).equals(gotcompanyid)){
                                 employer.setSelection(i);
                             }
@@ -1270,7 +1487,7 @@ public class Update_profile extends BaseActivity {
 
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Employers",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),toast_msg22,Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1311,7 +1528,7 @@ public class Update_profile extends BaseActivity {
 
     //Sector_list
     private void Sectorlist(final String Sectorvalue) {
-        String serverURL = CommonUtils.url+"get_sector.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_sector.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1324,7 +1541,7 @@ public class Update_profile extends BaseActivity {
                     if (sectorlist.size()>2){
                         sectorlist.clear();
                     }
-                    sectorlist.add("Choose the Sector");
+                    sectorlist.add(getResources().getString(R.string.Choose_Sector));
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("sector");
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -1339,8 +1556,6 @@ public class Update_profile extends BaseActivity {
 
 
                         for (int i=0;i<=sectorlist.size()-1;i++){
-                            System.out.println("sectoree"+sectorid );
-                            System.out.println("sectoreee"+sectorlist.get(i));
                             if (sectorlist.get(i).equals(gotsectorid)){
                                 sector.setSelection(i);
                             }
@@ -1348,7 +1563,7 @@ public class Update_profile extends BaseActivity {
 
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Sector Details",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), toast_msg23,Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
@@ -1361,7 +1576,7 @@ public class Update_profile extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(), "Failed to fetch Sectors List", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),toast_msg23, Toast.LENGTH_LONG).show();
             }
         })
 
@@ -1388,7 +1603,7 @@ public class Update_profile extends BaseActivity {
 
 
     private void getJobroleList(final String sscid) {
-        String serverURL = CommonUtils.url+"get_jobrole.php";
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_jobrole.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1422,15 +1637,13 @@ public class Update_profile extends BaseActivity {
 
 
                         for (int i=0;i<=jobrolelist.size()-1;i++){
-                            System.out.println("jobrolee"+gotjobroleid );
-                            System.out.println("jobroleee"+jobrolelist.get(i));
                             if (jobrolelist.get(i).equals(gotjobroleid)){
                                 input_jobrole.setSelection(i);
                             }
                         }
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Failed to fetch Job Roles",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),toast_msg24,Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1445,7 +1658,7 @@ public class Update_profile extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hide_progressbar();
-                Toast.makeText(getApplicationContext(), "Failed to fetch Job Roles", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),toast_msg24 , Toast.LENGTH_LONG).show();
             }
         })
 
@@ -1463,7 +1676,6 @@ public class Update_profile extends BaseActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("company_id",sscid);
-                System.out.println("aaaaaa"+map);
                 return map;
             }
         };
@@ -1472,25 +1684,13 @@ public class Update_profile extends BaseActivity {
     }
 
 
-
-
-
-
-
-
-
-
-
-
     private void Update_Student_detail() {
         progressDialog.show();
-        String serverURL = CommonUtils.url+"update_student_data.php";
-        System.out.println("sdff"+serverURL);
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/update_student_data.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("sdff"+response);
                 try {
 
                     JSONObject jobj = new JSONObject(response);
@@ -1502,7 +1702,7 @@ public class Update_profile extends BaseActivity {
                     }
 
                     else {
-                        Toast.makeText(getApplicationContext(),"Failed to Update the profile.Please Try Again.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),toast_msg25,Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
@@ -1519,8 +1719,7 @@ public class Update_profile extends BaseActivity {
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-                System.out.println("Failed to Update the profile.Please Try Again.");
-                Toast.makeText(getApplicationContext(), "Failed to Update the profile.Please Try Again.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),toast_msg25, Toast.LENGTH_LONG).show();
             }
         })
 
@@ -1565,7 +1764,6 @@ public class Update_profile extends BaseActivity {
                 if (disablity_type1!=null){
                 map.put("disabilitytype",disablity_type1);}
 
-               System.out.println("url is"+map);
                 return map;
             }
         };

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#eeeeee"
 
-    tools:context="com.radiant.rpl.testa.Initials.Reverify">
+    tools:context="com.radiant.rpl.testa.Reverify">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -31,6 +31,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_name"
                 android:layout_width="match_parent"
+                android:hint="@string/hint_name"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -38,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="@string/hint_name" />
+                     />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -46,6 +47,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_last_name"
                 android:layout_width="match_parent"
+                android:hint="@string/hint_last_name"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -53,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="@string/hint_last_name"
+
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -61,6 +63,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_mobile_no"
                 android:layout_width="match_parent"
+                android:hint="@string/hint_mobile"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -69,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:inputType="number"
-                    android:hint="@string/hint_mobile" />
+                    />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -81,6 +84,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_aadhar"
                 android:layout_width="match_parent"
+                android:hint="@string/hint_aadhar"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -89,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:inputType="number"
-                    android:hint="@string/hint_aadhar" />
+                     />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -97,6 +101,7 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_pancard_no"
             android:layout_width="match_parent"
+            android:hint="@string/hint_pancard"
             android:layout_height="wrap_content">
 
             <EditText
@@ -105,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:inputType="text"
-                android:hint="@string/hint_pancard" />
+                />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -114,6 +119,7 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_bank_username1"
             android:layout_width="match_parent"
+            android:hint="@string/name_as_in_bank"
             android:layout_height="wrap_content">
 
             <EditText
@@ -121,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:hint="Name as in Bank" />
+               />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -133,6 +139,7 @@
         <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_bank_ac"
                 android:layout_width="match_parent"
+                android:hint="@string/hint_bank_ac"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -141,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:inputType="number"
-                    android:hint="@string/hint_bank_ac" />
+                     />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -149,6 +156,7 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_ifsc_code1"
             android:layout_width="match_parent"
+            android:hint="@string/hint_ifsc_code"
             android:layout_height="wrap_content">
 
             <EditText
@@ -156,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:hint="@string/hint_ifsc_code" />
+                 />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -166,7 +174,7 @@
                 android:id="@+id/btn_Register"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-                android:text="Register"
+                android:text="@string/register"
                 android:textSize="18sp"
                 android:layout_marginBottom="20dp"
                 android:textColor="@drawable/button_text_color"

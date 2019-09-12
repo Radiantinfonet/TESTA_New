@@ -16,8 +16,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.radiant.rpl.testa.Initials.SignInAct;
-
 public class GPSTracker extends Service implements LocationListener {
     private final Context mContext;
     // flag for GPS status
