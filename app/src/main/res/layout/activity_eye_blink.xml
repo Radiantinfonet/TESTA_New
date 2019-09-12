@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.radiant.rpl.testa.Registration.MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Please Blink your Eyes like this in order to click the Photo"
+            android:layout_marginBottom="10dp"/>
+
+
+        <com.radiant.rpl.testa.Common.AlertDialogEx
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            />
+
+        <CheckBox
+            android:id="@+id/check_box1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Do not ask me again!" />
+
+    <SurfaceView
+        android:id="@+id/sview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    </FrameLayout>
+
+</LinearLayout>

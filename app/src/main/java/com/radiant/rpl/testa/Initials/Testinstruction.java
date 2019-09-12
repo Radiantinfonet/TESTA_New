@@ -1,4 +1,4 @@
-package com.radiant.rpl.testa;
+package com.radiant.rpl.testa.Initials;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.radiant.rpl.testa.Common.CommonUtils;
 import com.radiant.rpl.testa.ExamSection.ContactUsActivity;
 import com.radiant.rpl.testa.ExamSection.Technical_Activity;
 import com.radiant.rpl.testa.ExamSection.TestQuestion;
@@ -58,6 +58,7 @@ public class Testinstruction extends AppCompatActivity {
     long theory_time;
     long practical_time;
     DbAutoSave dbAutoSave;
+    private String student_type;
 
 
     @Override
@@ -78,6 +79,11 @@ public class Testinstruction extends AppCompatActivity {
         stringlongitude3=sspp.getString("long","");
         System.out.println("lat and long are"+stringlatitude3+" "+stringlongitude3);
         stuidd=sspp.getString("userid","");
+
+        if (sspp.contains("student_type")){
+            student_type=sspp.getString("student_type","");
+        }
+
         testinstructproceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +119,7 @@ public class Testinstruction extends AppCompatActivity {
                         editor.putLong("practicaltime",practical_time);
                         editor.apply();
                         editor.commit();
-                        saveLog(stuidd,"","Start Exam",stringlatitude3,stringlongitude3,"");
+                        //saveLog(stuidd,"","Start Exam",stringlatitude3,stringlongitude3,"");
                             Intent ii = new Intent(Testinstruction.this, TestQuestion.class);
                             startActivity(ii);
 
@@ -129,7 +135,7 @@ public class Testinstruction extends AppCompatActivity {
                         editor1.putLong("practicaltime",practical_time);
                         editor1.apply();
                         editor1.commit();
-                        saveLog(stuidd,"","Start Exam",stringlatitude3,stringlongitude3,"");
+                        //saveLog(stuidd,"","Start Exam",stringlatitude3,stringlongitude3,"");
                         Intent iii = new Intent(Testinstruction.this, TestQuestion.class);
                         startActivity(iii);
 
@@ -191,7 +197,7 @@ public class Testinstruction extends AppCompatActivity {
     //Exam Languages
     private void getExamLanguage(final String Sectorvalue) {
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_batch_language.php";
+        String serverURL = CommonUtils.url+"get_batch_language.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -258,6 +264,15 @@ public class Testinstruction extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("batch_id",Sectorvalue);
+                map.put("student_type",student_type);
+                map.put("username",stuidd);
+                map.put("mobile_imei","");
+                map.put("ip","");
+                map.put("company_id","");
+                map.put("activity","Start Exam");
+                map.put("lat",stringlatitude3);
+                map.put("longi",stringlongitude3);
+
                 return map;
             }
         };
@@ -266,7 +281,7 @@ public class Testinstruction extends AppCompatActivity {
     }
 
     private void saveLog(final String fnamee, final String ip, final String activity, final String lat, final String longi,final String cmpid) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_logs.php";
+        String serverURL = CommonUtils.url+"save_logs.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -311,6 +326,7 @@ public class Testinstruction extends AppCompatActivity {
                 map.put("activity",activity);
                 map.put("lat",lat);
                 map.put("longi",longi);
+                map.put("student_type",student_type);
                 System.out.println("test start data"+map);
                 return map;
             }

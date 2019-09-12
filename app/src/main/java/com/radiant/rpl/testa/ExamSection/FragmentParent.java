@@ -194,7 +194,8 @@ public class FragmentParent extends Fragment {
 
     }
 
-    public void addPage(String pagename, String que, int pgn,String op1, String op2, String op3, String op4) {
+    public void addPage(String pagename, String que, int pgn,String op1, String op2, String op3, String op4,String que_img,String optionimg1,
+                        String optionimg2,String optionimg3,String optionimg4) {
         Bundle bundle = new Bundle();
         bundle.putString("data", pagename);
         bundle.putInt("pgno",pgn);
@@ -203,6 +204,12 @@ public class FragmentParent extends Fragment {
         bundle.putString("op2",op2);
         bundle.putString("op3",op3);
         bundle.putString("op4",op4);
+
+        bundle.putString("que_img",que_img);
+        bundle.putString("img_op1",optionimg1);
+        bundle.putString("img_op2",optionimg2);
+        bundle.putString("img_op3",optionimg3);
+        bundle.putString("img_op4",optionimg4);
 
         pgnoo=pagename;
         quename1=que;

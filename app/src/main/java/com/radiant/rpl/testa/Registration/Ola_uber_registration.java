@@ -9,7 +9,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,11 +34,10 @@ import com.basgeekball.awesomevalidation.utility.custom.CustomErrorReset;
 import com.basgeekball.awesomevalidation.utility.custom.CustomValidation;
 import com.basgeekball.awesomevalidation.utility.custom.CustomValidationCallback;
 import com.radiant.rpl.testa.Barcode_d.SimpleScannerActivity;
-import com.radiant.rpl.testa.MainActivity;
-import com.radiant.rpl.testa.MyNetwork;
-import com.radiant.rpl.testa.Registration_Done;
-import com.radiant.rpl.testa.Reverify;
-import com.radiant.rpl.testa.SignInAct;
+import com.radiant.rpl.testa.Common.CommonUtils;
+import com.radiant.rpl.testa.Initials.MyNetwork;
+import com.radiant.rpl.testa.Initials.Registration_Done;
+import com.radiant.rpl.testa.Initials.SignInAct;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -293,7 +291,7 @@ String namefromaadhaar_ola;
 
     //Jobrole Api Call
     private void getJobroleList(final String sscid) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_jobrole.php";
+        String serverURL = CommonUtils.url+"get_jobrole.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -383,7 +381,7 @@ String namefromaadhaar_ola;
     private void languageSelect(final String cmp_id) {
 
         show_progressbar();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_language.php";
+        String serverURL = CommonUtils.url+"get_language.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -458,7 +456,7 @@ String namefromaadhaar_ola;
     //save_data
 
     private void SaveDetail() {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_student_data.php";
+        String serverURL = CommonUtils.url+"save_student_data.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {

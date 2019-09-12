@@ -1,16 +1,16 @@
-package com.radiant.rpl.testa;
+package com.radiant.rpl.testa.Registration;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,6 +18,9 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
@@ -27,6 +30,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
+import android.util.Base64OutputStream;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -55,18 +59,31 @@ import com.basgeekball.awesomevalidation.utility.custom.CustomValidationCallback
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
+import com.radiant.rpl.testa.Barcode_d.FullScannerActivity;
 import com.radiant.rpl.testa.Barcode_d.SimpleScannerActivity;
-import com.radiant.rpl.testa.Registration.BaseActivity;
-import com.radiant.rpl.testa.Registration.Ola_uber_registration;
-import com.radiant.rpl.testa.Registration.VerhoeffAlgorithm;
+import com.radiant.rpl.testa.Common.CommonUtils;
+import com.radiant.rpl.testa.Initials.MyNetwork;
+import com.radiant.rpl.testa.Initials.NetworkStateReceiver;
+import com.radiant.rpl.testa.Initials.Reverify;
+import com.radiant.rpl.testa.Initials.SignInAct;
+import com.radiant.rpl.testa.EyeBlink.Eye_blinkActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,6 +128,7 @@ public class MainActivity extends BaseActivity {
     private static final int CAMERA_REQUEST = 1888;
     private static final int CAMERA_AADHAR_REQUEST = 1889;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    private static final int MY_STORAGE_PERMISSION_CODE = 100;
     String yearobirth,monthobirth,dateobirth;
     AwesomeValidation awesomeValidation;
     String gender,eduction1,employer1,sector1,bankname1,state1,district1,encodedphoto,encodedphotoaadhar,jobrole1,
@@ -124,11 +142,12 @@ public class MainActivity extends BaseActivity {
     String cmp_id;
     private static final int ZBAR_CAMERA_PERMISSION = 1;
     String namefromaadhaar_main;
+    private String capturedImageUri,imagebase644;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-
         final Spinner myspinner = findViewById(R.id.input_layout_gender);
         parentv = findViewById(R.id.register_yourself);
         yearofbirth=findViewById(R.id.input_layout_year);
@@ -183,6 +202,8 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -229,7 +250,7 @@ public class MainActivity extends BaseActivity {
         alreadyregistered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent iiregistered=new Intent(MainActivity.this,SignInAct.class);
+                Intent iiregistered=new Intent(MainActivity.this, SignInAct.class);
                 startActivity(iiregistered);
             }
         });
@@ -509,8 +530,12 @@ public class MainActivity extends BaseActivity {
                     Toast.makeText(getApplicationContext(),"Year must be selected",Toast.LENGTH_LONG).show();
                 }*/
                // else
-                    if (faces!=null && faces.size()==0){
-                        Snackbar.make(parentv,"Your photo is not in correct format.Click another photo.",Snackbar.LENGTH_SHORT).show();
+
+                new SavephotoComparison(getApplicationContext()).PhotoApi(encodedphoto,input_mobile_no.getText().toString(),
+                        input_name.getText().toString() + input_last_name.getText().toString());
+
+                if (faces!=null && faces.size()==0){
+                        Snackbar.make(parentv,"We can't detect your face in the photo Clicked.Click another photo.",Snackbar.LENGTH_SHORT).show();
                 }
               /*  else if (gender.equals("Select Gender")){
                     Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
@@ -623,9 +648,6 @@ public class MainActivity extends BaseActivity {
 
                     Toast.makeText(MainActivity.this, "Aadhar Card Can't be empty according to your state", Toast.LENGTH_SHORT).show();
                 }
-
-
-
 
 
                 else if(awesomeValidation.validate()
@@ -743,20 +765,27 @@ public class MainActivity extends BaseActivity {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+
                     if (android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
                         if (checkSelfPermission(Manifest.permission.CAMERA)
                                 != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(new String[]{Manifest.permission.CAMERA},
                                     MY_CAMERA_PERMISSION_CODE);
-                        } else {
+                        }
 
+                        else {
 
+                            Intent ii=new Intent(MainActivity.this, Eye_blinkActivity.class);
+                            startActivityForResult(ii,1);
 
                         }
                     }
                     else {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        Intent ii=new Intent(MainActivity.this, Eye_blinkActivity.class);
+                        startActivityForResult(ii,1);
+
+                       /* Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
                     }
 
 
@@ -776,20 +805,25 @@ public class MainActivity extends BaseActivity {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+
                     if (android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
                     if (checkSelfPermission(Manifest.permission.CAMERA)
                             != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(new String[]{Manifest.permission.CAMERA},
                                 MY_CAMERA_PERMISSION_CODE);
                     } else {
-
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        Intent ii=new Intent(MainActivity.this, Eye_blinkActivity.class);
+                        startActivityForResult(ii,1);
+                        /*Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
 
                     }
                     }else {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        Intent ii=new Intent(MainActivity.this, Eye_blinkActivity.class);
+                        startActivityForResult(ii,1);
+
+                       /* Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
                     }
 
                 }
@@ -807,6 +841,8 @@ public class MainActivity extends BaseActivity {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
+
+
                 if (android.os.Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
                 if (checkSelfPermission(Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -814,10 +850,12 @@ public class MainActivity extends BaseActivity {
                             MY_CAMERA_PERMISSION_CODE);
                 } else {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri);
                     startActivityForResult(cameraIntent, CAMERA_AADHAR_REQUEST);
                 }
                 }else {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri);
                     startActivityForResult(cameraIntent, CAMERA_AADHAR_REQUEST);
                 }
 
@@ -1424,7 +1462,7 @@ public class MainActivity extends BaseActivity {
     private void Bankdetails() {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_bank.php";
+        String serverURL = CommonUtils.url+"get_bank.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1490,7 +1528,7 @@ public class MainActivity extends BaseActivity {
     private void languageSelect(final String cmp_id) {
 
         show_progressbar();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_language.php";
+        String serverURL = CommonUtils.url+"get_language.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1565,7 +1603,7 @@ public class MainActivity extends BaseActivity {
     private void Statedetails() {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_state.php";
+        String serverURL = CommonUtils.url+"get_state.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1634,7 +1672,7 @@ public class MainActivity extends BaseActivity {
     private void DistrictDetails(final String districtidd) {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_district.php";
+        String serverURL = CommonUtils.url+"get_district.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1713,7 +1751,7 @@ public class MainActivity extends BaseActivity {
         pd.setCanceledOnTouchOutside(false);
         pd.show();
 */
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_employer.php";
+        String serverURL = CommonUtils.url+"get_employer.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1786,7 +1824,7 @@ public class MainActivity extends BaseActivity {
 
     //Sector_list
     private void Sectorlist(final String Sectorvalue) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_sector.php";
+        String serverURL = CommonUtils.url+"get_sector.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1854,7 +1892,7 @@ public class MainActivity extends BaseActivity {
 
     //Jobrole Api Call
     private void getJobroleList(final String sscid) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_jobrole.php";
+        String serverURL = CommonUtils.url+"get_jobrole.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1964,7 +2002,7 @@ public class MainActivity extends BaseActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA}, ZBAR_CAMERA_PERMISSION);
         } else {
-            Intent ii=new Intent(MainActivity.this, SimpleScannerActivity.class);
+            Intent ii=new Intent(MainActivity.this, FullScannerActivity.class);
             startActivityForResult(ii, 1);
         }
     }
@@ -1973,11 +2011,40 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         try {
+
+            if (resultCode == 3 && requestCode == 1 ){
+                Bundle extras1 = data.getExtras();
+                String byteArray = extras1.getString("ss");
+                System.out.println("the path is"+byteArray);
+                File file = new File(byteArray);
+                if(file.exists()){
+                    Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                  /*  Matrix matrix = new Matrix();
+
+                    matrix.postRotate(-90);
+
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(myBitmap, 500, 500, true);
+
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+                  */
+                  input_photograph.setImageBitmap(myBitmap);
+                }
+                imagebase644=getStringFile(file);
+
+            }
+
+
             if (resultCode == 2 && requestCode == 1) {
                 //do something
                 HashMap<String, String> map = new HashMap<>();
                 Bundle extras = data.getExtras();
                 String ss[] = extras.getStringArray("ss");
+
+
+                 for (int i=0;i<=ss.length;i++){
+                     System.out.println("data from aadhaar is"+ss[i]);
+                 }
+
                 String uid_data=ss[1].replace("encoding=\"UTF-8\"?>\n<PrintLetterBarcodeData ","");
                 ss[1] = uid_data;
                 for (String s : ss) {
@@ -2002,6 +2069,9 @@ public class MainActivity extends BaseActivity {
                     namefromaadhaar_main=map.get("name").replace("\"","");
                     String namee[]=namefromaadhaar_main.split(" ");
                     input_name.setEnabled(false);
+
+                    //if last name is blank set condition for blank'
+
                     input_last_name.setEnabled(false);
                     input_name.setText(namee[0]);
                     input_last_name.setText(namee[1]);
@@ -2061,8 +2131,11 @@ public class MainActivity extends BaseActivity {
                 tempCanvas.drawBitmap(photo, 0, 0, null);
 
                 FaceDetector faceDetector = new
-                        FaceDetector.Builder(getApplicationContext()).setTrackingEnabled(true)
+                        FaceDetector.Builder(getApplicationContext())
+                        .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
+                        .setTrackingEnabled(true)
                         .build();
+
                 if(!faceDetector.isOperational()){
                     new AlertDialog.Builder(getApplicationContext()).setMessage("Could not set up the face detector!").show();
                     return;
@@ -2093,29 +2166,59 @@ public class MainActivity extends BaseActivity {
 
 
 
-
-
-
-
-            if (requestCode == CAMERA_AADHAR_REQUEST && resultCode == Activity.RESULT_OK) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                int currentBitmapWidth = photo.getWidth();
-                int currentBitmapHeight = photo.getHeight();
-                mySwipeRefreshLayout.setRefreshing(false);
-                input_aadharpic.setImageBitmap(photo);
-                int newHeight = (int) Math.floor((double) currentBitmapHeight * ((double) currentBitmapWidth / (double) currentBitmapWidth));
-                Bitmap newbitMap = Bitmap.createScaledBitmap(photo, currentBitmapWidth, newHeight, true);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                newbitMap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream.toByteArray();
-                encodedphotoaadhar = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-            }
         }catch (Exception e){
             e.printStackTrace();
         }
 
+       try {
+           if (requestCode == CAMERA_AADHAR_REQUEST && resultCode == Activity.RESULT_OK) {
+               Bitmap photo = (Bitmap) data.getExtras().get("data");
+               int currentBitmapWidth = photo.getWidth();
+               int currentBitmapHeight = photo.getHeight();
+               mySwipeRefreshLayout.setRefreshing(false);
+               input_aadharpic.setImageBitmap(photo);
+               int newHeight = (int) Math.floor((double) currentBitmapHeight * ((double) currentBitmapWidth / (double) currentBitmapWidth));
+               Bitmap newbitMap = Bitmap.createScaledBitmap(photo, currentBitmapWidth, newHeight, true);
+               ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+               newbitMap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+               saveImage(photo, "aadhar");
+               byte[] byteArray = byteArrayOutputStream.toByteArray();
+               encodedphotoaadhar = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+
+           }
+       }
+
+
+        catch (Exception e){
+          e.printStackTrace();
+          System.out.println("Exception"+e);
+        }
+
     }
+
+    private void saveImage(Bitmap finalBitmap, String image_name) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root);
+        myDir.mkdirs();
+        String fname = "Image-" + image_name+ ".jpg";
+        File file = new File(myDir, fname);
+        if (file.exists()) file.delete();
+        Log.i("LOAD", root + fname);
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            //Bitmap newbitMap = Bitmap.createScaledBitmap(finalBitmap, currentBitmapWidth, currentBitmapHeight, true);
+            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
     @Override
     protected void onDestroy() {
@@ -2131,8 +2234,32 @@ public class MainActivity extends BaseActivity {
     }
 
 
+    public String getStringFile(File f) {
+        InputStream inputStream = null;
+        String encodedFile= "", lastVal;
+        try {
+            inputStream = new FileInputStream(f.getAbsolutePath());
 
+            byte[] buffer = new byte[10240];//specify the size to allow
+            int bytesRead;
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            Base64OutputStream output64 = new Base64OutputStream(output, Base64.DEFAULT);
 
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                output64.write(buffer, 0, bytesRead);
+            }
+            output64.close();
+            encodedphoto =  output.toString();
 
+        }
+        catch (FileNotFoundException e1 ) {
+            e1.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        lastVal = encodedphoto;
+        return lastVal;
+    }
 
 }

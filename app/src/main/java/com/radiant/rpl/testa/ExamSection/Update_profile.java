@@ -1,32 +1,19 @@
 package com.radiant.rpl.testa.ExamSection;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -38,18 +25,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.radiant.rpl.testa.MainActivity;
-import com.radiant.rpl.testa.MyNetwork;
-import com.radiant.rpl.testa.NetworkStateReceiver;
+import com.radiant.rpl.testa.Common.CommonUtils;
+import com.radiant.rpl.testa.Initials.MyNetwork;
+import com.radiant.rpl.testa.Initials.NetworkStateReceiver;
 import com.radiant.rpl.testa.Registration.BaseActivity;
-import com.radiant.rpl.testa.Reverify;
-import com.radiant.rpl.testa.Welcome_page;
+import com.radiant.rpl.testa.Initials.Welcome_page;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -821,7 +806,7 @@ public class Update_profile extends BaseActivity {
 
     //Update_profile
     private void getStudentProfile() {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/test.php";
+        String serverURL = CommonUtils.url+"test.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -998,7 +983,7 @@ public class Update_profile extends BaseActivity {
     private void Statedetails() {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_state.php";
+        String serverURL = CommonUtils.url+"get_state.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1080,7 +1065,7 @@ public class Update_profile extends BaseActivity {
     private void DistrictDetails(final String districtidd) {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_district.php";
+        String serverURL = CommonUtils.url+"get_district.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1169,7 +1154,7 @@ public class Update_profile extends BaseActivity {
     private void Bankdetails() {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_bank.php";
+        String serverURL = CommonUtils.url+"get_bank.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1252,7 +1237,7 @@ public class Update_profile extends BaseActivity {
         pd.setCanceledOnTouchOutside(false);
         pd.show();
 */
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_employer.php";
+        String serverURL = CommonUtils.url+"get_employer.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1326,7 +1311,7 @@ public class Update_profile extends BaseActivity {
 
     //Sector_list
     private void Sectorlist(final String Sectorvalue) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_sector.php";
+        String serverURL = CommonUtils.url+"get_sector.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1403,7 +1388,7 @@ public class Update_profile extends BaseActivity {
 
 
     private void getJobroleList(final String sscid) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_jobrole.php";
+        String serverURL = CommonUtils.url+"get_jobrole.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1499,7 +1484,7 @@ public class Update_profile extends BaseActivity {
 
     private void Update_Student_detail() {
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/update_student_data.php";
+        String serverURL = CommonUtils.url+"update_student_data.php";
         System.out.println("sdff"+serverURL);
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {

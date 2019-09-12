@@ -22,7 +22,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -54,11 +53,11 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 import com.radiant.rpl.testa.Barcode_d.SimpleScannerActivity;
-import com.radiant.rpl.testa.MyNetwork;
-import com.radiant.rpl.testa.NetworkStateReceiver;
-import com.radiant.rpl.testa.Registration_Done;
-import com.radiant.rpl.testa.Reverify;
-import com.radiant.rpl.testa.SignInAct;
+import com.radiant.rpl.testa.Common.CommonUtils;
+import com.radiant.rpl.testa.Initials.MyNetwork;
+import com.radiant.rpl.testa.Initials.NetworkStateReceiver;
+import com.radiant.rpl.testa.Initials.Registration_Done;
+import com.radiant.rpl.testa.Initials.SignInAct;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1384,7 +1383,7 @@ public class Upica_Registration extends BaseActivity {
     private void Bankdetails() {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_bank.php";
+        String serverURL = CommonUtils.url+"get_bank.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1450,7 +1449,7 @@ public class Upica_Registration extends BaseActivity {
     private void languageSelect(final String cmp_id) {
 
         //show_progressbar();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_language.php";
+        String serverURL = CommonUtils.url+"get_language.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1522,7 +1521,7 @@ public class Upica_Registration extends BaseActivity {
     private void Statedetails() {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_state.php";
+        String serverURL = CommonUtils.url+"get_state.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1588,7 +1587,7 @@ public class Upica_Registration extends BaseActivity {
     private void DistrictDetails(final String districtidd) {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_district.php";
+        String serverURL = CommonUtils.url+"get_district.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1664,7 +1663,7 @@ public class Upica_Registration extends BaseActivity {
         pd.setCanceledOnTouchOutside(false);
         pd.show();
 */
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_employer.php";
+        String serverURL = CommonUtils.url+"get_employer.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1738,7 +1737,7 @@ public class Upica_Registration extends BaseActivity {
 
     //Sector_list
     private void Sectorlist(final String Sectorvalue) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_sector.php";
+        String serverURL = CommonUtils.url+"get_sector.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1804,7 +1803,7 @@ public class Upica_Registration extends BaseActivity {
     //Jobrole Api Call
     private void getJobroleList(final String sscid) {
         //show_progressbar();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_jobrole.php";
+        String serverURL = CommonUtils.url+"get_jobrole.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -2054,7 +2053,7 @@ public class Upica_Registration extends BaseActivity {
 
 
     private void SaveDetail() {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_student_data.php";
+        String serverURL = CommonUtils.url+"save_student_data.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {

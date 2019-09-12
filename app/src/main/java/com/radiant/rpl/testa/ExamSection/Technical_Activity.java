@@ -15,9 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Base64;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,9 +28,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.radiant.rpl.testa.MyNetwork;
-import com.radiant.rpl.testa.Registration_Done;
-import com.radiant.rpl.testa.Reverify;
+import com.radiant.rpl.testa.Common.CommonUtils;
+import com.radiant.rpl.testa.Initials.MyNetwork;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -199,7 +196,7 @@ public class Technical_Activity extends AppCompatActivity {
 
     private void SaveDetail() {
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_help_data.php";
+        String serverURL = CommonUtils.url+"save_help_data.php";
         pd = new ProgressDialog(Technical_Activity.this);
         pd.setMessage("Loading...");
         pd.setCancelable(false);

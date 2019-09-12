@@ -14,7 +14,7 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
-        android:name="com.radiant.rpl.testa.App"
+        android:name="com.radiant.rpl.testa.Initials.App"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/tlogohdd"
@@ -23,13 +23,29 @@
         android:roundIcon="@drawable/tlogohdd"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:replace="android:icon">
-        <activity android:name="com.radiant.rpl.testa.Activity_Rplintroduction"
-            android:label="Introduction"
+        <activity android:name="com.radiant.rpl.testa.ExamSection.Certificate_details"
             android:screenOrientation="portrait"
             android:theme="@style/Apptheme2"
             ></activity>
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.vysh.fullsizeimage.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity android:name="com.radiant.rpl.testa.Common.Camera_activity" />
+        <activity
+            android:name="com.radiant.rpl.testa.Initials.Activity_Rplintroduction"
+            android:label="Introduction"
+            android:screenOrientation="portrait"
+            android:theme="@style/Apptheme2" />
         <activity
             android:name="com.radiant.rpl.testa.Registration.Upica_Registration"
             android:label="Registration"
@@ -47,8 +63,12 @@
             android:theme="@style/Apptheme2"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name="com.radiant.rpl.testa.Barcode_d.SimpleScannerActivity"
+            android:name="com.radiant.rpl.testa.EyeBlink.Eye_blinkActivity"
+            android:hardwareAccelerated="false" />
+        <activity
+            android:name="com.radiant.rpl.testa.Barcode_d.FullScannerActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppOverlayTheme"
             android:uiOptions="splitActionBarWhenNarrow">
             <meta-data
@@ -57,6 +77,7 @@
         </activity>
         <activity
             android:name="com.radiant.rpl.testa.ExamSection.Update_profile"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme1" />
         <activity
             android:name="com.radiant.rpl.testa.ExamSection.TestQuestion"
@@ -68,7 +89,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
         <activity
-            android:name="com.radiant.rpl.testa.StudenAtten"
+            android:name="com.radiant.rpl.testa.Initials.StudenAtten"
             android:label="Attendance"
             android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
@@ -79,23 +100,24 @@
         <activity
             android:name="com.radiant.rpl.testa.ExamSection.Technical_Activity"
             android:label="Feedback"
+            android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
         <activity
-            android:name="com.radiant.rpl.testa.Testinstruction"
+            android:name="com.radiant.rpl.testa.Initials.Testinstruction"
             android:label="Instructions"
             android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
         <activity
-            android:name="com.radiant.rpl.testa.Welcome_page"
+            android:name="com.radiant.rpl.testa.Initials.Welcome_page"
             android:label="Home"
             android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
         <activity
-            android:name="com.radiant.rpl.testa.SignInAct"
+            android:name="com.radiant.rpl.testa.Initials.SignInAct"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1" />
         <activity
-            android:name="com.radiant.rpl.testa.Reverify"
+            android:name="com.radiant.rpl.testa.Initials.Reverify"
             android:label="Reverify"
             android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
@@ -104,11 +126,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1" />
         <activity
-            android:name="com.radiant.rpl.testa.MainActivity"
+            android:name="com.radiant.rpl.testa.Registration.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1" />
         <activity
-            android:name="com.radiant.rpl.testa.Registration_Done"
+            android:name="com.radiant.rpl.testa.Initials.Registration_Done"
             android:screenOrientation="portrait"
             android:theme="@style/Apptheme2" />
         <activity
@@ -116,7 +138,7 @@
             android:label="Thanks"
             android:theme="@style/AppTheme1" />
         <activity
-            android:name="com.radiant.rpl.testa.Start_Registration"
+            android:name="com.radiant.rpl.testa.Initials.Start_Registration"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1">
             <intent-filter>

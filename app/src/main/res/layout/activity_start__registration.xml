@@ -6,7 +6,7 @@
     android:weightSum="4"
     android:background="@drawable/splashscreen22"
     android:orientation="vertical"
-    tools:context="com.radiant.rpl.testa.Start_Registration">
+    tools:context="com.radiant.rpl.testa.Initials.Start_Registration">
 
 
     <ImageView

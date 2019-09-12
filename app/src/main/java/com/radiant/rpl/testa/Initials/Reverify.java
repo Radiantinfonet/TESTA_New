@@ -1,10 +1,9 @@
-package com.radiant.rpl.testa;
+package com.radiant.rpl.testa.Initials;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.radiant.rpl.testa.Common.CommonUtils;
 import com.radiant.rpl.testa.Registration.BaseActivity;
 
 import org.json.JSONException;
@@ -114,7 +114,14 @@ public class Reverify extends BaseActivity {
                 getMob=mob_txt.getText().toString();
                 getAadharno=aadharno_txt.getText().toString();
                 getBankacc=bankacc_txt.getText().toString();
-                SaveDetail(getFname,getLname,getMob,getAadharno,getBankacc);
+                if(awesomeValidation.validate()){
+                    SaveDetail(getFname,getLname,getMob,getAadharno,getBankacc);
+                }
+                else {
+                    //Toast.makeText(getApplicationContext(),"Please reverify the form",Toast.LENGTH_LONG).show();
+                }
+
+
 
 
             }
@@ -134,7 +141,7 @@ public class Reverify extends BaseActivity {
 
 
     private void SaveDetail(final String fnamee, final String lnamee, final String mobbb, final String aadhaar, final String bankacccc) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_student_data.php";
+        String serverURL = CommonUtils.url+"save_student_data.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {

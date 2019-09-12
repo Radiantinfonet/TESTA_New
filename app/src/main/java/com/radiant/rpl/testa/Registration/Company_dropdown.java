@@ -4,13 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -22,10 +20,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.radiant.rpl.testa.Common.CommonUtils;
 import com.radiant.rpl.testa.ExamSection.ContactUsActivity;
 import com.radiant.rpl.testa.ExamSection.Technical_Activity;
-import com.radiant.rpl.testa.MainActivity;
-import com.radiant.rpl.testa.MyNetwork;
+import com.radiant.rpl.testa.Initials.MyNetwork;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -149,7 +147,7 @@ String employerid,employervalue,employerrridd;
     //Employer_List
     private void Employerlist() {
         show_progressbar();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_employer.php";
+        String serverURL = CommonUtils.url+"get_employer.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override

@@ -1,4 +1,4 @@
-package com.radiant.rpl.testa;
+package com.radiant.rpl.testa.Initials;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

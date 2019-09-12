@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.radiant.rpl.testa.Start_Registration;
+import com.radiant.rpl.testa.Initials.Start_Registration;
 
 import radiant.rpl.radiantrpl.R;
 

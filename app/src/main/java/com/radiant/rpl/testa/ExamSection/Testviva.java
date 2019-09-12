@@ -54,7 +54,6 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,11 +64,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.androidhiddencamera.CameraConfig;
 import com.google.gson.Gson;
+import com.radiant.rpl.testa.Common.CommonUtils;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
-import com.radiant.rpl.testa.MyNetwork;
-import com.radiant.rpl.testa.SessionManager;
+import com.radiant.rpl.testa.Initials.MyNetwork;
+import com.radiant.rpl.testa.Initials.SessionManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,13 +112,6 @@ public class Testviva extends AppCompatActivity {
     SessionManager sessionManager;
     String name[];
     String j;
-
-
-
-
-
-    //camera by pk
-
     private static final String TAG = "AndroidCameraApi";
     private Button takePictureButton;
     private TextureView textureView;
@@ -154,21 +146,6 @@ public class Testviva extends AppCompatActivity {
     private boolean mFlashSupported;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private NotificationHelper mNotificationHelper;
     private android.app.AlertDialog progressDialog;
     long START_TIME_IN_MILLIS;
@@ -177,7 +154,6 @@ public class Testviva extends AppCompatActivity {
     private boolean TimerRunning;
     private long TimeLeftInMillis;
     private long EndTime;
-    private CameraConfig mCameraConfig;
     private static final int REQ_CODE_CAMERA_PERMISSION = 1253;
     ArrayList<String> studentidlist;
     ArrayList<String> questioniddd;
@@ -239,6 +215,14 @@ long practical_timeee;
     RelativeLayout parentLayout;
     int que_count,answersofpreviouspage;
     String stringLatitude1,stringLongitude1;
+    public String student_type;
+
+
+    ArrayList<String> Que_image_viva=new ArrayList<>();
+    ArrayList<String> Que_option1_viva=new ArrayList<>();
+    ArrayList<String> Que_option2_viva=new ArrayList<>();
+    ArrayList<String> Que_option3_viva=new ArrayList<>();
+    ArrayList<String> Que_option4_viva=new ArrayList<>();
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -313,6 +297,10 @@ long practical_timeee;
             System.out.println("ffff" + value);
         }
 
+        if (sp.contains("student_type")){
+            student_type=sp.getString("student_type","");
+        }
+        
         cursor = dbAutoSave.getData(studentid);
         answersofpreviouspage= cursor.getCount();
         System.out.println("difference is"+answersofpreviouspage);
@@ -874,7 +862,7 @@ long practical_timeee;
 
     private void SaveDetail() {
 
-        String serverURL ="https://www.skillassessment.org/sdms/android_connect1/save_proctoring.php";
+        String serverURL =CommonUtils.url+"save_proctoring.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -884,7 +872,6 @@ long practical_timeee;
                     System.out.println("sss"+response);
                     String status= jobj.getString("status");
 
-                    //Toast.makeText(getApplicationContext(),"We have Received your query will update soon",Toast.LENGTH_LONG).show();
                     if (status.equals("1")){
                         Toast.makeText(getApplicationContext(),"Photo Captured",Toast.LENGTH_SHORT).show();
                         Log.d("Response",response);
@@ -892,11 +879,6 @@ long practical_timeee;
 
 
                     }
-
-                    /*else if (status.equals("0")){
-                        Toast.makeText(getApplicationContext(),jobj.getString("msg"),Toast.LENGTH_LONG).show();
-                        Log.d("Response",response);
-                    }*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -932,6 +914,7 @@ long practical_timeee;
                 System.out.println("sccccc" +screenshot1);
                 map.put("student_id",studentid);
                 map.put("image_time",strDate);
+                map.put("student_type",student_type);
                 System.out.println("sccccc" +strDate);
 
 
@@ -965,7 +948,6 @@ long practical_timeee;
     @Override
     protected void onStart() {
         super.onStart();
-        // Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
         SharedPreferences prefs = getSharedPreferences("pref", MODE_PRIVATE);
         TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
         TimerRunning = prefs.getBoolean("timerRunning", false);
@@ -1009,6 +991,7 @@ long practical_timeee;
 
     }
 
+
     public void getTotalanswercount() {
 
         cursor = dbAutoSave.getData(studentid);
@@ -1046,6 +1029,7 @@ long practical_timeee;
             TimeLeftInMillis = START_TIME_IN_MILLISR;
         }
     }
+
     private void startTimer() {
         EndTime = System.currentTimeMillis() + TimeLeftInMillis;
         CountDownTimer = new CountDownTimer(TimeLeftInMillis, 1000) {
@@ -1176,6 +1160,7 @@ long practical_timeee;
                 Datalist listOfData = new Datalist();
                 listOfData.dataList = dataList;
                 listOfData.batch_id = batch_id;
+                listOfData.student_type=student_type;
                 Gson gson = new Gson();
                 jsonInString = gson.toJson(listOfData); // Here you go!
                 System.out.println("aasddd" + jsonInString);
@@ -1247,7 +1232,7 @@ long practical_timeee;
     //Fetching Questions
     private void Questionlist() {
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/batch_questions.php";
+        String serverURL = CommonUtils.url+"batch_questions.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1290,6 +1275,12 @@ long practical_timeee;
                                 options4.add(c.getString("option4"));
                             }
 
+                            if (Que_image_viva.size()<=jsonArray.length()-1){Que_image_viva.add(c.getString("question_image"));}
+                            if (Que_option1_viva.size()<=jsonArray.length()-1){Que_option1_viva.add(c.getString("option1_image"));}
+                            if (Que_option2_viva.size()<=jsonArray.length()-1){Que_option2_viva.add(c.getString("option2_image"));}
+                            if (Que_option3_viva.size()<=jsonArray.length()-1){Que_option3_viva.add(c.getString("option3_image"));}
+                            if (Que_option4_viva.size()<=jsonArray.length()-1){Que_option4_viva.add(c.getString("option4_image"));}
+
                         }
                         System.out.println("aaaa" + aa);
                         for (int ii = 0; ii <= aa.size() - 1; ii++) {
@@ -1301,7 +1292,9 @@ long practical_timeee;
                                 }
 
                             }
-                            fragmentParent.addPage(aa.get(ii) + "", bb.get(ii), qnooo.get(ii), options1.get(ii), options2.get(ii), options3.get(ii), options4.get(ii));
+                            fragmentParent.addPage(aa.get(ii) + "", bb.get(ii), qnooo.get(ii), options1.get(ii),
+                                    options2.get(ii), options3.get(ii), options4.get(ii),Que_image_viva.get(ii)
+                                    ,Que_option1_viva.get(ii),Que_option2_viva.get(ii),Que_option3_viva.get(ii),Que_option4_viva.get(ii));
                         }
 
                     } else {
@@ -1340,6 +1333,15 @@ long practical_timeee;
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("batch_id", batchvalue);
                 map.put("language", value);
+                map.put("student_type",student_type);
+                map.put("username",studentid);
+                map.put("mobile_imei","");
+                map.put("ip","");
+                map.put("company_id","");
+                map.put("activity","Start Viva Exam");
+                map.put("lat",stringLatitude1);
+                map.put("longi",stringLongitude1);
+                map.put("mobile_imei","");
                 System.out.println("ddd" + map);
                 return map;
             }
@@ -1352,7 +1354,7 @@ long practical_timeee;
     //Saving all the answers of exam conducted
     private void Questionlist1() {
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_answers.php";
+        String serverURL = CommonUtils.url+"save_answers.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1363,12 +1365,14 @@ long practical_timeee;
                     if (status.equals("1")) {
                         Toast.makeText(getApplicationContext(), "You have successfully attempted the Assessment", Toast.LENGTH_LONG).show();
                         dbAutoSave.onDelete();
-                        saveLog(studentid,"","Logout",stringLatitude1,stringLongitude1,"");
+                        //saveLog(studentid,"","Logout",stringLatitude1,stringLongitude1,"");
                         Intent ii = new Intent(Testviva.this, Thankspage.class);
                         startActivity(ii);
 
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                    }
+
+                    else {
+                        Toast.makeText(getApplicationContext(), "Error"+response, Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1402,6 +1406,14 @@ long practical_timeee;
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("JSON", jsonInString);
+                map.put("username",studentid);
+                map.put("mobile_imei","");
+                map.put("ip","");
+                map.put("company_id","");
+                map.put("activity","User Logout");
+                map.put("lat",stringLatitude1);
+                map.put("longi",stringLongitude1);
+                map.put("student_type",student_type);
                 System.out.println("ddd" + map);
                 return map;
             }
@@ -1452,7 +1464,7 @@ long practical_timeee;
     }
 
     private void saveLog(final String fnamee, final String ip, final String activity, final String lat, final String longi,final String cmpid) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_logs.php";
+        String serverURL = CommonUtils.url+"save_logs.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1497,6 +1509,7 @@ long practical_timeee;
                 map.put("activity",activity);
                 map.put("lat",lat);
                 map.put("longi",longi);
+                map.put("student_type",student_type);
                 System.out.println("map in test viva is"+map);
                 return map;
             }

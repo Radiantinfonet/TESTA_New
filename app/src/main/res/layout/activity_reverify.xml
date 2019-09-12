@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#eeeeee"
 
-    tools:context="com.radiant.rpl.testa.Reverify">
+    tools:context="com.radiant.rpl.testa.Initials.Reverify">
 
     <ScrollView
         android:layout_width="match_parent"

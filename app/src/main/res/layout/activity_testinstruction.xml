@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/pl"
 
-    tools:context="com.radiant.rpl.testa.Testinstruction">
+    tools:context="com.radiant.rpl.testa.Initials.Testinstruction">
 
     <LinearLayout
         android:id="@+id/len22"

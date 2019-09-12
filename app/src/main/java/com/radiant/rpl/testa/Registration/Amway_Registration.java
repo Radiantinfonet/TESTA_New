@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -38,13 +39,17 @@ import com.android.volley.toolbox.StringRequest;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.radiant.rpl.testa.Barcode_d.SimpleScannerActivity;
-import com.radiant.rpl.testa.MyNetwork;
-import com.radiant.rpl.testa.NetworkStateReceiver;
-import com.radiant.rpl.testa.Registration_Done;
+import com.radiant.rpl.testa.Common.CommonUtils;
+import com.radiant.rpl.testa.Common.FiletoBase64;
+import com.radiant.rpl.testa.EyeBlink.Eye_blinkActivity;
+import com.radiant.rpl.testa.Initials.MyNetwork;
+import com.radiant.rpl.testa.Initials.NetworkStateReceiver;
+import com.radiant.rpl.testa.Initials.Registration_Done;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -107,7 +112,7 @@ public class Amway_Registration extends BaseActivity {
     private static final int ZBAR_CAMERA_PERMISSION = 1;
     String namefromaadhaar_amway;
     Spinner myspinner;
-
+    private String imagebase;
 
 
     @Override
@@ -139,11 +144,6 @@ public class Amway_Registration extends BaseActivity {
         guardiantype = findViewById(R.id.input_layout_Guardiantype_amway);
         title = findViewById(R.id.input_layout_title_amway);
 
-
-
-
-
-        //employment=findViewById(R.id.input_layout_Employment);
         employer=findViewById(R.id.input_layout_Employer_amway);
         sector=findViewById(R.id.input_layout_Sector_amway);
 
@@ -171,6 +171,7 @@ public class Amway_Registration extends BaseActivity {
         checkBox = findViewById(R.id.checkBox_amway);
         Email = findViewById(R.id.input_email_amway);
         ImageView iv=findViewById(R.id.actionQrCode);
+
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,17 +183,15 @@ public class Amway_Registration extends BaseActivity {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
                 newString1= null;
-            } else {
-                newString1= extras.getString("cmp_id");
-
-
-                System.out.println("newwww" +newString1);
-
-
-
-
             }
-        } else {
+
+            else {
+                newString1= extras.getString("cmp_id");
+                System.out.println("newwww" +newString1);
+            }
+        }
+
+        else {
             newString1= (String) savedInstanceState.getSerializable("cmp_id");
         }
 
@@ -480,9 +479,10 @@ public class Amway_Registration extends BaseActivity {
                                 MY_CAMERA_PERMISSION_CODE);
                     } else {
 
-
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        Intent ii=new Intent(Amway_Registration.this, Eye_blinkActivity.class);
+                        startActivityForResult(ii,1);
+                        /*Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
                     }
 
                 }
@@ -506,9 +506,10 @@ public class Amway_Registration extends BaseActivity {
                                 MY_CAMERA_PERMISSION_CODE);
                     } else {
 
-
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        Intent ii=new Intent(Amway_Registration.this, Eye_blinkActivity.class);
+                        startActivityForResult(ii,1);
+                        /*Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
                     }
 
                 }
@@ -1172,7 +1173,7 @@ public class Amway_Registration extends BaseActivity {
     private void languageSelect(final String cmp_id) {
 
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_language.php";
+        String serverURL = CommonUtils.url+"get_language.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1253,7 +1254,7 @@ public class Amway_Registration extends BaseActivity {
     private void Statedetails() {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_state.php";
+        String serverURL = CommonUtils.url+"get_state.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1322,7 +1323,7 @@ public class Amway_Registration extends BaseActivity {
     private void DistrictDetails(final String districtidd) {
 
 
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_district.php";
+        String serverURL = CommonUtils.url+"get_district.php";
         show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1401,7 +1402,7 @@ public class Amway_Registration extends BaseActivity {
         pd.setCanceledOnTouchOutside(false);
         pd.show();
 */
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_employer.php";
+        String serverURL = CommonUtils.url+"get_employer.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1474,7 +1475,7 @@ public class Amway_Registration extends BaseActivity {
 
     //Sector_list
     private void Sectorlist(final String Sectorvalue) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_sector.php";
+        String serverURL = CommonUtils.url+"get_sector.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1542,7 +1543,7 @@ public class Amway_Registration extends BaseActivity {
 
     //Jobrole Api Call
     private void getJobroleList(final String sscid) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/get_jobrole.php";
+        String serverURL = CommonUtils.url+"get_jobrole.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1653,7 +1654,7 @@ public class Amway_Registration extends BaseActivity {
 
 
     private void SaveDetail() {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_student_data.php";
+        String serverURL = CommonUtils.url+"save_student_data.php";
       show_progressbar();
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1848,6 +1849,29 @@ public class Amway_Registration extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         try {
+
+            if (resultCode == 3 && requestCode == 1 ){
+                Bundle extras1 = data.getExtras();
+                String byteArray = extras1.getString("ss");
+                System.out.println("the path is"+byteArray);
+                File file = new File(byteArray);
+                if(file.exists()){
+                    Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                  /*  Matrix matrix = new Matrix();
+
+                    matrix.postRotate(-90);
+
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(myBitmap, 500, 500, true);
+
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+                  */
+                    input_photograph.setImageBitmap(myBitmap);
+                }
+                imagebase= FiletoBase64.getStringFile(file);
+
+            }
+
+
             if (resultCode == 2 && requestCode == 1){
                 //do something
                 HashMap<String, String> map = new HashMap<>();
@@ -1929,7 +1953,8 @@ public class Amway_Registration extends BaseActivity {
             }else{
                 // Toast.makeText(this,"aaaaa",Toast.LENGTH_LONG).show();
                 //do something else
-            }}catch (Exception e){
+            }
+        }catch (Exception e){
             System.out.println("fffff"+e);
         }
 

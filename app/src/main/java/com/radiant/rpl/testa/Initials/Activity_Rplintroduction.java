@@ -1,4 +1,4 @@
-package com.radiant.rpl.testa;
+package com.radiant.rpl.testa.Initials;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

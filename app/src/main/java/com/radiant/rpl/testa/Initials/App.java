@@ -1,7 +1,8 @@
-package com.radiant.rpl.testa;
+package com.radiant.rpl.testa.Initials;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
+import android.support.multidex.MultiDexApplication;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -10,7 +11,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import java.util.HashMap;
 import java.util.Map;
 
-public class App extends Application {
+public class App extends MultiDexApplication {
 
     @Override
     public void onCreate() {
@@ -19,7 +20,7 @@ public class App extends Application {
         final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
         Map<String,Object> defaultValue = new HashMap<>();
         defaultValue.put(UpdateHelper.KEY_UPDATE_ENABLE,false);
-        defaultValue.put(UpdateHelper.KEY_UPDATE_VERSION,"2.1.33");
+        defaultValue.put(UpdateHelper.KEY_UPDATE_VERSION,"2.1.34");
         defaultValue.put(UpdateHelper.KEY_UPDATE_URL,"url");
         remoteConfig.setDefaults(defaultValue);
         remoteConfig.fetch(5)

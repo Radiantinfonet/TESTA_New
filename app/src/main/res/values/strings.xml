@@ -24,11 +24,11 @@
     <string name="error_cannot_get_permission">Permission not granted</string>
     <string name="error_not_having_camera">Cant find Camera</string>
 
-    <string name="formats">Formats</string>
-    <string name="choose_formats">Choose Formats</string>
-    <string name="select_camera">Select a Camera</string>
-    <string name="ok_button">OK</string>
-    <string name="cancel_button">Cancel</string>
+
+    <string name="open">Home</string>
+    <string name="close">Home</string>
+
+
     <!-- hint name of field -->
     <string name="line1">1. Total duration of examination is defined on the exam panel for theory exam and
     for viva voce.</string>
@@ -55,10 +55,10 @@ status of each question using one of the following symbols:</string>
     <string name="line13">9  Dont quit the application in between exam else the exam will not be submitted</string>
     <string name="rplintro"> • A certification program under PMKVY to provide recognition to the informal learning
         or learning through work to get equal acceptance as the formal levels of education.</string>
-    
+
     <string name="rplintro2"> • It aims to appreciate prior learning irrespective of the medium of achieving it. In short, RPL is a process
     of assessment of an individual’s prior learning to give due importance to learning as an outcome rather than learning as process.</string>
-    
+
     <string name="benefits2">Benefits Under RPL 4.0 – BICE</string>
     <string name="benefitemp">Benefits to Employee :-</string>
     <string name="benefit1"> 1)No fee charged for assessment and certification</string>
@@ -136,7 +136,20 @@ status of each question using one of the following symbols:</string>
     <string name="err_msg_for_dob">it must be selected</string>
     <string name="err_msg_for_gender">it must be selected</string>
     <string name="error_message_email">Email is not in form</string>
+    <string name="blinkforphoto">Please Blink your Eyes in order to click the photo</string>
 
+    <string name="toggle_flash">Flash</string>
+    <string name="flash_on">Flash [ON]</string>
+    <string name="flash_off">Flash [OFF]</string>
+    <string name="auto_focus_on">Auto Focus [ON]</string>
+    <string name="auto_focus_off">Auto Focus [OFF]</string>
+    <string name="formats">Formats</string>
+    <string name="choose_formats">Choose Formats</string>
+    <string name="select_camera">Select a Camera</string>
+    <string name="ok_button">OK</string>
+    <string name="cancel_button">Cancel</string>
+   <string name="crt_msg">Your Certificate is ready.Download it now.</string>
+    <string name="crt_upload_soon">Your certificate will be uploaded Soon.</string>
 
     <string-array name="gender">
         <item>Select Gender</item>

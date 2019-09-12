@@ -21,6 +21,10 @@
     <color name="BBlue">#2E78B5</color>
     <color name="Btext">#707070</color>
     <color name="Border">#A5A5A5</color>
+
+    <color name="card6">#3386CB</color>
+    <color name="card7">#3AACDF</color>
+
     <color name="green">#47c10c</color>
     <color name="yelloww">#F0AD4E</color>
     <color name="nliveo_black_light">#222222</color>

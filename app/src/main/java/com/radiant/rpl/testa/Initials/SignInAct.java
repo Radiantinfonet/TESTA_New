@@ -1,4 +1,4 @@
-package com.radiant.rpl.testa;
+package com.radiant.rpl.testa.Initials;
 
 
 import android.Manifest;
@@ -7,24 +7,19 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.Window;
@@ -43,24 +38,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.radiant.rpl.testa.Common.CommonUtils;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
 import com.radiant.rpl.testa.Registration.GPSTracker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,7 +53,6 @@ import radiant.rpl.radiantrpl.R;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.radiant.rpl.testa.StudenAtten.REQUEST_CHECK_SETTINGS;
 
 public class SignInAct extends AppCompatActivity{
     private ImageView bookIconImageView;
@@ -84,7 +67,7 @@ public class SignInAct extends AppCompatActivity{
     SessionManager sessionManager;
     SharedPreferences sharedpreferences;
     final String mypreference = "mypref";
-    String name,rascibatchid,mobile,exam_status,address,userid,batchid,jobrole;
+    String name,rascibatchid,mobile,exam_status,address,userid,batchid,jobrole,student_type;
     private android.app.AlertDialog progressDialog;
     String status;
     String value;
@@ -93,6 +76,7 @@ public class SignInAct extends AppCompatActivity{
     String stringLatitude,stringLongitude;
     DbAutoSave dbAutoSave;
     private boolean TimerRunning;
+    private String proctoring_status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,7 +224,8 @@ public class SignInAct extends AppCompatActivity{
     private void sendDataServer() {
 
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/login.php";
+        String serverURL= CommonUtils.url+"login.php";
+        //String serverURL = CommonUtils.url+"login.php";
         System.out.println("geturll"+" "+serverURL);
         uname=username.getText().toString();
         pass= passowrd.getText().toString();
@@ -249,9 +234,13 @@ public class SignInAct extends AppCompatActivity{
             @Override
             public void onResponse(String response) {
                 try {
+                    System.out.println("response is"+response);
                     JSONObject jobj = new JSONObject(response);
                     status= jobj.getString("status");
                     exam_status=jobj.getString("exam_status");
+                    student_type=jobj.getString("student_type");
+                    proctoring_status = jobj.getString("proctoring_comparison");
+
                     if (status.equals("1")) {
                         if (exam_status.equals("Not Attempted")) {
                             JSONObject jsonObject = jobj.getJSONObject("student_details");
@@ -271,6 +260,9 @@ public class SignInAct extends AppCompatActivity{
                                 editor.putString("assessorid", mobile);
                                 editor.putString("userid", userid);
                                 editor.putString("jobrole",jobrole);
+                                editor.putString("proctor_status",proctoring_status);
+                                editor.putString("student_type",student_type);
+                                editor.putString("exam_status",exam_status);
                                 editor.apply();
 
                                 if(userid.equals("aman")){
@@ -300,12 +292,10 @@ public class SignInAct extends AppCompatActivity{
                                         dbAutoSave.onDelete();
                                 }
                             }
-                            stringLatitude= Double.toString(lati);
-                            stringLongitude= Double.toString(longi);
-                            saveLog(userid,"","User Login",stringLatitude,stringLongitude,"");
                             Intent ii = new Intent(SignInAct.this, Welcome_page.class);
                             startActivity(ii);
                         }
+
                         else if (exam_status.equals("Attempted")) {
                             JSONObject jsonObject = jobj.getJSONObject("student_details");
                             for (int i = 0; i < jsonObject.length(); i++) {
@@ -322,8 +312,11 @@ public class SignInAct extends AppCompatActivity{
                                 editor.putString("address", address);
                                 editor.putString("batchid", batchid);
                                 editor.putString("assessorid", mobile);
+                                editor.putString("proctor_status",proctoring_status);
                                 editor.putString("userid", userid);
                                 editor.putString("jobrole",jobrole);
+                                editor.putString("student_type",student_type);
+                                editor.putString("exam_status",exam_status);
                                 editor.apply();
 
                                 stringLatitude= Double.toString(lati);
@@ -335,7 +328,9 @@ public class SignInAct extends AppCompatActivity{
                                     startActivity(in);
                                 }
                                 else{
-                                    AlertDialog alertDialog = new AlertDialog.Builder(SignInAct.this)
+                                    Intent ii = new Intent(SignInAct.this, Welcome_page.class);
+                                    startActivity(ii);
+                                   /* AlertDialog alertDialog = new AlertDialog.Builder(SignInAct.this)
                                             .setMessage("You have already attempted the exam.")
                                             .setCancelable(false)
                                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -343,7 +338,7 @@ public class SignInAct extends AppCompatActivity{
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     finish();
                                                 }
-                                            }).show();
+                                            }).show();*/
                                     //alertDialog.show();
                                 }
                             }
@@ -401,6 +396,7 @@ public class SignInAct extends AppCompatActivity{
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+                System.out.println("error"+error);
                 Snackbar snackbar = Snackbar
                         .make(rootView,"Please check the Internet Connectivity.",Snackbar.LENGTH_LONG);
                 snackbar.show();            }
@@ -416,9 +412,18 @@ public class SignInAct extends AppCompatActivity{
             protected Map<String, String> getParams() throws AuthFailureError {
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
+                stringLatitude= Double.toString(lati);
+                stringLongitude= Double.toString(longi);
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("user_name", uname);
                 map.put("password", pass);
+                map.put("username",uname);
+                map.put("ip","");
+                map.put("mobile_imei","");
+                map.put("company_id","");
+                map.put("activity","User Login");
+                map.put("lat",stringLatitude);
+                map.put("longi",stringLongitude);
                 map.put("key_salt", "UmFkaWFudEluZm9uZXRTYWx0S2V5");
                 map.put("app_version", "1.0");
                 return map;
@@ -430,7 +435,7 @@ public class SignInAct extends AppCompatActivity{
 
 
     private void saveLog(final String fnamee, final String ip, final String activity, final String   lat, final String longi,final String cmpid) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_logs.php";
+        String serverURL = CommonUtils.url+"save_logs.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {

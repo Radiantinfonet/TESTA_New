@@ -66,9 +66,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.radiant.rpl.testa.Common.CommonUtils;
+import com.radiant.rpl.testa.Initials.StudenAtten;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
-import com.radiant.rpl.testa.MyNetwork;
-import com.radiant.rpl.testa.SessionManager;
+import com.radiant.rpl.testa.Initials.MyNetwork;
+import com.radiant.rpl.testa.Registration.SavephotoComparison;
+import com.radiant.rpl.testa.Initials.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,13 +115,11 @@ public class TestQuestion extends AppCompatActivity {
     CustomAdapter cl1,cl2;
     String  encodedd;
 
-
-
     //camera by pk
 
     private static final String TAG = "AndroidCameraApi";
     private Button takePictureButton;
-    private TextureView textureView;
+    TextureView textureView;
     public static int i = 0;
     int c=0;
     String screenshot1;
@@ -181,6 +182,12 @@ public class TestQuestion extends AppCompatActivity {
     ArrayList<String> options4=new ArrayList<>();
     ArrayList<String> statuss=new ArrayList<>();
     ArrayList<String> questatus=new ArrayList<>();
+
+    ArrayList<String> Que_image=new ArrayList<>();
+    ArrayList<String> Que_option1=new ArrayList<>();
+    ArrayList<String> Que_option2=new ArrayList<>();
+    ArrayList<String> Que_option3=new ArrayList<>();
+    ArrayList<String> Que_option4=new ArrayList<>();
     String value,batchvalue,studentid;
 
     SetterGetter setterGetter;
@@ -227,6 +234,15 @@ public class TestQuestion extends AppCompatActivity {
     String stringLatitude1,stringLongitude1;
     final Timer timer = new Timer(false);
     long theory_time,practical_time;
+    private long aab1;
+    private String proctoring_status;
+    private String proctoring_comparison_status;
+    private String UserMobile;
+    private String Name;
+    private String student_type;
+    private String Useridd;
+
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -273,16 +289,33 @@ public class TestQuestion extends AppCompatActivity {
         mNotificationHelper = new NotificationHelper(this);
 
 
-
-
-        //camera change by pk
-
-        timerstop();
-
-
-        textureView = findViewById(R.id.texture);
+        textureView = findViewById(R.id.texture1);
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
+
+
+        if (sp.contains("assessorid")){
+            UserMobile=sp.getString("assessorid","");
+        }
+
+        if (sp.contains("Name")) {
+            Name= sp.getString("Name","");
+        }
+
+        if (sp.contains("userid")){
+            Useridd=sp.getString("userid","");
+        }
+
+        if (sp.contains("student_type")){
+           student_type=sp.getString("student_type","");
+        }
+        //camera change by pk
+
+
+
+
+
+
         // assert takePictureButton != null;
 
 
@@ -455,24 +488,18 @@ public class TestQuestion extends AppCompatActivity {
 
                 if(c>=0&&c<21)
                 {
-                    SaveDetail();
+                    if (proctoring_status.equals("1")) {
+                        SaveDetail();
+                    }
+
+                    if (proctoring_comparison_status.equals("1") && screenshot1!=null){
+                    new SavephotoComparison(getApplicationContext()).PhotoApiREc1(screenshot1,Useridd, TestQuestion.this);
+                    }
                 }
             }};
-        timer.scheduleAtFixedRate(timerTask,60000, 60000); // 1000 = 1 second.
+        timer.scheduleAtFixedRate(timerTask,60000, aab1); // 1000 = 1 second.
 
         System.out.println(timer.purge());
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
@@ -538,6 +565,7 @@ public class TestQuestion extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onError(CameraDevice camera, int error) {
+            Log.d("cameraerror",""+error);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 cameraDevice.close();
             }
@@ -563,6 +591,7 @@ public class TestQuestion extends AppCompatActivity {
         mBackgroundThread.start();
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
     }
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     protected void stopBackgroundThread() {
         mBackgroundThread.quitSafely();
@@ -644,7 +673,12 @@ public class TestQuestion extends AppCompatActivity {
                             System.out.println("file size after compression is" +byteArray.length+" and before"+bytes.length);
                             screenshot1 = Base64.encodeToString(byteArray, Base64.DEFAULT);
                             System.out.println("yyyyyyy" +screenshot1);
+                            /*if(screenshot1!= null )
+                            {
+                                new SavephotoComparison(getApplicationContext()).
+                                        PhotoApiREc1(screenshot1,UserMobile,getApplicationContext());
 
+                            }*/
 
 
                         } catch (FileNotFoundException e) {
@@ -729,6 +763,8 @@ public class TestQuestion extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void openCamera() {
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
@@ -763,6 +799,8 @@ public class TestQuestion extends AppCompatActivity {
         }
         Log.e(TAG, "openCamera X");
     }
+
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void updatePreview() {
         if(null == cameraDevice) {
@@ -800,7 +838,6 @@ public class TestQuestion extends AppCompatActivity {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onResume() {
         super.onResume();
@@ -810,7 +847,9 @@ public class TestQuestion extends AppCompatActivity {
         Log.e(TAG, "onResume");
         startBackgroundThread();
         if (textureView.isAvailable()) {
-            openCamera();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                openCamera();
+            }
         } else {
             textureView.setSurfaceTextureListener(textureListener);
         }
@@ -847,7 +886,7 @@ public class TestQuestion extends AppCompatActivity {
 
     private void SaveDetail() {
 
-        String serverURL ="https://www.skillassessment.org/sdms/android_connect1/save_proctoring.php";
+        String serverURL = CommonUtils.url+"save_proctoring.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -860,11 +899,8 @@ public class TestQuestion extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(),"We have Received your query will update soon",Toast.LENGTH_LONG).show();
                     if (status.equals("1")){
 
-
-                        Toast.makeText(getApplicationContext(),"Photo Captured",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Photo Captured", Toast.LENGTH_SHORT).show();
                         Log.d("Response",response);
-
-
 
                     }
 
@@ -883,7 +919,7 @@ public class TestQuestion extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 //Toast.makeText(getApplicationContext(), "We Encounterd an Error. Please try again later"+error, Toast.LENGTH_LONG).show();
-                System.out.println("aa"+error);
+                System.out.println("error in saving image"+error);
             }
         })
 
@@ -907,6 +943,8 @@ public class TestQuestion extends AppCompatActivity {
                     map.put("student_image",screenshot1);
                     map.put("student_id",studentid);
                     map.put("image_time",strDate);
+                    map.put("student_type",student_type);
+                    
 
                 }
                 Log.d("image_file",screenshot1);
@@ -978,7 +1016,6 @@ public class TestQuestion extends AppCompatActivity {
         super.onStart();
         value=sp1.getString("languagev","");
         System.out.println("value issss"+value);
-//Toast.makeText(getApplicationContext(),"on start running",Toast.LENGTH_LONG).show();
 
         SharedPreferences prefs = getSharedPreferences("prefstimer", MODE_PRIVATE);
         TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
@@ -1088,7 +1125,7 @@ public class TestQuestion extends AppCompatActivity {
 
     private void Questionlist1() {
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_answers.php";
+        String serverURL = CommonUtils.url+"save_answers.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1099,7 +1136,6 @@ public class TestQuestion extends AppCompatActivity {
                     if (status.equals("1")) {
                         Toast.makeText(getApplicationContext(), "You have successfully attempted the Assessment", Toast.LENGTH_LONG).show();
                         dbAutoSave.onDelete();
-                        saveLog(studentid,"","Logout",stringLatitude1,stringLongitude1,"");
                         Intent ii = new Intent(TestQuestion.this, Thankspage.class);
                         startActivity(ii);
 
@@ -1141,6 +1177,14 @@ public class TestQuestion extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("JSON", jsonInString);
+                map.put("username",studentid);
+                map.put("mobile_imei","");
+                map.put("ip","");
+                map.put("company_id","");
+                map.put("activity","User Logout");
+                map.put("lat",stringLatitude2);
+                map.put("longi",stringLongitude2);
+                map.put("student_type",student_type);
                 System.out.println("ddd" + map);
                 return map;
             }
@@ -1276,7 +1320,7 @@ public class TestQuestion extends AppCompatActivity {
     private void Questionlist() {
 
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/batch_questions.php";
+        String serverURL = CommonUtils.url+"batch_questions.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -1284,9 +1328,12 @@ public class TestQuestion extends AppCompatActivity {
                 try {
                     alreadyExecuted=false;
                     JSONObject jobj = new JSONObject(response);
+                    aab1=jobj.getLong("proctoring_time");
+                    proctoring_status= jobj.getString("proctoring_status");
+                    proctoring_comparison_status= jobj.getString("proctoring_comparison_status");
                     String status= jobj.getString("status");
                     float aab=jobj.getLong("theory_time");
-                    System.out.println("dddd"+aab);
+                    System.out.println("dddd"+aab1);
                     if (status.equals("1")){
                         alreadyExecuted = true;
                         JSONArray jsonArray=jobj.getJSONArray("theory_questions");
@@ -1306,6 +1353,14 @@ public class TestQuestion extends AppCompatActivity {
                             if (options3.size()<=jsonArray.length()-1){ options3.add(c.getString("option3"));}
                             if (options4.size()<=jsonArray.length()-1){ options4.add(c.getString("option4"));}
 
+                            if (Que_image.size()<=jsonArray.length()-1){Que_image.add(c.getString("question_image"));}
+                            if (Que_option1.size()<=jsonArray.length()-1){Que_option1.add(c.getString("option1_image"));}
+                            if (Que_option2.size()<=jsonArray.length()-1){Que_option2.add(c.getString("option2_image"));}
+                            if (Que_option3.size()<=jsonArray.length()-1){Que_option3.add(c.getString("option3_image"));}
+                            if (Que_option4.size()<=jsonArray.length()-1){Que_option4.add(c.getString("option4_image"));}
+
+
+
                         }
                         System.out.println("bbbb"+aa);
                         for (int ii=0;ii<=aa.size()-1;ii++) {
@@ -1317,7 +1372,9 @@ public class TestQuestion extends AppCompatActivity {
                                 }
 
                             }
-                            fragmentParent.addPage(aa.get(ii) + "", bb.get(ii), qnooo.get(ii), options1.get(ii), options2.get(ii), options3.get(ii), options4.get(ii));
+                            fragmentParent.addPage(aa.get(ii) + "", bb.get(ii), qnooo.get(ii), options1.get(ii), options2.get(ii),
+                                    options3.get(ii), options4.get(ii),Que_image.get(ii)
+                                    ,Que_option1.get(ii),Que_option2.get(ii),Que_option3.get(ii),Que_option4.get(ii));
                         }
 
 
@@ -1337,6 +1394,7 @@ public class TestQuestion extends AppCompatActivity {
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+                timerstop();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -1362,6 +1420,14 @@ public class TestQuestion extends AppCompatActivity {
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("batch_id", batchvalue);
                 map.put("language", value);
+                map.put("username",studentid);
+                map.put("ip","");
+                map.put("mobile_imei","");
+                map.put("company_id","");
+                map.put("activity","Start Exam");
+                map.put("lat",stringLatitude2);
+                map.put("longi",stringLongitude2);
+                map.put("student_type",student_type);
                 System.out.println("ddd"+map);
                 return map;
             }
@@ -1413,6 +1479,7 @@ public class TestQuestion extends AppCompatActivity {
                 Datalist listOfData = new Datalist();
                 listOfData.dataList = dataList;
                 listOfData.batch_id = batch_id;
+                listOfData.student_type=student_type;
                 Gson gson = new Gson();
                 jsonInString = gson.toJson(listOfData); // Here you go!
                 System.out.println("aasddd" + jsonInString);
@@ -1467,7 +1534,7 @@ public class TestQuestion extends AppCompatActivity {
                 .setPositiveButton("Yes And proceed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        saveLog(studentid,"","Start Viva Exam",stringLatitude2,stringLongitude2,"");
+                        //saveLog(studentid,"","Start Viva Exam",stringLatitude2,stringLongitude2,"");
 
                         Intent ii = new Intent(TestQuestion.this, Testviva.class);
                         Bundle b=new Bundle();
@@ -1500,7 +1567,7 @@ public class TestQuestion extends AppCompatActivity {
                 .setPositiveButton("Yes And proceed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        saveLog(studentid,"","Start Viva Exam",stringLatitude2,stringLongitude2,"");
+                        //saveLog(studentid,"","Start Viva Exam",stringLatitude2,stringLongitude2,"");
                         Intent ii = new Intent(TestQuestion.this, Testviva.class);
                         Bundle b=new Bundle();
                         b.putInt("que_count",aa.size());
@@ -1521,10 +1588,6 @@ public class TestQuestion extends AppCompatActivity {
 
 
     }
-
-
-
-
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -1562,7 +1625,7 @@ public class TestQuestion extends AppCompatActivity {
     }
 
     private void saveLog(final String fnamee, final String ip, final String activity, final String lat, final String longi,final String cmpid) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_logs.php";
+        String serverURL = CommonUtils.url+"save_logs.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -1607,6 +1670,7 @@ public class TestQuestion extends AppCompatActivity {
                 map.put("activity",activity);
                 map.put("lat",lat);
                 map.put("longi",longi);
+                map.put("student_type",student_type);
                 System.out.println("map in test questions is"+map);
                 return map;
             }

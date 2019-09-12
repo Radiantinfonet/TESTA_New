@@ -9,6 +9,7 @@ class Datalist
     // size of input 4
     ArrayList<SetterGetter> dataList = new ArrayList<SetterGetter>();
     String batch_id=new String();
+    String student_type=new String();
    /* long theory_time;
     long practical_time;*/
    /* int n=4;

@@ -1,4 +1,4 @@
-package com.radiant.rpl.testa;
+package com.radiant.rpl.testa.Initials;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,15 +8,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+
+import com.radiant.rpl.testa.Common.CommonUtils;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
-import com.radiant.rpl.testa.Registration.Company_dropdown;
 
 import radiant.rpl.radiantrpl.R;
 
@@ -26,9 +26,12 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
     SharedPreferences prefs;
     Long timereset;
     DbAutoSave dbAutoSave;
-    public static String Baseurll="https://www.skillassessment.org/sdms/android_connect1/";
-    public static String Testing_Baseurll="https://www.skillassessment.org/sdms/android_connect11/";
+    public static String Baseurll= CommonUtils.url+"";
+    public static String Testing_Baseurll="https://www.skillassessment.org/sdms/android_connect1/";
     private static final int REQUEST_PHONE_CALL = 1;
+    private int permi;
+    private int permi1;
+    String[] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO};
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -41,11 +44,22 @@ public class Start_Registration extends AppCompatActivity implements UpdateHelpe
                 .onUpdateCheck((UpdateHelper.onUpdateCheckListener) this)
                 .check();
 
+       /* Intent ii=new Intent(Start_Registration.this,DecoderActivity.class);
+        startActivity(ii);*/
+
 
         sessionManager=new SessionManager();
         String stat=sessionManager.getPreferences(getApplicationContext(),"vipin");
         dbAutoSave = new DbAutoSave(getApplicationContext());
         prefs=getSharedPreferences("prefs", MODE_PRIVATE);
+
+        permi = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //permi1=ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO);
+        if (permi != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(permission, 7882);
+
+        }
+
 
         if (stat.equals("1")){
         }

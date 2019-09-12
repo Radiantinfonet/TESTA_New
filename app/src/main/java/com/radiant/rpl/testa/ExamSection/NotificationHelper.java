@@ -3,14 +3,10 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-
-import com.radiant.rpl.testa.Start_Registration;
 
 import radiant.rpl.radiantrpl.R;
 

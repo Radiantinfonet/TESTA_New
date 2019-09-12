@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.radiant.rpl.testa.SignInAct">
+    tools:context="com.radiant.rpl.testa.Initials.SignInAct">
     <ImageView
         android:id="@+id/bookIconImageView"
         android:layout_width="180dp"
@@ -41,7 +41,7 @@
         android:layout_height="match_parent"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="100dp"
         android:orientation="vertical"
         android:visibility="gone">
         <TextView

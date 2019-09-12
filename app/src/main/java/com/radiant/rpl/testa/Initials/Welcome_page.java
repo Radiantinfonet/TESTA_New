@@ -1,16 +1,24 @@
-package com.radiant.rpl.testa;
+package com.radiant.rpl.testa.Initials;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.Menu;
@@ -28,6 +36,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.ebanx.swipebtn.OnActiveListener;
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
+import com.radiant.rpl.testa.Common.CommonUtils;
+import com.radiant.rpl.testa.ExamSection.Certificate_details;
 import com.radiant.rpl.testa.ExamSection.ContactUsActivity;
 import com.radiant.rpl.testa.ExamSection.Technical_Activity;
 import com.radiant.rpl.testa.ExamSection.Update_profile;
@@ -43,7 +53,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
 import radiant.rpl.radiantrpl.R;
 
-public class Welcome_page extends AppCompatActivity {
+public class Welcome_page extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     SessionManager session;
     SharedPreferences sharedpreferences;
     public static final String mypreference = "mypref";
@@ -58,10 +68,19 @@ public class Welcome_page extends AppCompatActivity {
     ByteArrayOutputStream baos;
     byte[] imageBytes;
     CircleImageView imgview;
+    private String student_type;
+    String exam_statuss;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToogle;
+    private TextView headertext;
+    int itemid;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
+
         progressDialog = new SpotsDialog(Welcome_page.this, R.style.Custom);
         //blink();
         session = new SessionManager();
@@ -73,6 +92,32 @@ public class Welcome_page extends AppCompatActivity {
         geturl= Start_Registration.getURL();
         gettestingurl=Start_Registration.getTestingURL();
         enableButton = (SwipeButton) findViewById(R.id.swipe_btn);
+
+
+
+        mDrawerLayout = findViewById(R.id.drawer);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        mToogle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+        mDrawerLayout.addDrawerListener(mToogle);
+        mToogle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Home");
+
+        navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        headertext = header.findViewById(R.id.textview2);
+
+
+
+
+
+        sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+        if (sharedpreferences.contains("exam_status")) {
+            exam_statuss=sharedpreferences.getString("exam_status", "");
+        }
+
         baos = new ByteArrayOutputStream();
         enableButton.setOnStateChangeListener(new OnStateChangeListener() {
             @Override
@@ -82,9 +127,29 @@ public class Welcome_page extends AppCompatActivity {
         enableButton.setOnActiveListener(new OnActiveListener() {
             @Override
             public void onActive() {
-                Intent ii=new Intent(Welcome_page.this, StudenAtten.class);
-                startActivity(ii);
 
+                if (exam_statuss.equals("Attempted")){
+                    if (userid.equals("aman")) {
+                        Intent in = new Intent(Welcome_page.this, StudenAtten.class);
+                        startActivity(in);
+                    }
+                    else{
+                    AlertDialog alertDialog = new AlertDialog.Builder(Welcome_page.this)
+                            .setMessage("You have already attempted the exam.")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            }).show();
+                }
+                }
+                else {
+
+                    Intent ii = new Intent(Welcome_page.this, StudenAtten.class);
+                    startActivity(ii);
+                }
             }
         });
 
@@ -96,7 +161,9 @@ public class Welcome_page extends AppCompatActivity {
         if (sharedpreferences.contains("userid")) {
             userid=sharedpreferences.getString("userid", "");
         }
-
+        if (sharedpreferences.contains("student_type")){
+            student_type=sharedpreferences.getString("student_type","");
+        }
 
 
         //logout Code
@@ -109,6 +176,14 @@ public class Welcome_page extends AppCompatActivity {
         });
     }
 
+
+    public boolean isTablet(Context context) {
+        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
+        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+        return (xlarge || large);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -116,8 +191,12 @@ public class Welcome_page extends AppCompatActivity {
     }
 
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToogle.onOptionsItemSelected(item)) {
+            return true;
+        }
         switch (item.getItemId()) {
 
             case R.id.save_menu:
@@ -152,7 +231,15 @@ public class Welcome_page extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Check_Profille();
+        System.out.println("rerr"+student_type);
+        if (student_type.equals("Regular")){
+            alertmessage.setText("Mark Your Attendance on the next page and kindly follow the instructions to start the Assessment.");
+            enableButton.setVisibility(View.VISIBLE);
+            logoutt.setVisibility(View.GONE);
+        }
+        else {
+            Check_Profille();
+        }
     }
 
 
@@ -183,9 +270,10 @@ public class Welcome_page extends AppCompatActivity {
         }).start();
     }
 
+
     private void Check_Profille() {
         progressDialog.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/check_student_profile.php";
+        String serverURL = CommonUtils.url+"check_student_profile.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
@@ -243,6 +331,7 @@ public class Welcome_page extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("user_name", userid);
+                map.put("student_type",student_type);
                 return map;
             }
         };
@@ -256,6 +345,33 @@ public class Welcome_page extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finishAffinity();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        itemid = item.getItemId();
+        switch (itemid) {
+
+
+                case R.id.logout:
+                    //prefs.removeAll();
+                    Intent j = new Intent(Welcome_page.this, Certificate_details.class);
+                    startActivity(j);
+                    finish();
+                    break;
+
+
+
+
+            default:
+                break;
+
+        }
+
+
+
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
 

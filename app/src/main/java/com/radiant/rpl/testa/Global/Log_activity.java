@@ -1,8 +1,6 @@
 package com.radiant.rpl.testa.Global;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -11,10 +9,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.radiant.rpl.testa.MyNetwork;
-import com.radiant.rpl.testa.Registration_Done;
-import com.radiant.rpl.testa.Reverify;
-import com.radiant.rpl.testa.SignInAct;
+import com.radiant.rpl.testa.Common.CommonUtils;
+import com.radiant.rpl.testa.Initials.MyNetwork;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +27,7 @@ public class Log_activity {
     }
 
     private void saveLog(final String fnamee, final String ip, final String activity, final String lat, final String longi,final String cmpid) {
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect1/save_logs.php";
+        String serverURL = CommonUtils.url+"save_logs.php";
 
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {

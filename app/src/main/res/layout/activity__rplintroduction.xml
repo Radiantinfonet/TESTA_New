@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    tools:context="com.radiant.rpl.testa.Activity_Rplintroduction">
+    tools:context="com.radiant.rpl.testa.Initials.Activity_Rplintroduction">
 
     <ScrollView
         android:layout_width="match_parent"

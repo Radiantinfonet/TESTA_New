@@ -2,6 +2,7 @@ package com.radiant.rpl.testa.ExamSection;
 
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.radiant.rpl.testa.Common.FiletoBase64;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
 
 import java.util.HashMap;
@@ -26,10 +29,13 @@ import radiant.rpl.radiantrpl.R;
 import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentChild1 extends Fragment implements View.OnClickListener {
-    String childname,quename,option1,option2,option3,option4;
+    String childname,quename,option1,option2,option3,option4,que_img_viva,img_option1_viva,img_option2_viva,img_option3_viva,img_option4_viva;
     int pgnn;
     String dummystuid;
     SharedPreferences sp;
+
+    Bitmap que_imgConverted_viva,img_option1converted_viva, img_option2converted_viva, getImg_option3converted_viva,getImg_option4converted_viva;
+    ImageView que_iv_viva,que_opt1_viva,que_opt2_viva,que_opt3_viva,que_opt4_viva;
 
     TextView textViewChildName,t1,optiona,optionb,optionc,optiond,titlea,titleb,titlec,titled,mfr11;
     LinearLayout l1,l2,l3,l4;
@@ -53,6 +59,13 @@ public class FragmentChild1 extends Fragment implements View.OnClickListener {
         option2=bundle.getString("op2");
         option3=bundle.getString("op3");
         option4=bundle.getString("op4");
+
+        que_img_viva=bundle.getString("que_img_viva");
+        img_option1_viva=bundle.getString("img_op1_viva");
+        img_option2_viva=bundle.getString("img_op2_viva");
+        img_option3_viva=bundle.getString("img_op3_viva");
+        img_option4_viva=bundle.getString("img_op4_viva");
+
         hm.put(quename,childname);
         sp=getActivity().getSharedPreferences("mypref", MODE_PRIVATE);
         dbAutoSave = new DbAutoSave(getContext());
@@ -60,9 +73,72 @@ public class FragmentChild1 extends Fragment implements View.OnClickListener {
         setEvents();
         idd=dbAutoSave.getDataOfSingleClient(query);
         dummystuid=sp.getString("userid","");
+
+        getPhotoFromStringviva();
         return view;
     }
 
+
+    public void getPhotoFromStringviva(){
+        if (que_img_viva!=null){
+            que_imgConverted_viva= FiletoBase64.getFilefromString(que_img_viva);
+            if (que_imgConverted_viva!=null){
+                que_iv_viva.setVisibility(View.VISIBLE);
+                que_iv_viva.setImageBitmap(que_imgConverted_viva);
+
+            }
+            else {
+                System.out.println("Bitmap is empty");
+            }
+        }
+
+        if (img_option1_viva!=null){
+            img_option1converted_viva=FiletoBase64.getFilefromString(img_option1_viva);
+            if (img_option1converted_viva!=null){
+                que_opt1_viva.setVisibility(View.VISIBLE);
+                que_opt1_viva.setImageBitmap(img_option1converted_viva);
+
+            }
+            else {
+                System.out.println("Bitmap is empty");
+            }
+
+        }
+        if (img_option2_viva!=null){
+            img_option2converted_viva=FiletoBase64.getFilefromString(img_option2_viva);
+            if (img_option2converted_viva!=null){
+                que_opt2_viva.setVisibility(View.VISIBLE);
+                que_opt2_viva.setImageBitmap(img_option2converted_viva);
+            }
+            else {
+                System.out.println("Bitmap is empty");
+            }
+
+        }
+        if (img_option3_viva!=null){
+            getImg_option3converted_viva=FiletoBase64.getFilefromString(img_option3_viva);
+            if (getImg_option3converted_viva!=null){
+                que_opt3_viva.setVisibility(View.VISIBLE);
+                que_opt3_viva.setImageBitmap(getImg_option3converted_viva);
+            }
+            else {
+                System.out.println("Bitmap is empty");
+            }
+
+        }
+        if (img_option4_viva!=null){
+            getImg_option4converted_viva=FiletoBase64.getFilefromString(img_option4_viva);
+            if (getImg_option4converted_viva!=null){
+                que_opt4_viva.setVisibility(View.VISIBLE);
+                que_opt4_viva.setImageBitmap(getImg_option4converted_viva);
+            }
+            else {
+                System.out.println("Bitmap is empty");
+            }
+
+        }
+
+    }
 
 
     private void getIDs(View view) {
@@ -83,6 +159,14 @@ public class FragmentChild1 extends Fragment implements View.OnClickListener {
         View vv1=view.findViewById(R.id.vv11);
         View vv2=view.findViewById(R.id.vv22);
         View vv3=view.findViewById(R.id.vv33);
+
+        que_iv_viva=view.findViewById(R.id.iv_question1);
+        que_opt1_viva=view.findViewById(R.id.iv_option11);
+        que_opt2_viva=view.findViewById(R.id.iv_option21);
+        que_opt3_viva=view.findViewById(R.id.iv_option31);
+        que_opt4_viva=view.findViewById(R.id.iv_option41);
+
+
         mfr11=view.findViewById(R.id.markforreviewww1);
         l1.setOnClickListener(this);
         l2.setOnClickListener(this);
