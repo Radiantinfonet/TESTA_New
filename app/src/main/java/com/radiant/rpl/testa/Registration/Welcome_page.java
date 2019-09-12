@@ -60,7 +60,7 @@ public class Welcome_page extends AppCompatActivity {
     ByteArrayOutputStream baos;
     byte[] imageBytes;
     CircleImageView imgview;
-   int i;
+
 
 
       //changed
